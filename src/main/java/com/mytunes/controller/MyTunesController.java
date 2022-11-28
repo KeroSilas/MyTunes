@@ -1,4 +1,4 @@
-package project.mytunes;
+package com.mytunes.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
