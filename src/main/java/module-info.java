@@ -6,6 +6,10 @@ module project.mytunes {
     requires java.naming;
     requires com.microsoft.sqlserver.jdbc;
 
-    opens project.mytunes to javafx.fxml;
-    exports project.mytunes;
+    opens com.mytunes to javafx.fxml;
+    exports com.mytunes;
+    exports com.mytunes.controller;
+    opens com.mytunes.controller to javafx.fxml;
+    exports com.mytunes.dao;
+    opens com.mytunes.dao to javafx.fxml;
 }

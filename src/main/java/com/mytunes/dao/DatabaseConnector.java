@@ -1,4 +1,4 @@
-package project.mytunes;
+package com.mytunes.dao;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
