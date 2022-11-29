@@ -39,6 +39,7 @@ public class MyTunesController {
 
     @FXML private ListView<Song> selectedListView;
 
+    @FXML private TextField testTextField;
 
     @FXML void handlePlaylistClick(MouseEvent e) {
         //returns the selected playlist's songs
@@ -58,12 +59,13 @@ public class MyTunesController {
     @FXML void handleAddSongToPlaylist() {
     }
 
-    @FXML void handlePlay() {
-        player.play();
-    }
-
-    @FXML void handlePause() {
-        player.pause();
+    @FXML void handlePlayPause() {
+        if(player.isPlaying()) {
+            player.pause();
+        }
+        else {
+            player.play();
+        }
     }
 
     @FXML void handleStop() {

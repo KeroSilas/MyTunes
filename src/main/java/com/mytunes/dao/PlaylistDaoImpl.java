@@ -1,8 +1,6 @@
 package com.mytunes.dao;
 
-import com.microsoft.sqlserver.jdbc.SQLServerException;
 import com.mytunes.model.Playlist;
-import com.mytunes.model.Song;
 
 import java.sql.*;
 import java.util.ArrayList;

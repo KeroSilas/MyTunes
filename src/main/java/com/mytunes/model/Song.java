@@ -59,6 +59,7 @@ public class Song {
         this.path = path;
     }
 
+    //TODO: Fix this
     public int calculateDuration() {
         Path path = Path.of("src/main/resources/com/mytunes/music/" + getPath());
         Media media = new Media(path.toUri().toString());

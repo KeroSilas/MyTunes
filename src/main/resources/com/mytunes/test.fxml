@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mytunes.controller.MyTunesController">
@@ -24,5 +25,6 @@
             <TableColumn fx:id="durationColumn" prefWidth="96.0" text="Duration" />
          </columns>
       </TableView>
+      <TextField fx:id="testTextField" layoutX="388.0" layoutY="452.0" />
    </children>
 </AnchorPane>

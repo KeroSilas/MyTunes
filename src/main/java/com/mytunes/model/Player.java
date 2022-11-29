@@ -47,4 +47,8 @@ public class Player {
         return mediaPlayer.getVolume();
     }
 
+    public boolean isPlaying() {
+        return mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
+    }
+
 }
