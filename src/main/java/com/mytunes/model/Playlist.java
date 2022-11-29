@@ -55,4 +55,8 @@ public class Playlist {
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
+    public int getNumberOfSongs() {
+        return songs.size();
+    }
+
 }

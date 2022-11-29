@@ -1,4 +1,4 @@
-module project.mytunes {
+module com.mytunes {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.xml.bind;
@@ -13,4 +13,6 @@ module project.mytunes {
     opens com.mytunes.controller to javafx.fxml;
     exports com.mytunes.dao;
     opens com.mytunes.dao to javafx.fxml;
+    exports com.mytunes.model;
+    opens com.mytunes.model to javafx.fxml;
 }
