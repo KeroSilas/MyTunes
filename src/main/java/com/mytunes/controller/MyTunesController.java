@@ -29,7 +29,7 @@ public class MyTunesController {
     @FXML private TableView<Playlist> playlistTableView;
     @FXML private TableColumn<Playlist, String> nameColumn;
     @FXML private TableColumn<Playlist, Integer> songsColumn;
-    @FXML private TableColumn<Playlist, Integer> durationColumn;
+    @FXML private TableColumn<Playlist, String> durationColumn;
 
     @FXML private TableView<Song> songTableView;
     @FXML private ListView<Song> selectedListView;
