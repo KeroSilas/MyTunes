@@ -1,16 +1,21 @@
 package com.mytunes.model;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+import java.nio.file.Path;
+
 public class Song {
 
         private String title;
         private String artist;
-        private String genre;
+        private String category;
         private String path;
 
-        public Song(String title, String artist, String genre, String path) {
+        public Song(String title, String artist, String category, String path) {
             this.title = title;
             this.artist = artist;
-            this.genre = genre;
+            this.category = category;
             this.path = path;
         }
 
@@ -22,11 +27,40 @@ public class Song {
             return artist;
         }
 
-        public String getGenre() {
-            return genre;
+        public String getCategory() {
+            return category;
         }
 
         public String getPath() {
             return path;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public void setArtist(String artist) {
+            this.artist = artist;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        public int calculateDuration() {
+            Path path = Path.of("src/main/resources/com/mytunes/music/" + getPath());
+            Media media = new Media(path.toUri().toString());
+            return (int) media.getDuration().toSeconds();
+        }
+
+        public String getDuration() {
+            int duration = calculateDuration();
+            int minutes = (duration / 60) % 60;
+            int seconds = duration % 60;
+            return String.format("%02d:%02d", minutes, seconds);
         }
 }

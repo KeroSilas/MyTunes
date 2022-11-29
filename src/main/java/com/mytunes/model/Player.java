@@ -31,8 +31,8 @@ public class Player {
         mediaPlayer.stop();
     }
 
-    public void shuffle() {
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+    public void repeat() {
+        //mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
     public void setVolume(double volume) {
@@ -43,8 +43,8 @@ public class Player {
         mediaPlayer.setRate(rate);
     }
 
-    public void getVolume() {
-        mediaPlayer.getVolume();
+    public double getVolume() {
+        return mediaPlayer.getVolume();
     }
 
 }

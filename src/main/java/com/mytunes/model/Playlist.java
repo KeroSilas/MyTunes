@@ -25,9 +25,28 @@ public class Playlist {
         this.name = name;
     }
 
+    public void removeSong(Song song) {
+        songs.remove(song);
+    }
+
     public void addSong(Song song) {
         songs.add(song);
     }
 
+    public int calculateDuration() {
+        int duration = 0;
+        for (Song song : songs) {
+            duration += song.calculateDuration();
+        }
+        return duration;
+    }
+
+    public String getDuration() {
+        int duration = calculateDuration();
+        int hours = duration / 3600;
+        int minutes = (duration / 60) % 60;
+        int seconds = duration % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+    }
 
 }
