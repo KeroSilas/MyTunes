@@ -1,66 +1,71 @@
 package com.mytunes.model;
 
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 import java.nio.file.Path;
 
 public class Song {
 
-        private String title;
-        private String artist;
-        private String category;
-        private String path;
+    private final int id;
+    private String title;
+    private String artist;
+    private String category;
+    private String path;
 
-        public Song(String title, String artist, String category, String path) {
-            this.title = title;
-            this.artist = artist;
-            this.category = category;
-            this.path = path;
-        }
+    public Song(int id, String title, String artist, String path) {
+        this.id = id;
+        this.title = title;
+        this.artist = artist;
+        //this.category = category;
+        this.path = path;
+    }
 
-        public String getTitle() {
-            return title;
-        }
+    public int getId() {
+        return id;
+    }
 
-        public String getArtist() {
-            return artist;
-        }
+    public String getTitle() {
+        return title;
+    }
 
-        public String getCategory() {
-            return category;
-        }
+    public String getArtist() {
+        return artist;
+    }
 
-        public String getPath() {
-            return path;
-        }
+    public String getCategory() {
+        return category;
+    }
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
+    public String getPath() {
+        return path;
+    }
 
-        public void setArtist(String artist) {
-            this.artist = artist;
-        }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-        public void setCategory(String category) {
-            this.category = category;
-        }
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
 
-        public void setPath(String path) {
-            this.path = path;
-        }
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-        public int calculateDuration() {
-            Path path = Path.of("src/main/resources/com/mytunes/music/" + getPath());
-            Media media = new Media(path.toUri().toString());
-            return (int) media.getDuration().toSeconds();
-        }
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-        public String getDuration() {
-            int duration = calculateDuration();
-            int minutes = (duration / 60) % 60;
-            int seconds = duration % 60;
-            return String.format("%02d:%02d", minutes, seconds);
-        }
+    public int calculateDuration() {
+        Path path = Path.of("src/main/resources/com/mytunes/music/" + getPath());
+        Media media = new Media(path.toUri().toString());
+        return (int) media.getDuration().toSeconds();
+    }
+
+    public String getDuration() {
+        int duration = calculateDuration();
+        int minutes = (duration / 60) % 60;
+        int seconds = duration % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
 }

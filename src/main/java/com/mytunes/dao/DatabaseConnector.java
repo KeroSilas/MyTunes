@@ -11,7 +11,7 @@ public class DatabaseConnector {
     public DatabaseConnector() {
         dataSource = new SQLServerDataSource();
         dataSource.setServerName("kero.database.windows.net");
-        dataSource.setDatabaseName("Test");
+        dataSource.setDatabaseName("MyTunes");
         dataSource.setUser("MyTunes");
         dataSource.setPassword("Strong.Pwd-123");
         dataSource.setPortNumber(1433);
