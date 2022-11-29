@@ -36,7 +36,7 @@ public class MyTunesController {
 
 
     @FXML void handlePlaylistClick(MouseEvent e) {
-        //returns the selected playlist
+        //returns the selected playlist's songs
         if(playlistTableView.getSelectionModel().getSelectedItem() != null)
             selectedListView.getItems().setAll(playlistTableView.getSelectionModel().getSelectedItem().getAllSongs());
     }
