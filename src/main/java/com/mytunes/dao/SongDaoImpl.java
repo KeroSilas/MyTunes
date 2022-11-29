@@ -72,13 +72,13 @@ public class SongDaoImpl implements SongDao{
         }
     }
 
-    //Check dao methods
+    //debugging
     public static void main(String[] args) throws SQLException {
         SongDaoImpl songDao = new SongDaoImpl();
 
         //songDao.deleteSong(3);
         //songDao.createSong("Test", "Test", "test3.wav");
-        //songDao.updateSong(4, "Test", "Test", "test3.wav");
+        //songDao.updateSong(4, "Test", "Test", "13-unfold.mp3");
 
         List<Song> songs = songDao.getAllSongs();
         for (Song song : songs) {

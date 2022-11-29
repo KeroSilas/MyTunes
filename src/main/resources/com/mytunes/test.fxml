@@ -8,19 +8,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mytunes.controller.MyTunesController">
    <children>
-      <TableView fx:id="songTableView" layoutX="611.0" layoutY="14.0" prefHeight="414.0" prefWidth="275.0">
+      <TableView fx:id="songTableView" layoutX="469.0" layoutY="14.0" prefHeight="414.0" prefWidth="417.0">
          <columns>
-            <TableColumn prefWidth="75.0" text="C1" />
-            <TableColumn prefWidth="75.0" text="C2" />
+            <TableColumn fx:id="titleColumn" prefWidth="75.0" text="Title" />
+            <TableColumn fx:id="artistColumn" prefWidth="75.0" text="Artist" />
+            <TableColumn fx:id="timeColumn" prefWidth="75.0" text="Duration" />
          </columns>
       </TableView>
-      <ListView fx:id="selectedListView" layoutX="297.0" layoutY="14.0" prefHeight="414.0" prefWidth="307.0" />
+      <ListView fx:id="selectedListView" layoutX="265.0" layoutY="14.0" prefHeight="414.0" prefWidth="197.0" />
       <Button fx:id="btnTest" layoutX="59.0" layoutY="452.0" mnemonicParsing="false" onAction="#handleTest" text="Button" />
-      <TableView fx:id="playlistTableView" layoutX="14.0" layoutY="14.0" onMouseClicked="#handlePlaylistClick" prefHeight="414.0" prefWidth="275.0">
+      <TableView fx:id="playlistTableView" layoutX="14.0" layoutY="14.0" onMouseClicked="#handlePlaylistClick" prefHeight="414.0" prefWidth="245.0">
          <columns>
-            <TableColumn fx:id="nameColumn" prefWidth="75.0" text="Name" />
-            <TableColumn fx:id="songsColumn" prefWidth="75.0" text="Songs" />
-            <TableColumn fx:id="durationColumn" prefWidth="75.0" text="Duration" />
+            <TableColumn fx:id="nameColumn" prefWidth="90.0" text="Name" />
+            <TableColumn fx:id="songsColumn" prefWidth="58.0" text="Songs" />
+            <TableColumn fx:id="durationColumn" prefWidth="96.0" text="Duration" />
          </columns>
       </TableView>
    </children>

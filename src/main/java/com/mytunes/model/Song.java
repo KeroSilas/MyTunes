@@ -1,10 +1,13 @@
 package com.mytunes.model;
 
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import java.nio.file.Path;
 
 public class Song {
+
+    private MediaPlayer mediaPlayer;
 
     private final int id;
     private String title;
@@ -67,5 +70,11 @@ public class Song {
         int minutes = (duration / 60) % 60;
         int seconds = duration % 60;
         return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    //debugging
+    public static void main(String[] args) {
+        Song song = new Song(1, "test", "test", "13-unfold.mp3");
+        System.out.println(song.calculateDuration());
     }
 }

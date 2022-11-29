@@ -67,7 +67,7 @@ public class PlaylistDaoImpl implements PlaylistDao {
         }
     }
 
-    //Check dao methods
+    //debugging
     public static void main(String[] args) throws SQLException {
         PlaylistDaoImpl playlistDao = new PlaylistDaoImpl();
 
