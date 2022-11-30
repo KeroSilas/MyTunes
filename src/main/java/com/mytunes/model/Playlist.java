@@ -50,7 +50,7 @@ public class Playlist {
     */
 
     public String getDuration() {
-        int duration = 242;
+        int duration = 242; //test value
         int hours = duration / 3600;
         int minutes = (duration / 60) % 60;
         int seconds = duration % 60;
