@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -26,6 +27,8 @@
             <TableColumn fx:id="durationColumn" prefWidth="57.0" text="Duration" />
          </columns>
       </TableView>
-      <TextField fx:id="testTextField" layoutX="388.0" layoutY="452.0" />
+      <TextField fx:id="testTextField" layoutX="119.0" layoutY="452.0" />
+      <Slider fx:id="volumeSlider" layoutX="310.0" layoutY="457.0" />
+      <Slider fx:id="progressSlider" layoutX="469.0" layoutY="457.0" />
    </children>
 </AnchorPane>

@@ -4,6 +4,8 @@ import com.mytunes.dao.*;
 import com.mytunes.model.Player;
 import com.mytunes.model.Playlist;
 import com.mytunes.model.Song;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 
 public class MyTunesController {
@@ -40,6 +43,10 @@ public class MyTunesController {
     @FXML private ListView<Song> selectedListView;
 
     @FXML private TextField testTextField;
+
+    @FXML private Slider volumeSlider;
+
+    @FXML private Slider progressSlider;
 
     @FXML void handlePlaylistClick(MouseEvent e) {
         try {
@@ -123,6 +130,23 @@ public class MyTunesController {
 
     public void initialize() throws SQLException {
         player = new Player();
+        volumeSlider.valueProperty().addListener(
+                new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
+                        player.setVolume(newValue.doubleValue());
+                    }
+                }
+        );
+        progressSlider.valueProperty().addListener(
+                new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
+                        player.setProgress(newValue.doubleValue());
+                    }
+                }
+        );
+
         songDao = new SongDaoImpl();
         playlistDao = new PlaylistDaoImpl();
         songsInPlaylistDao = new SongsInPlaylistDaoImpl();
