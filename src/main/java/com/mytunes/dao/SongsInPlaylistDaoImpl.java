@@ -18,23 +18,24 @@ public class SongsInPlaylistDaoImpl implements SongsInPlaylistDao {
     public List<Song> getPlaylist(int playlistId) throws SQLException {
         List<Song> playlist = new ArrayList<>();
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "SELECT SongsInPlaylist.PlaylistID, Songs.SongsID, Songs.title, Songs.Artist, Songs.Category, Songs.Path " +
+            String sql = "SELECT SongsInPlaylist.playlistID, Songs.songID, Songs.title, Songs.artist, Songs.category, Songs.duration, Songs.path " +
                          "FROM SongsInPlaylist " +
                          "INNER JOIN Songs " +
-                         "ON SongsInPlaylist.SongsID = Songs.SongsID " +
-                         "WHERE SongsInPlaylist.PlaylistID = ?;";
+                         "ON SongsInPlaylist.songID = Songs.songID " +
+                         "WHERE SongsInPlaylist.playlistID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, playlistId);
             if (statement.execute()) {
                 ResultSet resultSet = statement.getResultSet();
                 while (resultSet.next()) {
-                    int id = resultSet.getInt("SongsID");
+                    int id = resultSet.getInt("songID");
                     String title = resultSet.getString("title");
-                    String artist = resultSet.getString("Artist");
-                    String category = resultSet.getString("Category");
-                    String path = resultSet.getString("Path");
+                    String artist = resultSet.getString("artist");
+                    String category = resultSet.getString("category");
+                    int duration = resultSet.getInt("duration");
+                    String path = resultSet.getString("path");
 
-                    Song song = new Song(id, title, artist, category, path);
+                    Song song = new Song(id, title, artist, category, duration, path);
                     playlist.add(song);
                 }
             }
@@ -46,7 +47,7 @@ public class SongsInPlaylistDaoImpl implements SongsInPlaylistDao {
     @Override
     public void deleteSongFromPlaylist(int playlistId, int songId) throws SQLException {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "DELETE FROM SongsInPlaylist WHERE PlaylistID = ? AND SongsID = ?;";
+            String sql = "DELETE FROM SongsInPlaylist WHERE playlistID = ? AND songID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, playlistId);
             statement.setInt(2, songId);
@@ -57,7 +58,7 @@ public class SongsInPlaylistDaoImpl implements SongsInPlaylistDao {
     @Override
     public void moveSongToPlaylist(int playlistId, int songId) throws SQLException {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "INSERT INTO SongsInPlaylist (PlaylistID, SongsID) VALUES (?, ?);";
+            String sql = "INSERT INTO SongsInPlaylist (playlistID, songID) VALUES (?, ?);";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, playlistId);
             statement.setInt(2, songId);

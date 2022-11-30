@@ -23,13 +23,14 @@ public class SongDaoImpl implements SongDao{
             if (statement.execute(sql)) {
                 ResultSet resultSet = statement.getResultSet();
                 while (resultSet.next()) {
-                    int id = resultSet.getInt("SongsID");
+                    int id = resultSet.getInt("songID");
                     String title = resultSet.getString("title");
-                    String artist = resultSet.getString("Artist");
-                    String category = resultSet.getString("Category");
-                    String path = resultSet.getString("Path");
+                    String artist = resultSet.getString("artist");
+                    String category = resultSet.getString("category");
+                    int duration = resultSet.getInt("duration");
+                    String path = resultSet.getString("path");
 
-                    Song song = new Song(id, title, artist, category, path);
+                    Song song = new Song(id, title, artist, category, duration, path);
                     songs.add(song);
                 }
             }
@@ -40,7 +41,7 @@ public class SongDaoImpl implements SongDao{
     @Override
     public void deleteSong(int id) throws SQLException {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "DELETE FROM Songs WHERE SongsID = ?;";
+            String sql = "DELETE FROM Songs WHERE songID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -48,28 +49,30 @@ public class SongDaoImpl implements SongDao{
     }
 
     @Override
-    public void updateSong(int id, String title, String artist, String category, String path) throws SQLException {
+    public void updateSong(int id, String title, String artist, String category, int duration, String path) throws SQLException {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "UPDATE Songs SET title = ?, Artist = ?, Category = ?, Path = ? WHERE SongsID = ?;";
+            String sql = "UPDATE Songs SET title = ?, artist = ?, category = ?, duration = ?, path = ? WHERE songID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, title);
             statement.setString(2, artist);
             statement.setString(3, category);
-            statement.setString(4, path);
-            statement.setInt(5, id);
+            statement.setInt(4, duration);
+            statement.setString(5, path);
+            statement.setInt(6, id);
             statement.executeUpdate();
         }
     }
 
     @Override
-    public void createSong(String title, String artist, String category, String path) throws SQLException {
+    public void createSong(String title, String artist, String category, int duration, String path) throws SQLException {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "INSERT INTO Songs (title, Artist, Category, Path) VALUES (?, ?, ?, ?);";
+            String sql = "INSERT INTO Songs (title, artist, category, duration, path) VALUES (?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, title);
             statement.setString(2, artist);
             statement.setString(3, category);
-            statement.setString(4, path);
+            statement.setInt(4, duration);
+            statement.setString(5, path);
             statement.executeUpdate();
         }
     }
@@ -78,20 +81,21 @@ public class SongDaoImpl implements SongDao{
     public List<Song> searchSong(String search) throws SQLException {
         List<Song> songs = new ArrayList<>();
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "SELECT * FROM Songs WHERE title LIKE ? OR Artist LIKE ?;";
+            String sql = "SELECT * FROM Songs WHERE title LIKE ? OR artist LIKE ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, "%" + search + "%");
             statement.setString(2, "%" + search + "%");
             if (statement.execute()) {
                 ResultSet resultSet = statement.getResultSet();
                 while (resultSet.next()) {
-                    int id = resultSet.getInt("SongsID");
+                    int id = resultSet.getInt("songID");
                     String title = resultSet.getString("title");
-                    String artist = resultSet.getString("Artist");
-                    String category = resultSet.getString("Category");
-                    String path = resultSet.getString("Path");
+                    String artist = resultSet.getString("artist");
+                    String category = resultSet.getString("category");
+                    int duration = resultSet.getInt("duration");
+                    String path = resultSet.getString("path");
 
-                    Song song = new Song(id, title, artist, category, path);
+                    Song song = new Song(id, title, artist, category, duration, path);
                     songs.add(song);
                 }
             }

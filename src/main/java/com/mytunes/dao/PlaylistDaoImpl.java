@@ -23,8 +23,8 @@ public class PlaylistDaoImpl implements PlaylistDao {
             if (statement.execute(sql)) {
                 ResultSet resultSet = statement.getResultSet();
                 while (resultSet.next()) {
-                    int id = resultSet.getInt("PlaylistsID");
-                    String name = resultSet.getString("Name");
+                    int id = resultSet.getInt("playlistID");
+                    String name = resultSet.getString("name");
 
                     Playlist playlist = new Playlist(id, name);
                     playlists.add(playlist);
@@ -37,7 +37,7 @@ public class PlaylistDaoImpl implements PlaylistDao {
     @Override
     public void deletePlaylist(int id) throws SQLException {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "DELETE FROM Playlists WHERE PlaylistsID = ?;";
+            String sql = "DELETE FROM Playlists WHERE playlistID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -47,7 +47,7 @@ public class PlaylistDaoImpl implements PlaylistDao {
     @Override
     public void updatePlaylist(int id, String name) throws SQLException {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "UPDATE Playlists SET Name = ? WHERE PlaylistsID = ?;";
+            String sql = "UPDATE Playlists SET name = ? WHERE playlistID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, name);
             statement.setInt(2, id);
@@ -58,7 +58,7 @@ public class PlaylistDaoImpl implements PlaylistDao {
     @Override
     public void createPlaylist(String name) throws SQLException {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "INSERT INTO Playlists (Name) VALUES (?);";
+            String sql = "INSERT INTO Playlists (name) VALUES (?);";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, name);
             statement.executeUpdate();

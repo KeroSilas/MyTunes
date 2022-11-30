@@ -32,13 +32,13 @@ public class MyTunesController {
     @FXML private TableView<Playlist> playlistTableView;
     @FXML private TableColumn<Playlist, String> nameColumn;
     @FXML private TableColumn<Playlist, Integer> songsColumn;
-    @FXML private TableColumn<Playlist, String> durationColumn;
+    @FXML private TableColumn<Playlist, String> totalDurationColumn;
 
     @FXML private TableView<Song> songTableView;
     @FXML private TableColumn<Song, String> titleColumn;
     @FXML private TableColumn<Song, String> artistColumn;
     @FXML private TableColumn<Song, String> categoryColumn;
-    @FXML private TableColumn<Song, String> timeColumn;
+    @FXML private TableColumn<Song, String> durationColumn;
 
     @FXML private ListView<Song> selectedListView;
 
@@ -89,7 +89,7 @@ public class MyTunesController {
     //temporary implementation
     @FXML void handleAddSong(ActionEvent e) {
         try {
-            songDao.createSong("New Song", "New Artist", "New Category", "New Path");
+            songDao.createSong("New Song", "New Artist", "New Category", 420, "New Path");
             songObservableList.setAll(songDao.getAllSongs());
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -156,7 +156,7 @@ public class MyTunesController {
             //Set up the table columns and cells for the playlist table
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
             songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
-            durationColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
+            totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
             playlistTableView.setItems(playlistObservableList);
             playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             playlistObservableList.addAll(playlistDao.getAllPlaylists());
@@ -165,7 +165,7 @@ public class MyTunesController {
             titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
             artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
             categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
-            timeColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
+            durationColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
             songTableView.setItems(songObservableList);
             songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             songObservableList.addAll(songDao.getAllSongs());

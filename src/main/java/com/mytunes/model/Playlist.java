@@ -3,7 +3,7 @@ package com.mytunes.model;
 public class Playlist {
 
     private final int id;
-    private String name;
+    private final String name;
 
     public Playlist(int id, String name) {
         this.id = id;
@@ -16,10 +16,6 @@ public class Playlist {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDuration() {

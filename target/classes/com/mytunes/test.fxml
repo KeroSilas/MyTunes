@@ -15,7 +15,7 @@
             <TableColumn fx:id="titleColumn" prefWidth="75.0" text="Title" />
             <TableColumn fx:id="artistColumn" prefWidth="75.0" text="Artist" />
             <TableColumn fx:id="categoryColumn" prefWidth="75.0" text="Category" />
-            <TableColumn fx:id="timeColumn" prefWidth="75.0" text="Duration" />
+            <TableColumn fx:id="durationColumn" prefWidth="75.0" text="Duration" />
          </columns>
       </TableView>
       <ListView fx:id="selectedListView" layoutX="265.0" layoutY="14.0" prefHeight="414.0" prefWidth="197.0" />
@@ -24,7 +24,7 @@
          <columns>
             <TableColumn fx:id="nameColumn" prefWidth="48.0" text="Name" />
             <TableColumn fx:id="songsColumn" prefWidth="55.0" text="Songs" />
-            <TableColumn fx:id="durationColumn" prefWidth="57.0" text="Duration" />
+            <TableColumn fx:id="totalDurationColumn" prefWidth="57.0" text="Duration" />
          </columns>
       </TableView>
       <TextField fx:id="testTextField" layoutX="678.0" layoutY="433.0" />

@@ -1,22 +1,27 @@
 package com.mytunes.model;
 
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 import java.nio.file.Path;
 
 public class Song {
 
-    private final int id;
-    private String title;
-    private String artist;
-    private String category;
-    private String path;
+    MediaPlayer mediaPlayer;
 
-    public Song(int id, String title, String artist, String category, String path) {
+    private final int id;
+    private final String title;
+    private final String artist;
+    private final String category;
+    private final String path;
+    private final int duration;
+
+    public Song(int id, String title, String artist, String category, int duration, String path) {
         this.id = id;
         this.title = title;
         this.artist = artist;
         this.category = category;
+        this.duration = duration;
         this.path = path;
     }
 
@@ -36,42 +41,21 @@ public class Song {
         return category;
     }
 
+    public String getDuration() {
+        return String.format("%02d:%02d", duration / 60, duration % 60);
+    }
+
     public String getPath() {
         return path;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    //TODO: Fix this
-    public int calculateDuration() {
-        Path path = Path.of("src/main/resources/com/mytunes/music/" + getPath());
-        Media media = new Media(path.toUri().toString());
-        return (int) media.getDuration().toSeconds();
-    }
-
-    public String getDuration() {
-        int duration = 242;
-        int minutes = (duration / 60) % 60;
-        int seconds = duration % 60;
-        return String.format("%02d:%02d", minutes, seconds);
     }
 
     @Override
     public String toString() {
         return artist + " - " + title;
+    }
+
+    public static void main(String[] args) {
+        Song song = new Song(1, "test", "test", "test", 4, "test.wav");
+        System.out.println(song.getDuration());
     }
 }
