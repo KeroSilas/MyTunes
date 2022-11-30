@@ -45,12 +45,24 @@ public class SongsInPlaylistDaoImpl implements SongsInPlaylistDao {
 
     @Override
     public void deleteSongFromPlaylist(int playlistId, int songId) throws SQLException {
-
+        try (Connection connection = databaseConnector.getConnection()) {
+            String sql = "DELETE FROM SongsInPlaylist WHERE PlaylistID = ? AND SongsID = ?;";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, playlistId);
+            statement.setInt(2, songId);
+            statement.executeUpdate();
+        }
     }
 
     @Override
     public void moveSongToPlaylist(int playlistId, int songId) throws SQLException {
-
+        try (Connection connection = databaseConnector.getConnection()) {
+            String sql = "INSERT INTO SongsInPlaylist (PlaylistID, SongsID) VALUES (?, ?);";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, playlistId);
+            statement.setInt(2, songId);
+            statement.executeUpdate();
+        }
     }
 
     public static void main(String[] args) throws SQLException {
