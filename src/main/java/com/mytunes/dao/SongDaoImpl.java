@@ -26,10 +26,10 @@ public class SongDaoImpl implements SongDao{
                     int id = resultSet.getInt("SongsID");
                     String title = resultSet.getString("title");
                     String artist = resultSet.getString("Artist");
-                    //String category = resultSet.getString("Category"); //TO-DO: Add Category to DB
+                    String category = resultSet.getString("Category");
                     String path = resultSet.getString("Path");
 
-                    Song song = new Song(id, title, artist, path);
+                    Song song = new Song(id, title, artist, category, path);
                     songs.add(song);
                 }
             }

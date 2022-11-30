@@ -1,9 +1,6 @@
 package com.mytunes.controller;
 
-import com.mytunes.dao.PlaylistDao;
-import com.mytunes.dao.PlaylistDaoImpl;
-import com.mytunes.dao.SongDao;
-import com.mytunes.dao.SongDaoImpl;
+import com.mytunes.dao.*;
 import com.mytunes.model.Player;
 import com.mytunes.model.Playlist;
 import com.mytunes.model.Song;
@@ -22,6 +19,7 @@ public class MyTunesController {
     private Player player;
     private SongDao songDao;
     private PlaylistDao playlistDao;
+    private SongsInPlaylistDao songsInPlaylistDao;
 
     private ObservableList<Playlist> playlistObservableList = FXCollections.observableArrayList();
     private ObservableList<Song> songObservableList = FXCollections.observableArrayList();
@@ -34,17 +32,19 @@ public class MyTunesController {
     @FXML private TableView<Song> songTableView;
     @FXML private TableColumn<Song, String> titleColumn;
     @FXML private TableColumn<Song, String> artistColumn;
-    //@FXML private TableColumn<Song, String> categoryColumn;
+    @FXML private TableColumn<Song, String> categoryColumn;
     @FXML private TableColumn<Song, String> timeColumn;
 
     @FXML private ListView<Song> selectedListView;
 
     @FXML private TextField testTextField;
 
-    @FXML void handlePlaylistClick(MouseEvent e) {
+    @FXML void handlePlaylistClick(MouseEvent e) throws SQLException {
         //returns the selected playlist's songs
-        if(playlistTableView.getSelectionModel().getSelectedItem() != null)
-            selectedListView.getItems().setAll(playlistTableView.getSelectionModel().getSelectedItem().getAllSongs());
+        Playlist selectedPlaylist = playlistTableView.getSelectionModel().getSelectedItem();
+        if(selectedPlaylist != null) {
+            selectedListView.getItems().setAll(songsInPlaylistDao.getPlaylist(selectedPlaylist.getId()));
+        }
     }
 
     @FXML void handleSongClick() {
@@ -86,6 +86,7 @@ public class MyTunesController {
         player = new Player();
         songDao = new SongDaoImpl();
         playlistDao = new PlaylistDaoImpl();
+        songsInPlaylistDao = new SongsInPlaylistDaoImpl();
 
         //Set up the table columns and cells for the playlist table
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
@@ -98,7 +99,7 @@ public class MyTunesController {
         //Set up the table columns and cells for the song table
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
-        //categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
         songTableView.setItems(songObservableList);
         songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

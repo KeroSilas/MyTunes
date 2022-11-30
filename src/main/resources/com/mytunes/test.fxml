@@ -13,6 +13,7 @@
          <columns>
             <TableColumn fx:id="titleColumn" prefWidth="75.0" text="Title" />
             <TableColumn fx:id="artistColumn" prefWidth="75.0" text="Artist" />
+            <TableColumn fx:id="categoryColumn" prefWidth="75.0" text="Category" />
             <TableColumn fx:id="timeColumn" prefWidth="75.0" text="Duration" />
          </columns>
       </TableView>
@@ -20,9 +21,9 @@
       <Button fx:id="btnTest" layoutX="59.0" layoutY="452.0" mnemonicParsing="false" onAction="#handleTest" text="Button" />
       <TableView fx:id="playlistTableView" layoutX="14.0" layoutY="14.0" onMouseClicked="#handlePlaylistClick" prefHeight="414.0" prefWidth="245.0">
          <columns>
-            <TableColumn fx:id="nameColumn" prefWidth="90.0" text="Name" />
-            <TableColumn fx:id="songsColumn" prefWidth="58.0" text="Songs" />
-            <TableColumn fx:id="durationColumn" prefWidth="96.0" text="Duration" />
+            <TableColumn fx:id="nameColumn" prefWidth="48.0" text="Name" />
+            <TableColumn fx:id="songsColumn" prefWidth="55.0" text="Songs" />
+            <TableColumn fx:id="durationColumn" prefWidth="57.0" text="Duration" />
          </columns>
       </TableView>
       <TextField fx:id="testTextField" layoutX="388.0" layoutY="452.0" />

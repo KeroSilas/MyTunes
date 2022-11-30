@@ -7,12 +7,12 @@ public class Playlist {
 
     private final int id;
     private String name;
-    private final List<Song> songs;
+    //private final List<Song> songs;
 
     public Playlist(int id, String name) {
         this.id = id;
         this.name = name;
-        this.songs = new ArrayList<>();
+        //this.songs = new ArrayList<>();
     }
 
     public int getId() {
@@ -23,14 +23,16 @@ public class Playlist {
         return name;
     }
 
-    public List<Song> getAllSongs() {
+    /*public List<Song> getAllSongs() {
         return songs;
     }
+    */
 
     public void setName(String name) {
         this.name = name;
     }
 
+    /*
     public void removeSong(Song song) {
         songs.remove(song);
     }
@@ -38,7 +40,6 @@ public class Playlist {
     public void addSong(Song song) {
         songs.add(song);
     }
-
     public int calculateDuration() {
         int duration = 0;
         for (Song song : songs) {
@@ -46,9 +47,10 @@ public class Playlist {
         }
         return duration;
     }
+    */
 
     public String getDuration() {
-        int duration = calculateDuration();
+        int duration = 242;
         int hours = duration / 3600;
         int minutes = (duration / 60) % 60;
         int seconds = duration % 60;
@@ -56,7 +58,7 @@ public class Playlist {
     }
 
     public int getNumberOfSongs() {
-        return songs.size();
+        return 3;
     }
 
 }

@@ -7,7 +7,7 @@ import java.nio.file.Path;
 
 public class Song {
 
-    private MediaPlayer mediaPlayer;
+    //private MediaPlayer mediaPlayer;
 
     private final int id;
     private String title;
@@ -15,11 +15,11 @@ public class Song {
     private String category;
     private String path;
 
-    public Song(int id, String title, String artist, String path) {
+    public Song(int id, String title, String artist, String category, String path) {
         this.id = id;
         this.title = title;
         this.artist = artist;
-        //this.category = category;
+        this.category = category;
         this.path = path;
     }
 
@@ -67,15 +67,20 @@ public class Song {
     }
 
     public String getDuration() {
-        int duration = calculateDuration();
+        int duration = 242;
         int minutes = (duration / 60) % 60;
         int seconds = duration % 60;
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+    @Override
+    public String toString() {
+        return artist + " - " + title;
+    }
+
     //debugging
     public static void main(String[] args) {
-        Song song = new Song(1, "test", "test", "13-unfold.mp3");
+        Song song = new Song(1, "test", "test", "test", "13-unfold.mp3");
         System.out.println(song.calculateDuration());
     }
 }
