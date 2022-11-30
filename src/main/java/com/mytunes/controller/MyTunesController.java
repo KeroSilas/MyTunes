@@ -137,7 +137,7 @@ public class MyTunesController {
                 player.setVolume(newValue.doubleValue() / 100)
         ); //add listener to volumeSlider
 
-        //automatically update progressSlider every 0.1s, unless progressSlider is being dragged
+        //automatically update progressSlider every 0.001s, unless progressSlider is being dragged
         Timer progressTimer = new Timer();
         progressTimer.schedule(new TimerTask() {
             @Override public void run() {
@@ -145,7 +145,7 @@ public class MyTunesController {
                     progressSlider.setValue(player.getCurrentProgress() * 100);
                 }
             }
-        }, 0L, 100L);
+        }, 0L, 1L);
 
         //initialize DAOs
         songDao = new SongDaoImpl();
@@ -156,7 +156,7 @@ public class MyTunesController {
             //Set up the table columns and cells for the playlist table
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
             songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
-            totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
+            totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("TotalDuration"));
             playlistTableView.setItems(playlistObservableList);
             playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             playlistObservableList.addAll(playlistDao.getAllPlaylists());
@@ -165,7 +165,7 @@ public class MyTunesController {
             titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
             artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
             categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
-            durationColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
+            durationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
             songTableView.setItems(songObservableList);
             songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             songObservableList.addAll(songDao.getAllSongs());

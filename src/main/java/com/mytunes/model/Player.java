@@ -41,14 +41,6 @@ public class Player {
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
-    public void setVolume(double volume) {
-        mediaPlayer.setVolume(volume);
-    }
-
-    public void setProgress(double progress) {
-        mediaPlayer.seek(mediaPlayer.getMedia().getDuration().multiply(progress));
-    }
-
     public double getVolume() {
         return mediaPlayer.getVolume();
     }
@@ -58,8 +50,15 @@ public class Player {
         return mediaPlayer.getCurrentTime().toMillis() / mediaPlayer.getTotalDuration().toMillis();
     }
 
+    public void setVolume(double volume) {
+        mediaPlayer.setVolume(volume);
+    }
+
+    public void setProgress(double progress) {
+        mediaPlayer.seek(mediaPlayer.getMedia().getDuration().multiply(progress));
+    }
+
     public boolean isPlaying() {
         return mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
     }
-
 }
