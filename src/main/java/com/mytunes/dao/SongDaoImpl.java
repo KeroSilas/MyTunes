@@ -48,28 +48,55 @@ public class SongDaoImpl implements SongDao{
     }
 
     @Override
-    public void updateSong(int id, String title, String artist, String path) throws SQLException {
+    public void updateSong(int id, String title, String artist, String category, String path) throws SQLException {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "UPDATE Songs SET title = ?, Artist = ?, Path = ? WHERE SongsID = ?;";
+            String sql = "UPDATE Songs SET title = ?, Artist = ?, Category = ?, Path = ? WHERE SongsID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, title);
             statement.setString(2, artist);
-            statement.setString(3, path);
-            statement.setInt(4, id);
+            statement.setString(3, category);
+            statement.setString(4, path);
+            statement.setInt(5, id);
             statement.executeUpdate();
         }
     }
 
     @Override
-    public void createSong(String title, String artist, String path) throws SQLException {
+    public void createSong(String title, String artist, String category, String path) throws SQLException {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "INSERT INTO Songs (title, Artist, Path) VALUES (?, ?, ?);";
+            String sql = "INSERT INTO Songs (title, Artist, Category, Path) VALUES (?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, title);
             statement.setString(2, artist);
-            statement.setString(3, path);
+            statement.setString(3, category);
+            statement.setString(4, path);
             statement.executeUpdate();
         }
+    }
+
+    @Override
+    public List<Song> searchSong(String search) throws SQLException {
+        List<Song> songs = new ArrayList<>();
+        try (Connection connection = databaseConnector.getConnection()) {
+            String sql = "SELECT * FROM Songs WHERE title LIKE ? OR Artist LIKE ?;";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, "%" + search + "%");
+            statement.setString(2, "%" + search + "%");
+            if (statement.execute()) {
+                ResultSet resultSet = statement.getResultSet();
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("SongsID");
+                    String title = resultSet.getString("title");
+                    String artist = resultSet.getString("Artist");
+                    String category = resultSet.getString("Category");
+                    String path = resultSet.getString("Path");
+
+                    Song song = new Song(id, title, artist, category, path);
+                    songs.add(song);
+                }
+            }
+        }
+        return songs;
     }
 
     //debugging
@@ -84,5 +111,6 @@ public class SongDaoImpl implements SongDao{
         for (Song song : songs) {
             System.out.println(song.getId()+ " " + song.getTitle() + " " + song.getArtist() + " " + song.getPath());
         }
+        System.out.println(songDao.searchSong("cb"));
     }
 }

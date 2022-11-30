@@ -11,8 +11,10 @@ public interface SongDao {
 
     void deleteSong(int id) throws SQLException;
 
-    void updateSong(int id, String title, String artist, String path) throws SQLException;
+    void updateSong(int id, String title, String artist, String category, String path) throws SQLException;
 
-    void createSong(String title, String artist, String path) throws SQLException;
+    void createSong(String title, String artist, String category, String path) throws SQLException;
+
+    List<Song> searchSong(String search) throws SQLException;
 
 }
