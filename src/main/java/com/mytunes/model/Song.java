@@ -1,13 +1,10 @@
 package com.mytunes.model;
 
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 import java.nio.file.Path;
 
 public class Song {
-
-    //private MediaPlayer mediaPlayer;
 
     private final int id;
     private String title;
@@ -76,11 +73,5 @@ public class Song {
     @Override
     public String toString() {
         return artist + " - " + title;
-    }
-
-    //debugging
-    public static void main(String[] args) {
-        Song song = new Song(1, "test", "test", "test", "13-unfold.mp3");
-        System.out.println(song.calculateDuration());
     }
 }

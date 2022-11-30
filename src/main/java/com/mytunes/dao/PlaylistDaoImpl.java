@@ -64,18 +64,4 @@ public class PlaylistDaoImpl implements PlaylistDao {
             statement.executeUpdate();
         }
     }
-
-    //debugging
-    public static void main(String[] args) throws SQLException {
-        PlaylistDaoImpl playlistDao = new PlaylistDaoImpl();
-
-        //playlistDao.createPlaylist("Test");
-        //playlistDao.updatePlaylist(1, "Test2");
-        //playlistDao.deletePlaylist(2);
-
-        List<Playlist> playlists = playlistDao.getAllPlaylists();
-        for (Playlist playlist : playlists) {
-            System.out.println(playlist.getId() + " " + playlist.getName());
-        }
-    }
 }

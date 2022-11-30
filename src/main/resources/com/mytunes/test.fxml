@@ -19,7 +19,7 @@
          </columns>
       </TableView>
       <ListView fx:id="selectedListView" layoutX="265.0" layoutY="14.0" prefHeight="414.0" prefWidth="197.0" />
-      <Button fx:id="btnTest" layoutX="59.0" layoutY="452.0" mnemonicParsing="false" onAction="#handleSearch" text="Button" />
+      <Button fx:id="btnTest" layoutX="834.0" layoutY="433.0" mnemonicParsing="false" onAction="#handleSearch" text="Button" />
       <TableView fx:id="playlistTableView" layoutX="14.0" layoutY="14.0" onMouseClicked="#handlePlaylistClick" prefHeight="414.0" prefWidth="245.0">
          <columns>
             <TableColumn fx:id="nameColumn" prefWidth="48.0" text="Name" />
@@ -27,8 +27,8 @@
             <TableColumn fx:id="durationColumn" prefWidth="57.0" text="Duration" />
          </columns>
       </TableView>
-      <TextField fx:id="testTextField" layoutX="119.0" layoutY="452.0" />
-      <Slider fx:id="volumeSlider" layoutX="310.0" layoutY="457.0" />
-      <Slider fx:id="progressSlider" layoutX="469.0" layoutY="457.0" />
+      <TextField fx:id="testTextField" layoutX="678.0" layoutY="433.0" />
+      <Slider fx:id="volumeSlider" layoutX="720.0" layoutY="470.0" />
+      <Slider fx:id="progressSlider" layoutX="25.0" layoutY="456.0" onMouseReleased="#handleProgressSlider" prefHeight="14.0" prefWidth="632.0" />
    </children>
 </AnchorPane>

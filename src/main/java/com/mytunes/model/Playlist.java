@@ -1,18 +1,13 @@
 package com.mytunes.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Playlist {
 
     private final int id;
     private String name;
-    //private final List<Song> songs;
 
     public Playlist(int id, String name) {
         this.id = id;
         this.name = name;
-        //this.songs = new ArrayList<>();
     }
 
     public int getId() {
@@ -23,31 +18,9 @@ public class Playlist {
         return name;
     }
 
-    /*public List<Song> getAllSongs() {
-        return songs;
-    }
-    */
-
     public void setName(String name) {
         this.name = name;
     }
-
-    /*
-    public void removeSong(Song song) {
-        songs.remove(song);
-    }
-
-    public void addSong(Song song) {
-        songs.add(song);
-    }
-    public int calculateDuration() {
-        int duration = 0;
-        for (Song song : songs) {
-            duration += song.calculateDuration();
-        }
-        return duration;
-    }
-    */
 
     public String getDuration() {
         int duration = 242; //test value
@@ -60,5 +33,4 @@ public class Playlist {
     public int getNumberOfSongs() {
         return 3;
     }
-
 }

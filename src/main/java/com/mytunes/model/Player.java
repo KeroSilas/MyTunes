@@ -4,7 +4,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class Player {
 
@@ -16,6 +15,7 @@ public class Player {
         path = Path.of("src/main/resources/com/mytunes/music/test.wav");
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
     }
 
     //loads audio file
@@ -49,16 +49,13 @@ public class Player {
         mediaPlayer.seek(mediaPlayer.getMedia().getDuration().multiply(progress));
     }
 
-    public void setRate(double rate) {
-        mediaPlayer.setRate(rate);
-    }
-
     public double getVolume() {
         return mediaPlayer.getVolume();
     }
 
-    public int getProgress() {
-        return (int) (mediaPlayer.getCurrentTime().toSeconds() / mediaPlayer.getTotalDuration().toSeconds());
+    //returns current progress of song
+    public double getCurrentProgress() {
+        return mediaPlayer.getCurrentTime().toMillis() / mediaPlayer.getTotalDuration().toMillis();
     }
 
     public boolean isPlaying() {

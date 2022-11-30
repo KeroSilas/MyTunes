@@ -64,13 +64,4 @@ public class SongsInPlaylistDaoImpl implements SongsInPlaylistDao {
             statement.executeUpdate();
         }
     }
-
-    public static void main(String[] args) throws SQLException {
-        SongsInPlaylistDaoImpl songsInPlaylistDao = new SongsInPlaylistDaoImpl();
-        List<Song> playlist = songsInPlaylistDao.getPlaylist(3);
-        for (Song song : playlist) {
-            System.out.println(song.getId() + " " + song.getTitle() + " " + song.getArtist() + " " + song.getCategory() + " " + song.getPath());
-        }
-    }
-
 }

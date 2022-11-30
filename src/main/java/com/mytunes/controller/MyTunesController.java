@@ -4,8 +4,6 @@ import com.mytunes.dao.*;
 import com.mytunes.model.Player;
 import com.mytunes.model.Playlist;
 import com.mytunes.model.Song;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,12 +12,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MyTunesController {
 
     private Player player;
+
     private SongDao songDao;
     private PlaylistDao playlistDao;
     private SongsInPlaylistDao songsInPlaylistDao;
@@ -67,6 +67,7 @@ public class MyTunesController {
         }
     }
 
+    //searches for songs in the database
     @FXML void handleSearch(ActionEvent e) {
         try {
             songObservableList.setAll(songDao.searchSong(testTextField.getText()));
@@ -105,6 +106,7 @@ public class MyTunesController {
         }
     }
 
+    //determines whether the player is playing or paused and changes the buttons action accordingly
     @FXML void handlePlayPause(ActionEvent e) {
         if(player.isPlaying()) {
             player.pause();
@@ -122,50 +124,53 @@ public class MyTunesController {
         player.repeat();
     }
 
-    @FXML void handleTest(ActionEvent e) {
-        System.out.println("Test");
-        player.load("test.wav");
-        player.play();
+    //changes progress of player when mouse click is released
+    @FXML void handleProgressSlider(MouseEvent e) {
+        player.setProgress(progressSlider.getValue() / 100);
     }
 
-    public void initialize() throws SQLException {
-        player = new Player();
-        volumeSlider.valueProperty().addListener(
-                new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
-                        player.setVolume(newValue.doubleValue());
-                    }
-                }
-        );
-        progressSlider.valueProperty().addListener(
-                new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
-                        player.setProgress(newValue.doubleValue());
-                    }
-                }
-        );
+    public void initialize() {
+        player = new Player(); //initialize player
+        player.setVolume(0.5); //set default volume to 0.5 (50%)
+        volumeSlider.setValue(player.getVolume() * 100);
+        volumeSlider.valueProperty().addListener((ov, oldValue, newValue) ->
+                player.setVolume(newValue.doubleValue() / 100)
+        ); //add listener to volumeSlider
 
+        //automatically update progressSlider every 0.1s, unless progressSlider is being dragged
+        Timer progressTimer = new Timer();
+        progressTimer.schedule(new TimerTask() {
+            @Override public void run() {
+                if(!progressSlider.isPressed()) {
+                    progressSlider.setValue(player.getCurrentProgress() * 100);
+                }
+            }
+        }, 0L, 100L);
+
+        //initialize DAOs
         songDao = new SongDaoImpl();
         playlistDao = new PlaylistDaoImpl();
         songsInPlaylistDao = new SongsInPlaylistDaoImpl();
 
-        //Set up the table columns and cells for the playlist table
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
-        durationColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
-        playlistTableView.setItems(playlistObservableList);
-        playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        playlistObservableList.addAll(playlistDao.getAllPlaylists());
+        try {
+            //Set up the table columns and cells for the playlist table
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
+            songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
+            durationColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
+            playlistTableView.setItems(playlistObservableList);
+            playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            playlistObservableList.addAll(playlistDao.getAllPlaylists());
 
-        //Set up the table columns and cells for the song table
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
-        artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
-        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
-        timeColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
-        songTableView.setItems(songObservableList);
-        songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        songObservableList.addAll(songDao.getAllSongs());
+            //Set up the table columns and cells for the song table
+            titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
+            artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
+            categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
+            timeColumn.setCellValueFactory(new PropertyValueFactory<>("Duration"));
+            songTableView.setItems(songObservableList);
+            songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            songObservableList.addAll(songDao.getAllSongs());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }

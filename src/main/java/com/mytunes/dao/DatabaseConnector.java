@@ -21,8 +21,8 @@ public class DatabaseConnector {
         return dataSource.getConnection();
     }
 
+    //test connection
     public static void main(String[] args) throws SQLException {
-        //Test connection
         DatabaseConnector databaseConnector = new DatabaseConnector();
         try (Connection connection = databaseConnector.getConnection()) {
             System.out.println("Connection open? " + !connection.isClosed());
