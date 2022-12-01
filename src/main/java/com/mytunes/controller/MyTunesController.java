@@ -42,35 +42,29 @@ public class MyTunesController {
 
     @FXML private ListView<Song> selectedListView;
 
-    @FXML private TextField testTextField;
+    @FXML private TextField searchTextField;
 
     @FXML private Slider volumeSlider;
 
     @FXML private Slider progressSlider;
 
     @FXML void handlePlaylistClick(MouseEvent e) {
-        try {
-            selectedPlaylist = playlistTableView.getSelectionModel().getSelectedItem();
-            if (selectedPlaylist != null) {
-                selectedListView.getItems().setAll(songsInPlaylistDao.getPlaylist(selectedPlaylist.getId()));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        selectedPlaylist = playlistTableView.getSelectionModel().getSelectedItem();
+        updateSongsInPlaylists();
     }
 
     @FXML void handleSongClick(MouseEvent e) {
         selectedSong = songTableView.getSelectionModel().getSelectedItem();
         if (selectedSong != null) {
-            player.load(selectedSong.getPath());
-            player.play();
+            //player.load(selectedSong.getPath());
+            //player.play();
         }
     }
 
     //searches for songs in the database
     @FXML void handleSearch(ActionEvent e) {
         try {
-            songObservableList.setAll(songDao.searchSong(testTextField.getText()));
+            songObservableList.setAll(songDao.searchSong(searchTextField.getText()));
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -80,7 +74,7 @@ public class MyTunesController {
     @FXML void handleAddPlaylist(ActionEvent e) {
         try {
             playlistDao.createPlaylist("New Playlist");
-            playlistObservableList.setAll(playlistDao.getAllPlaylists());
+            updatePlaylists();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -90,7 +84,7 @@ public class MyTunesController {
     @FXML void handleAddSong(ActionEvent e) {
         try {
             songDao.createSong("New Song", "New Artist", "New Category", 420, "New Path");
-            songObservableList.setAll(songDao.getAllSongs());
+            updateSongs();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -99,8 +93,30 @@ public class MyTunesController {
     //temporary implementation
     @FXML void handleAddSongToPlaylist(ActionEvent e) {
         try {
-            songsInPlaylistDao.moveSongToPlaylist(selectedPlaylist.getId(), selectedSong.getId());
-            selectedListView.getItems().setAll(songsInPlaylistDao.getPlaylist(selectedPlaylist.getId()));
+            if (selectedPlaylist != null && selectedSong != null) {
+                songsInPlaylistDao.moveSongToPlaylist(selectedPlaylist.getId(), selectedSong.getId());
+            }
+            updateSongsInPlaylists();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML void handleDeleteSong(ActionEvent e) {
+        try {
+            songDao.deleteSong(selectedSong.getId());
+            updateSongs();
+            updateSongsInPlaylists();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML void handleDeletePlaylist(ActionEvent e) {
+        try {
+            playlistDao.deletePlaylist(selectedPlaylist.getId());
+            updatePlaylists();
+            updateSongsInPlaylists();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -127,6 +143,32 @@ public class MyTunesController {
     //changes progress of player when mouse click is released
     @FXML void handleProgressSlider(MouseEvent e) {
         player.setProgress(progressSlider.getValue() / 100);
+    }
+
+    private void updateSongsInPlaylists() {
+        try {
+            if (selectedPlaylist != null) {
+                selectedListView.getItems().setAll(songsInPlaylistDao.getPlaylist(selectedPlaylist.getId()));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void updateSongs() {
+        try {
+            songObservableList.setAll(songDao.getAllSongs());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void updatePlaylists() {
+        try {
+            playlistObservableList.setAll(playlistDao.getAllPlaylists());
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void initialize() {

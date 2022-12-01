@@ -11,7 +11,7 @@ import java.io.IOException;
 public class MyTunesApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MyTunesApplication.class.getResource("test.fxml")); //change to "mytunes-view.fxml" when done
+        FXMLLoader fxmlLoader = new FXMLLoader(MyTunesApplication.class.getResource("mytunes-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("MyTunes");
         stage.setScene(scene);
