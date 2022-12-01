@@ -179,7 +179,7 @@ public class MyTunesController {
                 player.setVolume(newValue.doubleValue() / 100)
         ); //add listener to volumeSlider
 
-        //automatically update progressSlider every 0.001s, unless progressSlider is being dragged
+        //automatically update progressSlider, unless progressSlider is being dragged
         Timer progressTimer = new Timer();
         progressTimer.schedule(new TimerTask() {
             @Override public void run() {
@@ -187,7 +187,7 @@ public class MyTunesController {
                     progressSlider.setValue(player.getCurrentProgress() * 100);
                 }
             }
-        }, 0L, 1L);
+        }, 0L, 100L);
 
         //initialize DAOs
         songDao = new SongDaoImpl();
