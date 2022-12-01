@@ -14,7 +14,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="636.0" prefWidth="847.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mytunes.controller.MyTunesController">
    <children>
-      <ListView fx:id="selectedListView" layoutX="221.0" layoutY="128.0" prefHeight="412.0" prefWidth="209.0" />
+      <ListView fx:id="selectedListView" layoutX="221.0" layoutY="128.0" onMouseClicked="#handleSongInPlaylistClick" prefHeight="412.0" prefWidth="209.0" />
       <Button layoutX="562.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleDeleteSong" text="Delete" />
       <Button layoutX="518.0" layoutY="86.0" mnemonicParsing="false" text="Edit" />
       <Button layoutX="471.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleAddSong" text="New" />
@@ -54,46 +54,46 @@
       <Button layoutX="769.0" layoutY="32.0" mnemonicParsing="false" onAction="#handleSearch" text="Search" />
       <TextField fx:id="searchTextField" layoutX="612.0" layoutY="32.0" />
       <Label layoutX="570.0" layoutY="23.0" prefHeight="43.0" prefWidth="42.0" text="Filter :" />
-      <Button cancelButton="true" layoutX="95.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0">
+      <Button cancelButton="true" layoutX="95.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleNextSong" prefHeight="20.0" prefWidth="20.0">
          <graphic>
             <ImageView fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@Mytunes%20image/F.png" />
+                  <Image url="@images/F.png" />
                </image>
             </ImageView>
          </graphic>
       </Button>
-      <Button layoutX="135.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0">
+      <Button fx:id="repeatButton" layoutX="135.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleRepeat" prefHeight="20.0" prefWidth="20.0">
          <graphic>
             <ImageView fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@Mytunes%20image/G.png" />
+                  <Image url="@images/G.png" />
                </image>
             </ImageView>
          </graphic>
       </Button>
-      <Button layoutX="172.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0">
+      <Button fx:id="muteUnmuteButton" layoutX="172.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleMuteUnmute" prefHeight="20.0" prefWidth="20.0">
          <graphic>
             <ImageView fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@Mytunes%20image/L.png" />
+                  <Image url="@images/L.png" />
                </image>
             </ImageView>
          </graphic>
       </Button>
-      <Button layoutX="25.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0">
+      <Button layoutX="25.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handlePreviousSong" prefHeight="20.0" prefWidth="20.0">
          <graphic>
             <ImageView fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@Mytunes%20image/W.png" />
+                  <Image url="@images/W.png" />
                </image>
             </ImageView>
          </graphic></Button>
-      <Button layoutX="60.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handlePlayPause" prefHeight="20.0" prefWidth="20.0">
+      <Button fx:id="playPauseButton" layoutX="60.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handlePlayPause" prefHeight="20.0" prefWidth="20.0">
          <graphic>
             <ImageView fx:id="playPauseImage" fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@Mytunes%20image/play.png" />
+                  <Image url="@images/play.png" />
                </image>
             </ImageView>
          </graphic>

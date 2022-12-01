@@ -10,12 +10,12 @@ public class Player {
     private Path path;
     private Media media;
     private MediaPlayer mediaPlayer;
+    private String currentFile = "empty";
 
     public Player() {
         path = Path.of("src/main/resources/com/mytunes/music/test.wav");
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.play();
     }
 
     //loads audio file
@@ -23,6 +23,11 @@ public class Player {
         path = Path.of("src/main/resources/com/mytunes/music/" + file);
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
+        currentFile = file;
+    }
+
+    public String getCurrentFile() {
+        return currentFile;
     }
 
     public void play() {
@@ -37,8 +42,12 @@ public class Player {
         mediaPlayer.stop();
     }
 
-    public void repeat() {
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+    public void setRepeat(boolean repeat) {
+        if(repeat) {
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        } else {
+            mediaPlayer.setCycleCount(1);
+        }
     }
 
     public double getVolume() {
@@ -61,4 +70,17 @@ public class Player {
     public boolean isPlaying() {
         return mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
     }
+
+    public boolean isEndOfMedia() {
+        return mediaPlayer.getCurrentTime().equals(mediaPlayer.getTotalDuration());
+    }
+
+    public boolean isRepeating() {
+        return mediaPlayer.getCycleCount() == MediaPlayer.INDEFINITE;
+    }
+
+    public boolean isMuted() {
+        return getVolume() == 0;
+    }
+
 }

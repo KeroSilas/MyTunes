@@ -39,7 +39,10 @@ public class Song {
     }
 
     public String getDurationInString() {
-        return String.format("%02d:%02d", duration / 60, duration % 60);
+        int duration = getDurationInInteger();
+        int minutes = (duration % 3600) / 60;
+        int seconds = duration % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
     public String getPath() {

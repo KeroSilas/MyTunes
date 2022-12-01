@@ -24,10 +24,11 @@ public class MyTunesController {
     private PlaylistDao playlistDao;
     private SongsInPlaylistDao songsInPlaylistDao;
 
-    private ObservableList<Playlist> playlistObservableList = FXCollections.observableArrayList();
-    private ObservableList<Song> songObservableList = FXCollections.observableArrayList();
+    private final ObservableList<Playlist> playlistObservableList = FXCollections.observableArrayList();
+    private final ObservableList<Song> songObservableList = FXCollections.observableArrayList();
     private Playlist selectedPlaylist;
     private Song selectedSong;
+    private Song selectedSongInPlaylist;
 
     @FXML private TableView<Playlist> playlistTableView;
     @FXML private TableColumn<Playlist, String> nameColumn;
@@ -57,6 +58,14 @@ public class MyTunesController {
         selectedSong = songTableView.getSelectionModel().getSelectedItem();
         if (selectedSong != null) {
             //player.load(selectedSong.getPath());
+            //player.play();
+        }
+    }
+
+    @FXML void handleSongInPlaylistClick(MouseEvent e) {
+        selectedSongInPlaylist = selectedListView.getSelectionModel().getSelectedItem();
+        if (selectedSongInPlaylist != null) {
+            //player.load(selectedSongInPlaylist.getPath());
             //player.play();
         }
     }
@@ -97,6 +106,7 @@ public class MyTunesController {
                 songsInPlaylistDao.moveSongToPlaylist(selectedPlaylist.getId(), selectedSong.getId());
             }
             updateSongsInPlaylists();
+            updatePlaylists();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -107,6 +117,7 @@ public class MyTunesController {
             songDao.deleteSong(selectedSong.getId());
             updateSongs();
             updateSongsInPlaylists();
+            updatePlaylists();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -132,12 +143,34 @@ public class MyTunesController {
         }
     }
 
-    @FXML void handleStop(ActionEvent e) {
-        player.stop();
+    @FXML void handleRepeat(ActionEvent e) {
+        if(player.isRepeating()) {
+            player.setRepeat(false);
+        }
+        else {
+            player.setRepeat(true);
+        }
     }
 
-    @FXML void handleRepeat(ActionEvent e) {
-        player.repeat();
+    @FXML void handleShuffle(ActionEvent e) {
+        //TODO: implement shuffle
+    }
+
+    @FXML void handleNextSong(ActionEvent e) {
+        //TODO: implement next song
+    }
+
+    @FXML void handlePreviousSong(ActionEvent e) {
+        //TODO: implement previous song
+    }
+
+    @FXML void handleMuteUnmute(ActionEvent e) {
+        if(player.isMuted()) {
+            player.setVolume(volumeSlider.getValue() / 100);
+        }
+        else {
+            player.setVolume(0);
+        }
     }
 
     //changes progress of player when mouse click is released
@@ -198,7 +231,7 @@ public class MyTunesController {
             //Set up the table columns and cells for the playlist table
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
             songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
-            totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("TotalDuration"));
+            totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
             playlistTableView.setItems(playlistObservableList);
             playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             playlistObservableList.addAll(playlistDao.getAllPlaylists());

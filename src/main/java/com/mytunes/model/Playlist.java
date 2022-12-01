@@ -26,8 +26,12 @@ public class Playlist {
         return name;
     }
 
-    public int getTotalDuration() throws SQLException {
-        return songsInPlaylistDao.getPlaylistDuration(getId());
+    public String getDurationInString() throws SQLException {
+        int duration = songsInPlaylistDao.getPlaylistDuration(getId());
+        int hours = duration / 3600;
+        int minutes = (duration % 3600) / 60;
+        int seconds = duration % 60;
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
     public int getNumberOfSongs() throws SQLException {
