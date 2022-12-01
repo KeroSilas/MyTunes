@@ -14,7 +14,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="636.0" prefWidth="847.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mytunes.controller.MyTunesController">
    <children>
-      <ListView fx:id="selectedListView" layoutX="221.0" layoutY="128.0" onMouseClicked="#handleSongInPlaylistClick" prefHeight="412.0" prefWidth="209.0" />
+      <ListView fx:id="songsInPlaylistListView" layoutX="221.0" layoutY="128.0" onMouseClicked="#handleSongInPlaylistClick" prefHeight="412.0" prefWidth="209.0" />
       <Button layoutX="562.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleDeleteSong" text="Delete" />
       <Button layoutX="518.0" layoutY="86.0" mnemonicParsing="false" text="Edit" />
       <Button layoutX="471.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleAddSong" text="New" />

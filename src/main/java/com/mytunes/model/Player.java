@@ -11,6 +11,7 @@ public class Player {
     private Media media;
     private MediaPlayer mediaPlayer;
     private String currentFile = "empty";
+    private String playlistStatus;
 
     public Player() {
         path = Path.of("src/main/resources/com/mytunes/music/test.wav");
@@ -30,6 +31,14 @@ public class Player {
         return currentFile;
     }
 
+    public String getPlaylistStatus() {
+        return playlistStatus;
+    }
+
+    public void setPlaylistStatus(String playlistStatus) {
+        this.playlistStatus = playlistStatus;
+    }
+
     public void play() {
         mediaPlayer.play();
     }
@@ -40,6 +49,10 @@ public class Player {
 
     public void stop() {
         mediaPlayer.stop();
+    }
+
+    public void reset() {
+        mediaPlayer.seek(mediaPlayer.getStartTime());
     }
 
     public void setRepeat(boolean repeat) {
@@ -57,6 +70,10 @@ public class Player {
     //returns current progress of song
     public double getCurrentProgress() {
         return mediaPlayer.getCurrentTime().toMillis() / mediaPlayer.getTotalDuration().toMillis();
+    }
+
+    public int getCurrentTime() {
+        return (int) mediaPlayer.getCurrentTime().toSeconds();
     }
 
     public void setVolume(double volume) {

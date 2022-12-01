@@ -26,6 +26,7 @@ public class MyTunesController {
 
     private final ObservableList<Playlist> playlistObservableList = FXCollections.observableArrayList();
     private final ObservableList<Song> songObservableList = FXCollections.observableArrayList();
+    private final ObservableList<Song> songInPlaylistObservableList = FXCollections.observableArrayList();
     private Playlist selectedPlaylist;
     private Song selectedSong;
     private Song selectedSongInPlaylist;
@@ -41,7 +42,7 @@ public class MyTunesController {
     @FXML private TableColumn<Song, String> categoryColumn;
     @FXML private TableColumn<Song, String> durationColumn;
 
-    @FXML private ListView<Song> selectedListView;
+    @FXML private ListView<Song> songsInPlaylistListView;
 
     @FXML private TextField searchTextField;
 
@@ -57,14 +58,16 @@ public class MyTunesController {
     @FXML void handleSongClick(MouseEvent e) {
         selectedSong = songTableView.getSelectionModel().getSelectedItem();
         if (selectedSong != null) {
+            player.setPlaylistStatus("allSongs");
             //player.load(selectedSong.getPath());
             //player.play();
         }
     }
 
     @FXML void handleSongInPlaylistClick(MouseEvent e) {
-        selectedSongInPlaylist = selectedListView.getSelectionModel().getSelectedItem();
+        selectedSongInPlaylist = songsInPlaylistListView.getSelectionModel().getSelectedItem();
         if (selectedSongInPlaylist != null) {
+            player.setPlaylistStatus("playlist");
             //player.load(selectedSongInPlaylist.getPath());
             //player.play();
         }
@@ -135,7 +138,7 @@ public class MyTunesController {
 
     //determines whether the player is playing or paused and changes the buttons action accordingly
     @FXML void handlePlayPause(ActionEvent e) {
-        if(player.isPlaying()) {
+        if (player.isPlaying()) {
             player.pause();
         }
         else {
@@ -144,12 +147,14 @@ public class MyTunesController {
     }
 
     @FXML void handleRepeat(ActionEvent e) {
-        if(player.isRepeating()) {
+        /*if (player.isRepeating()) {
             player.setRepeat(false);
         }
         else {
             player.setRepeat(true);
-        }
+        }*/
+
+        player.setRepeat(!player.isRepeating());
     }
 
     @FXML void handleShuffle(ActionEvent e) {
@@ -157,15 +162,35 @@ public class MyTunesController {
     }
 
     @FXML void handleNextSong(ActionEvent e) {
-        //TODO: implement next song
+        if (player.getPlaylistStatus().equals("allSongs")) {
+            player.load(songObservableList.get(songObservableList.indexOf(selectedSong) + 1).getPath());
+        }
+        else if (player.getPlaylistStatus().equals("playlist")) {
+            player.load(songInPlaylistObservableList.get(songInPlaylistObservableList.indexOf(selectedSongInPlaylist) + 1).getPath());
+        }
     }
 
     @FXML void handlePreviousSong(ActionEvent e) {
-        //TODO: implement previous song
+        if (player.getPlaylistStatus().equals("allSongs")) {
+            if(player.getCurrentTime() > 3) {
+                player.reset();
+            }
+            else {
+                player.load(songObservableList.get(songObservableList.indexOf(selectedSong) - 1).getPath());
+            }
+        }
+        else if (player.getPlaylistStatus().equals("playlist")) {
+            if(player.getCurrentTime() > 3) {
+                player.reset();
+            }
+            else {
+                player.load(songInPlaylistObservableList.get(songInPlaylistObservableList.indexOf(selectedSongInPlaylist) - 1).getPath());
+            }
+        }
     }
 
     @FXML void handleMuteUnmute(ActionEvent e) {
-        if(player.isMuted()) {
+        if (player.isMuted()) {
             player.setVolume(volumeSlider.getValue() / 100);
         }
         else {
@@ -181,7 +206,7 @@ public class MyTunesController {
     private void updateSongsInPlaylists() {
         try {
             if (selectedPlaylist != null) {
-                selectedListView.getItems().setAll(songsInPlaylistDao.getPlaylist(selectedPlaylist.getId()));
+                songInPlaylistObservableList.setAll(songsInPlaylistDao.getPlaylist(selectedPlaylist.getId()));
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -244,6 +269,9 @@ public class MyTunesController {
             songTableView.setItems(songObservableList);
             songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             songObservableList.addAll(songDao.getAllSongs());
+
+            songsInPlaylistListView.setItems(songInPlaylistObservableList);
+            songsInPlaylistListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

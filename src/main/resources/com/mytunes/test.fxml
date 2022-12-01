@@ -18,7 +18,7 @@
             <TableColumn fx:id="durationColumn" prefWidth="75.0" text="Duration" />
          </columns>
       </TableView>
-      <ListView fx:id="selectedListView" layoutX="265.0" layoutY="14.0" prefHeight="414.0" prefWidth="197.0" />
+      <ListView fx:id="songsInPlaylistListView" layoutX="265.0" layoutY="14.0" prefHeight="414.0" prefWidth="197.0" />
       <Button fx:id="btnTest" layoutX="834.0" layoutY="433.0" mnemonicParsing="false" onAction="#handleSearch" text="Button" />
       <TableView fx:id="playlistTableView" layoutX="14.0" layoutY="14.0" onMouseClicked="#handlePlaylistClick" prefHeight="414.0" prefWidth="245.0">
          <columns>
