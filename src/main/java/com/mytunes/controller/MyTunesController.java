@@ -10,8 +10,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
+import java.nio.file.Path;
 import java.sql.SQLException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -19,6 +22,14 @@ import java.util.TimerTask;
 public class MyTunesController {
 
     private Player player;
+    private final Path playPath = Path.of("src/main/resources/com/mytunes/images/play.png");
+    private final Path pausePath = Path.of("src/main/resources/com/mytunes/images/pus.png");
+    private final Path mutePath = Path.of("src/main/resources/com/mytunes/images/M.png");
+    private final Path unmutePath = Path.of("src/main/resources/com/mytunes/images/L.png");
+    private final Image playImage = new Image(playPath.toUri().toString());
+    private final Image pauseImage = new Image(pausePath.toUri().toString());
+    private final Image muteImage = new Image(mutePath.toUri().toString());
+    private final Image unmuteImage = new Image(unmutePath.toUri().toString());
 
     private SongDao songDao;
     private PlaylistDao playlistDao;
@@ -47,8 +58,11 @@ public class MyTunesController {
     @FXML private TextField searchTextField;
 
     @FXML private Slider volumeSlider;
-
     @FXML private Slider progressSlider;
+
+    @FXML private ImageView playPauseImage;
+    @FXML private ImageView muteUnmuteImage;
+    @FXML private ImageView repeatImage;
 
     @FXML void handlePlaylistClick(MouseEvent e) {
         selectedPlaylist = playlistTableView.getSelectionModel().getSelectedItem();
@@ -142,9 +156,11 @@ public class MyTunesController {
     @FXML void handlePlayPause(ActionEvent e) {
         if (player.isPlaying()) {
             player.pause();
+            playPauseImage.setImage(playImage);
         }
         else {
             player.play();
+            playPauseImage.setImage(pauseImage);
         }
     }
 
@@ -217,9 +233,11 @@ public class MyTunesController {
     @FXML void handleMuteUnmute(ActionEvent e) {
         if (player.isMuted()) {
             player.setVolume(volumeSlider.getValue() / 100);
+            muteUnmuteImage.setImage(unmuteImage);
         }
         else {
             player.setVolume(0);
+            muteUnmuteImage.setImage(muteImage);
         }
     }
 

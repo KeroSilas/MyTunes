@@ -65,7 +65,7 @@
       </Button>
       <Button fx:id="repeatButton" layoutX="135.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleRepeat" prefHeight="20.0" prefWidth="20.0">
          <graphic>
-            <ImageView fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="repeatImage" fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/G.png" />
                </image>
@@ -74,7 +74,7 @@
       </Button>
       <Button fx:id="muteUnmuteButton" layoutX="172.0" layoutY="590.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#handleMuteUnmute" prefHeight="20.0" prefWidth="20.0">
          <graphic>
-            <ImageView fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="muteUnmuteImage" fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@images/L.png" />
                </image>
