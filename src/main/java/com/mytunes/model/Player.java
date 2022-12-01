@@ -10,32 +10,40 @@ public class Player {
     private Path path;
     private Media media;
     private MediaPlayer mediaPlayer;
-    private String currentFile = "empty";
-    private String playlistStatus;
+    private Song currentSong;
+
+    private PlaylistStatus playlistStatus;
+
+    public enum PlaylistStatus {
+        ALL_SONGS,
+        PLAYLIST,
+        DEFAULT
+    }
 
     public Player() {
         path = Path.of("src/main/resources/com/mytunes/music/test.wav");
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
+        setPlaylistStatus(PlaylistStatus.DEFAULT);
     }
 
     //loads audio file
-    public void load(String file) {
-        path = Path.of("src/main/resources/com/mytunes/music/" + file);
+    public void load(Song song) {
+        path = Path.of("src/main/resources/com/mytunes/music/" + song.getPath());
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
-        currentFile = file;
+        currentSong = song;
     }
 
-    public String getCurrentFile() {
-        return currentFile;
+    public Song getCurrentSong() {
+        return currentSong;
     }
 
-    public String getPlaylistStatus() {
+    public PlaylistStatus getPlaylistStatus() {
         return playlistStatus;
     }
 
-    public void setPlaylistStatus(String playlistStatus) {
+    public void setPlaylistStatus(PlaylistStatus playlistStatus) {
         this.playlistStatus = playlistStatus;
     }
 

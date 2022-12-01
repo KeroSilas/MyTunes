@@ -57,19 +57,21 @@ public class MyTunesController {
 
     @FXML void handleSongClick(MouseEvent e) {
         selectedSong = songTableView.getSelectionModel().getSelectedItem();
-        if (selectedSong != null) {
-            player.setPlaylistStatus("allSongs");
-            //player.load(selectedSong.getPath());
-            //player.play();
+        if (selectedSong != null && e.getClickCount() == 2) {
+            songsInPlaylistListView.getSelectionModel().clearSelection();
+            player.setPlaylistStatus(Player.PlaylistStatus.ALL_SONGS);
+            player.load(selectedSong);
+            player.play();
         }
     }
 
     @FXML void handleSongInPlaylistClick(MouseEvent e) {
         selectedSongInPlaylist = songsInPlaylistListView.getSelectionModel().getSelectedItem();
-        if (selectedSongInPlaylist != null) {
-            player.setPlaylistStatus("playlist");
-            //player.load(selectedSongInPlaylist.getPath());
-            //player.play();
+        if (selectedSongInPlaylist != null && e.getClickCount() == 2) {
+            songTableView.getSelectionModel().clearSelection();
+            player.setPlaylistStatus(Player.PlaylistStatus.PLAYLIST);
+            player.load(selectedSongInPlaylist);
+            player.play();
         }
     }
 
@@ -162,29 +164,52 @@ public class MyTunesController {
     }
 
     @FXML void handleNextSong(ActionEvent e) {
-        if (player.getPlaylistStatus().equals("allSongs")) {
-            player.load(songObservableList.get(songObservableList.indexOf(selectedSong) + 1).getPath());
+        if(player.getPlaylistStatus() == Player.PlaylistStatus.DEFAULT) {
+            player.stop();
         }
-        else if (player.getPlaylistStatus().equals("playlist")) {
-            player.load(songInPlaylistObservableList.get(songInPlaylistObservableList.indexOf(selectedSongInPlaylist) + 1).getPath());
+        else if (player.getPlaylistStatus() == Player.PlaylistStatus.ALL_SONGS) {
+            if (songObservableList.indexOf(player.getCurrentSong()) == songObservableList.size() - 1) {
+                player.load(songObservableList.get(0));
+            }
+            else {
+                Song previousSong = songObservableList.get(songObservableList.indexOf(player.getCurrentSong()) + 1);
+                player.load(previousSong);
+            }
+        }
+        else if (player.getPlaylistStatus() == Player.PlaylistStatus.PLAYLIST) {
+            if (songInPlaylistObservableList.indexOf(player.getCurrentSong()) == songInPlaylistObservableList.size() - 1) {
+                player.load(songInPlaylistObservableList.get(0));
+            }
+            else {
+                Song previousSong = songInPlaylistObservableList.get(songInPlaylistObservableList.indexOf(player.getCurrentSong()) - 1);
+                player.load(previousSong);
+            }
         }
     }
 
     @FXML void handlePreviousSong(ActionEvent e) {
-        if (player.getPlaylistStatus().equals("allSongs")) {
-            if(player.getCurrentTime() > 3) {
+        if (player.getCurrentTime() > 3) {
+            player.reset();
+        }
+        else if(player.getPlaylistStatus() == Player.PlaylistStatus.DEFAULT) {
+            player.reset();
+        }
+        else if (player.getPlaylistStatus() == Player.PlaylistStatus.ALL_SONGS) {
+            if (songObservableList.indexOf(player.getCurrentSong()) == 0) {
                 player.reset();
             }
             else {
-                player.load(songObservableList.get(songObservableList.indexOf(selectedSong) - 1).getPath());
+                Song previousSong = songObservableList.get(songObservableList.indexOf(player.getCurrentSong()) - 1);
+                player.load(previousSong);
             }
         }
-        else if (player.getPlaylistStatus().equals("playlist")) {
-            if(player.getCurrentTime() > 3) {
+        else if (player.getPlaylistStatus() == Player.PlaylistStatus.PLAYLIST) {
+            if (songInPlaylistObservableList.indexOf(player.getCurrentSong()) == 0) {
                 player.reset();
             }
             else {
-                player.load(songInPlaylistObservableList.get(songInPlaylistObservableList.indexOf(selectedSongInPlaylist) - 1).getPath());
+                Song previousSong = songInPlaylistObservableList.get(songInPlaylistObservableList.indexOf(player.getCurrentSong()) - 1);
+                player.load(previousSong);
             }
         }
     }
