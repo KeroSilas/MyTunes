@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,30 +39,22 @@ public class MyTunesController {
     private final ObservableList<Song> songObservableList = FXCollections.observableArrayList();
     private final ObservableList<Song> songInPlaylistObservableList = FXCollections.observableArrayList();
     private Playlist selectedPlaylist;
-    private Song selectedSong;
-    private Song selectedSongInPlaylist;
+    private Song selectedSong, selectedSongInPlaylist;
 
     @FXML private TableView<Playlist> playlistTableView;
-    @FXML private TableColumn<Playlist, String> nameColumn;
+    @FXML private TableColumn<Playlist, String> nameColumn, totalDurationColumn;
     @FXML private TableColumn<Playlist, Integer> songsColumn;
-    @FXML private TableColumn<Playlist, String> totalDurationColumn;
 
     @FXML private TableView<Song> songTableView;
-    @FXML private TableColumn<Song, String> titleColumn;
-    @FXML private TableColumn<Song, String> artistColumn;
-    @FXML private TableColumn<Song, String> categoryColumn;
-    @FXML private TableColumn<Song, String> durationColumn;
+    @FXML private TableColumn<Song, String> titleColumn, artistColumn, categoryColumn, durationColumn;
 
     @FXML private ListView<Song> songsInPlaylistListView;
 
     @FXML private TextField searchTextField;
 
-    @FXML private Slider volumeSlider;
-    @FXML private Slider progressSlider;
+    @FXML private Slider volumeSlider, progressSlider;
 
-    @FXML private ImageView playPauseImage;
-    @FXML private ImageView muteUnmuteImage;
-    @FXML private ImageView repeatImage;
+    @FXML private ImageView playPauseImage, muteUnmuteImage, repeatImage;
 
     @FXML void handlePlaylistClick(MouseEvent e) {
         selectedPlaylist = playlistTableView.getSelectionModel().getSelectedItem();
@@ -133,6 +126,7 @@ public class MyTunesController {
             if (selectedPlaylist != null && selectedSong != null) {
                 selectedPlaylist.addSong(selectedSong);
                 updateSongsInPlaylist();
+                player.updateCurrentPlaylist(selectedPlaylist);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -144,6 +138,7 @@ public class MyTunesController {
             songDao.deleteSong(selectedSong.getId());
             songObservableList.remove(selectedSong);
             updateSongsInPlaylist();
+            player.updateCurrentPlaylist(selectedPlaylist);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -157,6 +152,18 @@ public class MyTunesController {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    }
+
+    @FXML void handleMoveSongUp(ActionEvent e) {
+        Collections.swap(selectedPlaylist.getSongs(), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist) - 1);
+        updateSongsInPlaylist();
+        player.updateCurrentPlaylist(selectedPlaylist);
+    }
+
+    @FXML void handleMoveSongDown(ActionEvent e) {
+        Collections.swap(selectedPlaylist.getSongs(), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist) + 1);
+        updateSongsInPlaylist();
+        player.updateCurrentPlaylist(selectedPlaylist);
     }
 
     //determines whether the player is playing or paused and changes the buttons action accordingly

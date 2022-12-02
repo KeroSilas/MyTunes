@@ -1,4 +1,4 @@
-package com.mytunes;
+package com.mytunes.services;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -12,7 +12,7 @@ import java.io.IOException;
 public class MyTunesApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MyTunesApplication.class.getResource("mytunes-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/MyTunes.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("MyTunes");
         stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/play.png"));

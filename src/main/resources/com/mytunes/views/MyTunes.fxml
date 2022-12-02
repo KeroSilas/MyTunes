@@ -58,7 +58,7 @@
          <graphic>
             <ImageView fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/F.png" />
+                  <Image url="@../images/F.png" />
                </image>
             </ImageView>
          </graphic>
@@ -67,7 +67,7 @@
          <graphic>
             <ImageView fx:id="repeatImage" fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/G.png" />
+                  <Image url="@../images/G.png" />
                </image>
             </ImageView>
          </graphic>
@@ -76,7 +76,7 @@
          <graphic>
             <ImageView fx:id="muteUnmuteImage" fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/L.png" />
+                  <Image url="@../images/L.png" />
                </image>
             </ImageView>
          </graphic>
@@ -85,7 +85,7 @@
          <graphic>
             <ImageView fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/W.png" />
+                  <Image url="@../images/W.png" />
                </image>
             </ImageView>
          </graphic></Button>
@@ -93,12 +93,14 @@
          <graphic>
             <ImageView fx:id="playPauseImage" fitHeight="22.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/play.png" />
+                  <Image url="@../images/play.png" />
                </image>
             </ImageView>
          </graphic>
       </Button>
       <Slider fx:id="volumeSlider" layoutX="207.0" layoutY="592.0" />
       <Button layoutX="438.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleAddSongToPlaylist" text="&lt;" />
+      <Button layoutX="215.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleMoveSongUp" text="UP" />
+      <Button layoutX="257.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleMoveSongDown" text="DOWN" />
    </children>
 </Pane>
