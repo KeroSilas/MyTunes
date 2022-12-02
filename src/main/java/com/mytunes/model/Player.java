@@ -10,6 +10,7 @@ public class Player {
     private Path path;
     private Media media;
     private MediaPlayer mediaPlayer;
+
     private Song currentSong;
 
     private PlaylistStatus playlistStatus;
@@ -63,31 +64,42 @@ public class Player {
         mediaPlayer.seek(mediaPlayer.getStartTime());
     }
 
-    public void setRepeat(boolean repeat) {
-        if(repeat) {
-            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        } else {
-            mediaPlayer.setCycleCount(1);
-        }
+    public void mute() {
+        mediaPlayer.setMute(true);
+    }
+
+    public void unmute() {
+        mediaPlayer.setMute(false);
+    }
+
+    public void repeat() {
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+    }
+
+    public void unrepeat() {
+        mediaPlayer.setCycleCount(1);
     }
 
     public double getVolume() {
         return mediaPlayer.getVolume();
     }
 
-    //returns current progress of song
+    //returns current progress of song in a value between 0 and 1
     public double getCurrentProgress() {
         return mediaPlayer.getCurrentTime().toMillis() / mediaPlayer.getTotalDuration().toMillis();
     }
 
+    //returns current time of song in seconds
     public int getCurrentTime() {
         return (int) mediaPlayer.getCurrentTime().toSeconds();
     }
 
+    //volume value must be between 0 and 1
     public void setVolume(double volume) {
         mediaPlayer.setVolume(volume);
     }
 
+    //progress value must be between 0 and 1
     public void setProgress(double progress) {
         mediaPlayer.seek(mediaPlayer.getMedia().getDuration().multiply(progress));
     }
@@ -96,6 +108,7 @@ public class Player {
         return mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
     }
 
+    //returns true when song is finished
     public boolean isEndOfMedia() {
         return mediaPlayer.getCurrentTime().equals(mediaPlayer.getTotalDuration());
     }
@@ -105,7 +118,6 @@ public class Player {
     }
 
     public boolean isMuted() {
-        return getVolume() == 0;
+        return mediaPlayer.isMute();
     }
-
 }

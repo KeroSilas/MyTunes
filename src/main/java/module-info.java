@@ -9,8 +9,8 @@ module com.mytunes {
 
     opens com.mytunes to javafx.fxml;
     exports com.mytunes;
-    exports com.mytunes.controller;
-    opens com.mytunes.controller to javafx.fxml;
+    exports com.mytunes.controllers;
+    opens com.mytunes.controllers to javafx.fxml;
     exports com.mytunes.dao;
     opens com.mytunes.dao to javafx.fxml;
     exports com.mytunes.model;

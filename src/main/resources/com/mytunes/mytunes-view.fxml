@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="636.0" prefWidth="847.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mytunes.controller.MyTunesController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="636.0" prefWidth="847.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mytunes.controllers.MyTunesController">
    <children>
       <ListView fx:id="songsInPlaylistListView" layoutX="221.0" layoutY="128.0" onMouseClicked="#handleSongInPlaylistClick" prefHeight="412.0" prefWidth="209.0" />
       <Button layoutX="562.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleDeleteSong" text="Delete" />

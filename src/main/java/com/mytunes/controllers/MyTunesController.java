@@ -1,4 +1,4 @@
-package com.mytunes.controller;
+package com.mytunes.controllers;
 
 import com.mytunes.dao.*;
 import com.mytunes.model.Player;
@@ -165,14 +165,12 @@ public class MyTunesController {
     }
 
     @FXML void handleRepeat(ActionEvent e) {
-        /*if (player.isRepeating()) {
-            player.setRepeat(false);
+        if (player.isRepeating()) {
+            player.unrepeat();
         }
         else {
-            player.setRepeat(true);
-        }*/
-
-        player.setRepeat(!player.isRepeating());
+            player.repeat();
+        }
     }
 
     @FXML void handleShuffle(ActionEvent e) {
@@ -232,11 +230,13 @@ public class MyTunesController {
 
     @FXML void handleMuteUnmute(ActionEvent e) {
         if (player.isMuted()) {
-            player.setVolume(volumeSlider.getValue() / 100);
+            player.unmute();
+            volumeSlider.setDisable(false);
             muteUnmuteImage.setImage(unmuteImage);
         }
         else {
-            player.setVolume(0);
+            player.mute();
+            volumeSlider.setDisable(true);
             muteUnmuteImage.setImage(muteImage);
         }
     }
@@ -284,8 +284,13 @@ public class MyTunesController {
         Timer progressTimer = new Timer();
         progressTimer.schedule(new TimerTask() {
             @Override public void run() {
-                if(!progressSlider.isPressed()) {
+                if (!progressSlider.isPressed()) {
                     progressSlider.setValue(player.getCurrentProgress() * 100);
+                }
+                if (player.isEndOfMedia() && !player.isRepeating()) {
+                    player.stop();
+                    player.reset();
+                    playPauseImage.setImage(playImage);
                 }
             }
         }, 0L, 100L);
