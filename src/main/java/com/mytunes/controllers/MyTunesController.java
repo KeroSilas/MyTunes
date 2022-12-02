@@ -147,6 +147,7 @@ public class MyTunesController {
             songObservableList.remove(selectedSong);
             updateSongsInPlaylist();
             player.updateCurrentPlaylist(selectedPlaylist);
+            selectedSong = null;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -163,6 +164,7 @@ public class MyTunesController {
                 player.load(songObservableList, songObservableList.get(0));
             }
             updateSongsInPlaylist();
+            selectedPlaylist = null;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -172,6 +174,7 @@ public class MyTunesController {
         try {
             selectedPlaylist.removeSong(selectedSongInPlaylist);
             updateSongsInPlaylist();
+            selectedSongInPlaylist = null;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
