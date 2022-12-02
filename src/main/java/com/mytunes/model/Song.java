@@ -53,9 +53,4 @@ public class Song {
     public String toString() {
         return String.format("%s - %s", artist, title);
     }
-
-    public static void main(String[] args) {
-        Song song = new Song(1, "test", "test", "test", 4, "test.wav");
-        System.out.println(song.getDurationInString());
-    }
 }

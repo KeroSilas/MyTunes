@@ -20,12 +20,4 @@ public class DatabaseConnector {
     public Connection getConnection() throws SQLServerException {
         return dataSource.getConnection();
     }
-
-    //test connection
-    public static void main(String[] args) throws SQLException {
-        DatabaseConnector databaseConnector = new DatabaseConnector();
-        try (Connection connection = databaseConnector.getConnection()) {
-            System.out.println("Connection open? " + !connection.isClosed());
-        }
-    }
 }
