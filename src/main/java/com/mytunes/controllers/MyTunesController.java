@@ -33,7 +33,6 @@ public class MyTunesController {
 
     private SongDao songDao;
     private PlaylistDao playlistDao;
-    private SongsInPlaylistDao songsInPlaylistDao;
 
     private final ObservableList<Playlist> playlistObservableList = FXCollections.observableArrayList();
     private final ObservableList<Song> songObservableList = FXCollections.observableArrayList();
@@ -66,16 +65,26 @@ public class MyTunesController {
 
     @FXML void handlePlaylistClick(MouseEvent e) {
         selectedPlaylist = playlistTableView.getSelectionModel().getSelectedItem();
-        updateSongsInPlaylists();
+        if (selectedPlaylist != null) {
+            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            if (selectedPlaylist.getNumberOfSongs() > 0 && e.getClickCount() == 2) {
+                songTableView.getSelectionModel().clearSelection();
+                player.stop();
+                player.load(selectedPlaylist, selectedPlaylist.getSongs().get(0));
+                player.play();
+                playPauseImage.setImage(pauseImage);
+            }
+        }
     }
 
     @FXML void handleSongClick(MouseEvent e) {
         selectedSong = songTableView.getSelectionModel().getSelectedItem();
         if (selectedSong != null && e.getClickCount() == 2) {
             songsInPlaylistListView.getSelectionModel().clearSelection();
-            player.setPlaylistStatus(Player.PlaylistStatus.ALL_SONGS);
-            player.load(selectedSong);
+            player.stop();
+            player.load(songObservableList, selectedSong);
             player.play();
+            playPauseImage.setImage(pauseImage);
         }
     }
 
@@ -83,9 +92,10 @@ public class MyTunesController {
         selectedSongInPlaylist = songsInPlaylistListView.getSelectionModel().getSelectedItem();
         if (selectedSongInPlaylist != null && e.getClickCount() == 2) {
             songTableView.getSelectionModel().clearSelection();
-            player.setPlaylistStatus(Player.PlaylistStatus.PLAYLIST);
-            player.load(selectedSongInPlaylist);
+            player.stop();
+            player.load(selectedPlaylist, selectedSongInPlaylist);
             player.play();
+            playPauseImage.setImage(pauseImage);
         }
     }
 
@@ -118,14 +128,12 @@ public class MyTunesController {
         }
     }
 
-    //temporary implementation
     @FXML void handleAddSongToPlaylist(ActionEvent e) {
         try {
             if (selectedPlaylist != null && selectedSong != null) {
-                songsInPlaylistDao.moveSongToPlaylist(selectedPlaylist.getId(), selectedSong.getId());
+                selectedPlaylist.addSong(selectedSong);
+                updateSongsInPlaylist();
             }
-            updateSongsInPlaylists();
-            updatePlaylists();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -134,9 +142,8 @@ public class MyTunesController {
     @FXML void handleDeleteSong(ActionEvent e) {
         try {
             songDao.deleteSong(selectedSong.getId());
-            updateSongs();
-            updateSongsInPlaylists();
-            updatePlaylists();
+            songObservableList.remove(selectedSong);
+            updateSongsInPlaylist();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -145,8 +152,8 @@ public class MyTunesController {
     @FXML void handleDeletePlaylist(ActionEvent e) {
         try {
             playlistDao.deletePlaylist(selectedPlaylist.getId());
-            updatePlaylists();
-            updateSongsInPlaylists();
+            playlistObservableList.remove(selectedPlaylist);
+            updateSongsInPlaylist();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -159,83 +166,32 @@ public class MyTunesController {
             playPauseImage.setImage(playImage);
         }
         else {
+            player.setProgress(progressSlider.getValue() / 100);
             player.play();
             playPauseImage.setImage(pauseImage);
         }
     }
 
     @FXML void handleRepeat(ActionEvent e) {
-        if (player.isRepeating()) {
-            player.unrepeat();
-        }
-        else {
-            player.repeat();
-        }
-    }
-
-    @FXML void handleShuffle(ActionEvent e) {
-        //TODO: implement shuffle
+        player.repeat(!player.isRepeating());
     }
 
     @FXML void handleNextSong(ActionEvent e) {
-        if(player.getPlaylistStatus() == Player.PlaylistStatus.DEFAULT) {
-            player.stop();
-        }
-        else if (player.getPlaylistStatus() == Player.PlaylistStatus.ALL_SONGS) {
-            if (songObservableList.indexOf(player.getCurrentSong()) == songObservableList.size() - 1) {
-                player.load(songObservableList.get(0));
-            }
-            else {
-                Song previousSong = songObservableList.get(songObservableList.indexOf(player.getCurrentSong()) + 1);
-                player.load(previousSong);
-            }
-        }
-        else if (player.getPlaylistStatus() == Player.PlaylistStatus.PLAYLIST) {
-            if (songInPlaylistObservableList.indexOf(player.getCurrentSong()) == songInPlaylistObservableList.size() - 1) {
-                player.load(songInPlaylistObservableList.get(0));
-            }
-            else {
-                Song previousSong = songInPlaylistObservableList.get(songInPlaylistObservableList.indexOf(player.getCurrentSong()) - 1);
-                player.load(previousSong);
-            }
-        }
+        player.next();
     }
 
     @FXML void handlePreviousSong(ActionEvent e) {
-        if (player.getCurrentTime() > 3) {
-            player.reset();
-        }
-        else if(player.getPlaylistStatus() == Player.PlaylistStatus.DEFAULT) {
-            player.reset();
-        }
-        else if (player.getPlaylistStatus() == Player.PlaylistStatus.ALL_SONGS) {
-            if (songObservableList.indexOf(player.getCurrentSong()) == 0) {
-                player.reset();
-            }
-            else {
-                Song previousSong = songObservableList.get(songObservableList.indexOf(player.getCurrentSong()) - 1);
-                player.load(previousSong);
-            }
-        }
-        else if (player.getPlaylistStatus() == Player.PlaylistStatus.PLAYLIST) {
-            if (songInPlaylistObservableList.indexOf(player.getCurrentSong()) == 0) {
-                player.reset();
-            }
-            else {
-                Song previousSong = songInPlaylistObservableList.get(songInPlaylistObservableList.indexOf(player.getCurrentSong()) - 1);
-                player.load(previousSong);
-            }
-        }
+        player.previous();
     }
 
     @FXML void handleMuteUnmute(ActionEvent e) {
         if (player.isMuted()) {
-            player.unmute();
+            player.mute(false);
             volumeSlider.setDisable(false);
             muteUnmuteImage.setImage(unmuteImage);
         }
         else {
-            player.mute();
+            player.mute(true);
             volumeSlider.setDisable(true);
             muteUnmuteImage.setImage(muteImage);
         }
@@ -246,14 +202,8 @@ public class MyTunesController {
         player.setProgress(progressSlider.getValue() / 100);
     }
 
-    private void updateSongsInPlaylists() {
-        try {
-            if (selectedPlaylist != null) {
-                songInPlaylistObservableList.setAll(songsInPlaylistDao.getPlaylist(selectedPlaylist.getId()));
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+    private void updateSongsInPlaylist() {
+        songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
     }
 
     private void updateSongs() {
@@ -273,42 +223,11 @@ public class MyTunesController {
     }
 
     public void initialize() {
-        player = new Player(); //initialize player
-        player.setVolume(0.5); //set default volume to 0.5 (50%)
-        volumeSlider.setValue(player.getVolume() * 100);
-        volumeSlider.valueProperty().addListener((ov, oldValue, newValue) ->
-                player.setVolume(newValue.doubleValue() / 100)
-        ); //add listener to volumeSlider
-
-        //automatically update progressSlider, unless progressSlider is being dragged
-        Timer progressTimer = new Timer();
-        progressTimer.schedule(new TimerTask() {
-            @Override public void run() {
-                if (!progressSlider.isPressed()) {
-                    progressSlider.setValue(player.getCurrentProgress() * 100);
-                }
-                if (player.isEndOfMedia() && !player.isRepeating()) {
-                    player.stop();
-                    player.reset();
-                    playPauseImage.setImage(playImage);
-                }
-            }
-        }, 0L, 100L);
-
         //initialize DAOs
         songDao = new SongDaoImpl();
         playlistDao = new PlaylistDaoImpl();
-        songsInPlaylistDao = new SongsInPlaylistDaoImpl();
 
         try {
-            //Set up the table columns and cells for the playlist table
-            nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
-            songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
-            totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
-            playlistTableView.setItems(playlistObservableList);
-            playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-            playlistObservableList.addAll(playlistDao.getAllPlaylists());
-
             //Set up the table columns and cells for the song table
             titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
             artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
@@ -318,10 +237,58 @@ public class MyTunesController {
             songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
             songObservableList.addAll(songDao.getAllSongs());
 
+            //Set up the table columns and cells for the playlist table
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
+            songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
+            totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
+            playlistTableView.setItems(playlistObservableList);
+            playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+            playlistObservableList.addAll(playlistDao.getAllPlaylists());
+
             songsInPlaylistListView.setItems(songInPlaylistObservableList);
             songsInPlaylistListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+            //initialize player with first song on Songs list
+            player = new Player(songObservableList, songObservableList.get(0));
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        //set default volume to 50%
+        player.setVolume(0.5);
+        volumeSlider.setValue(player.getVolume() * 100);
+
+        //add listener to volumeSlider
+        volumeSlider.valueProperty().addListener((ov, oldValue, newValue) ->
+                player.setVolume(newValue.doubleValue() / 100)
+        );
+
+        /*
+        //add listener to currentTime in player, this is what makes the progressBar move by itself
+        player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
+            if(!progressSlider.isPressed())
+                progressSlider.setValue(newValue.toSeconds() / player.getTotalDuration().toMillis() * 100);
+        });
+
+        //runnable that runs when a song has reached the end
+        player.setOnEndOfMedia(() -> {
+            if(!player.isRepeating()) {
+                progressSlider.setValue(0);
+                player.next();
+            }
+        });
+        */
+
+        //automatically update progressSlider, unless progressSlider is being dragged
+        Timer progressTimer = new Timer();
+        progressTimer.schedule(new TimerTask() {
+            @Override public void run() {
+                if (!progressSlider.isPressed()) {
+                    progressSlider.setValue(player.getCurrentTime().toMillis() / player.getTotalDuration().toMillis() * 100);
+                }
+                if (player.isEndOfMedia() && !player.isRepeating()) {
+                    player.next();
+                }
+            }
+        }, 0L, 20L);
     }
 }
