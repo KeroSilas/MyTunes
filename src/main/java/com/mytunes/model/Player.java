@@ -216,6 +216,14 @@ public class Player {
         return mediaPlayer.getCurrentTime().toSeconds() == mediaPlayer.getTotalDuration().toSeconds();
     }
 
+    public void updateCurrentPlaylist(Playlist playlist) {
+        currentPlaylist = playlist;
+    }
+
+    public void updateCurrentAllSongs(ObservableList<Song> allSongs) {
+        this.allSongs = allSongs;
+    }
+
     public ReadOnlyObjectProperty<Duration> currentTimeProperty() {
         return mediaPlayer.currentTimeProperty();
     }
