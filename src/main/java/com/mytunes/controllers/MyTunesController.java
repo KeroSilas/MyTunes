@@ -40,6 +40,7 @@ public class MyTunesController {
     private final ObservableList<Song> songInPlaylistObservableList = FXCollections.observableArrayList();
     private Playlist selectedPlaylist;
     private Song selectedSong, selectedSongInPlaylist;
+    private boolean isSearching = false;
 
     @FXML private TableView<Playlist> playlistTableView;
     @FXML private TableColumn<Playlist, String> nameColumn, totalDurationColumn;
@@ -95,7 +96,14 @@ public class MyTunesController {
     //searches for songs in the database
     @FXML void handleSearch(ActionEvent e) {
         try {
-            songObservableList.setAll(songDao.searchSong(searchTextField.getText()));
+            if(!isSearching && !searchTextField.getText().isEmpty()) {
+                songObservableList.setAll(songDao.searchSong(searchTextField.getText()));
+                isSearching = true;
+            } else {
+                searchTextField.clear();
+                songObservableList.setAll(songDao.getAllSongs());
+                isSearching = false;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -148,6 +156,21 @@ public class MyTunesController {
         try {
             playlistDao.deletePlaylist(selectedPlaylist.getId());
             playlistObservableList.remove(selectedPlaylist);
+            selectedPlaylist.getSongs().clear();
+            if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
+                player.stop();
+                playPauseImage.setImage(playImage);
+                player.load(songObservableList, songObservableList.get(0));
+            }
+            updateSongsInPlaylist();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML void handleDeleteSongFromPlaylist(ActionEvent e) {
+        try {
+            selectedPlaylist.removeSong(selectedSongInPlaylist);
             updateSongsInPlaylist();
         } catch (SQLException ex) {
             ex.printStackTrace();
