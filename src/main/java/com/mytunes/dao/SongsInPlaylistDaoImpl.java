@@ -44,48 +44,6 @@ public class SongsInPlaylistDaoImpl implements SongsInPlaylistDao {
     }
 
     @Override
-    public int getPlaylistDuration(int playlistId) throws SQLException {
-        int playlistDuration = 0;
-        try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "SELECT SUM(Songs.duration) AS playlistDuration " +
-                         "FROM SongsInPlaylist " +
-                         "INNER JOIN Songs " +
-                         "ON SongsInPlaylist.songID = Songs.songID " +
-                         "WHERE SongsInPlaylist.playlistID = ?;";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, playlistId);
-            if (statement.execute()) {
-                ResultSet resultSet = statement.getResultSet();
-                while (resultSet.next()) {
-                    playlistDuration = resultSet.getInt("playlistDuration");
-                }
-            }
-        }
-        return playlistDuration;
-    }
-
-    @Override
-    public int getPlaylistSize(int playlistId) throws SQLException {
-        int playlistSize = 0;
-        try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "SELECT COUNT(SongsInPlaylist.songID) AS playlistSize " +
-                         "FROM SongsInPlaylist " +
-                         "INNER JOIN Songs " +
-                         "ON SongsInPlaylist.songID = Songs.songID " +
-                         "WHERE SongsInPlaylist.playlistID = ?;";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, playlistId);
-            if (statement.execute()) {
-                ResultSet resultSet = statement.getResultSet();
-                while (resultSet.next()) {
-                    playlistSize = resultSet.getInt("playlistSize");
-                }
-            }
-        }
-        return playlistSize;
-    }
-
-    @Override
     public void deleteSongFromPlaylist(int playlistId, int songId) throws SQLException {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE FROM SongsInPlaylist WHERE playlistID = ? AND songID = ?;";

@@ -21,12 +21,22 @@ public class Player {
 
     private double volumeBeforeMediaChange;
     private boolean isPlayingBeforeMediaChange;
+    private boolean isMutedBeforeMediaChange;
 
     private ListStatus listStatus;
 
     public enum ListStatus {
         ALL_SONGS,
         PLAYLIST,
+        DEFAULT,
+    }
+
+    public Player() {
+        setListStatus(ListStatus.DEFAULT);
+
+        path = Path.of("src/main/resources/com/mytunes/music/default.mp3");
+        media = new Media(path.toUri().toString());
+        mediaPlayer = new MediaPlayer(media);
     }
 
     public Player(ObservableList<Song> allSongs, Song song) throws SQLException {
@@ -47,12 +57,15 @@ public class Player {
 
         volumeBeforeMediaChange = mediaPlayer.getVolume();
         isPlayingBeforeMediaChange = mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);
+        isMutedBeforeMediaChange = isMuted();
 
         mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(volumeBeforeMediaChange);
         if (isPlayingBeforeMediaChange)
             mediaPlayer.play();
+        if (isMutedBeforeMediaChange)
+            mediaPlayer.setMute(true);
 
         currentSong = song;
     }
@@ -64,9 +77,12 @@ public class Player {
         media = new Media(path.toUri().toString());
 
         volumeBeforeMediaChange = mediaPlayer.getVolume();
+        isMutedBeforeMediaChange = isMuted();
 
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(volumeBeforeMediaChange);
+        if (isMutedBeforeMediaChange)
+            mediaPlayer.setMute(true);
 
         currentSong = song;
         this.allSongs = allSongs;

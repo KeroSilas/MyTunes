@@ -12,7 +12,7 @@ public class Playlist {
 
     private final int id;
     private final String name;
-    private final List<Song> songs;
+    private List<Song> songs;
 
     public Playlist(int id, String name) throws SQLException {
         this.id = id;

@@ -18,7 +18,7 @@
       <Button layoutX="562.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleDeleteSong" text="Delete" />
       <Button layoutX="518.0" layoutY="86.0" mnemonicParsing="false" text="Edit" />
       <Button layoutX="471.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleAddSong" text="New" />
-      <Button layoutX="15.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleAddPlaylist" text="New" />
+      <Button fx:id="test" layoutX="15.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleAddPlaylist" text="New" />
       <Button layoutX="67.0" layoutY="86.0" mnemonicParsing="false" text="Edit" />
       <Button layoutX="115.0" layoutY="86.0" mnemonicParsing="false" onAction="#handleDeletePlaylist" text="Delete" />
       <TableView fx:id="playlistTableView" editable="true" layoutX="15.0" layoutY="128.0" onMouseClicked="#handlePlaylistClick" prefHeight="412.0" prefWidth="200.0">

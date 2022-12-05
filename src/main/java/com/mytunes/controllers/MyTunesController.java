@@ -8,17 +8,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class MyTunesController {
 
@@ -34,13 +39,13 @@ public class MyTunesController {
 
     private SongDao songDao;
     private PlaylistDao playlistDao;
+    private boolean isSearching = false;
 
     private final ObservableList<Playlist> playlistObservableList = FXCollections.observableArrayList();
     private final ObservableList<Song> songObservableList = FXCollections.observableArrayList();
     private final ObservableList<Song> songInPlaylistObservableList = FXCollections.observableArrayList();
     private Playlist selectedPlaylist;
     private Song selectedSong, selectedSongInPlaylist;
-    private boolean isSearching = false;
 
     @FXML private TableView<Playlist> playlistTableView;
     @FXML private TableColumn<Playlist, String> nameColumn, totalDurationColumn;
@@ -111,10 +116,17 @@ public class MyTunesController {
 
     //temporary implementation
     @FXML void handleAddPlaylist(ActionEvent e) {
+        Button button = (Button) e.getSource();
         try {
-            playlistDao.createPlaylist("New Playlist");
-            updatePlaylists();
-        } catch (SQLException ex) {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
+            fxmlLoader.setController(new NewEditPlaylistController());
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+            playlistObservableList.setAll(playlistDao.getAllPlaylists());
+        } catch (IOException | SQLException ex) {
             ex.printStackTrace();
         }
     }
@@ -122,9 +134,43 @@ public class MyTunesController {
     //temporary implementation
     @FXML void handleAddSong(ActionEvent e) {
         try {
-            songDao.createSong("New Song", "New Artist", "New Category", 420, "New Path");
-            updateSongs();
-        } catch (SQLException ex) {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/????.fxml"));
+            fxmlLoader.setController(new NewEditPlaylistController());
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+            songObservableList.setAll(songDao.getAllSongs());
+        } catch (IOException | SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML void handleEditSong(ActionEvent e) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/????.fxml"));
+            fxmlLoader.setController(new NewEditPlaylistController());
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML void handleEditPlaylist(ActionEvent e) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
+            fxmlLoader.setController(new NewEditPlaylistController());
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
@@ -133,7 +179,7 @@ public class MyTunesController {
         try {
             if (selectedPlaylist != null && selectedSong != null) {
                 selectedPlaylist.addSong(selectedSong);
-                updateSongsInPlaylist();
+                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
                 player.updateCurrentPlaylist(selectedPlaylist);
             }
         } catch (SQLException ex) {
@@ -145,7 +191,8 @@ public class MyTunesController {
         try {
             songDao.deleteSong(selectedSong.getId());
             songObservableList.remove(selectedSong);
-            updateSongsInPlaylist();
+            selectedPlaylist.getSongs().remove(selectedSong);
+            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
             player.updateCurrentPlaylist(selectedPlaylist);
             selectedSong = null;
         } catch (SQLException ex) {
@@ -158,12 +205,13 @@ public class MyTunesController {
             playlistDao.deletePlaylist(selectedPlaylist.getId());
             playlistObservableList.remove(selectedPlaylist);
             selectedPlaylist.getSongs().clear();
+            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
             if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
                 player.stop();
                 playPauseImage.setImage(playImage);
                 player.load(songObservableList, songObservableList.get(0));
             }
-            updateSongsInPlaylist();
             selectedPlaylist = null;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -173,7 +221,8 @@ public class MyTunesController {
     @FXML void handleDeleteSongFromPlaylist(ActionEvent e) {
         try {
             selectedPlaylist.removeSong(selectedSongInPlaylist);
-            updateSongsInPlaylist();
+            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            player.updateCurrentPlaylist(selectedPlaylist);
             selectedSongInPlaylist = null;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -182,13 +231,13 @@ public class MyTunesController {
 
     @FXML void handleMoveSongUp(ActionEvent e) {
         Collections.swap(selectedPlaylist.getSongs(), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist) - 1);
-        updateSongsInPlaylist();
+        songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
         player.updateCurrentPlaylist(selectedPlaylist);
     }
 
     @FXML void handleMoveSongDown(ActionEvent e) {
         Collections.swap(selectedPlaylist.getSongs(), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist) + 1);
-        updateSongsInPlaylist();
+        songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
         player.updateCurrentPlaylist(selectedPlaylist);
     }
 
@@ -235,26 +284,6 @@ public class MyTunesController {
         player.setProgress(progressSlider.getValue() / 100);
     }
 
-    private void updateSongsInPlaylist() {
-        songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-    }
-
-    private void updateSongs() {
-        try {
-            songObservableList.setAll(songDao.getAllSongs());
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void updatePlaylists() {
-        try {
-            playlistObservableList.setAll(playlistDao.getAllPlaylists());
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     public void initialize() {
         //initialize DAOs
         songDao = new SongDaoImpl();
@@ -281,8 +310,12 @@ public class MyTunesController {
             songsInPlaylistListView.setItems(songInPlaylistObservableList);
             songsInPlaylistListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-            //initialize player with first song on Songs list
-            player = new Player(songObservableList, songObservableList.get(0));
+            //initialize player with first song on Songs list if there is any
+            if (songObservableList.isEmpty()) {
+                player = new Player();
+            } else {
+                player = new Player(songObservableList, songObservableList.get(0));
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -321,6 +354,12 @@ public class MyTunesController {
                 if (player.isEndOfMedia() && !player.isRepeating()) {
                     player.next();
                 }
+                if (player.isEndOfMedia() && !player.isRepeating() && player.getListStatus() == Player.ListStatus.DEFAULT) {
+                    player.pause();
+                    player.reset();
+                    playPauseImage.setImage(playImage);
+                }
+
             }
         }, 0L, 20L);
     }
