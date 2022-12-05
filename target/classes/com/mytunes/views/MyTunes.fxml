@@ -211,6 +211,9 @@
                   <Label fx:id="currentTimeLabel" text="00:00" />
                   <Label fx:id="totalDurationLabel" text="00:00" GridPane.columnIndex="1" />
                </children>
+               <padding>
+                  <Insets left="6.0" right="6.0" />
+               </padding>
             </GridPane>
             <Slider fx:id="progressSlider" onMouseReleased="#handleProgressSlider">
                <VBox.margin>

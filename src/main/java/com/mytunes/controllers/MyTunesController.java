@@ -79,6 +79,7 @@ public class MyTunesController {
                 player.stop();
                 player.load(selectedPlaylist, selectedPlaylist.getSongs().get(0));
                 update();
+                songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
                 player.play();
 
                 playPauseImage.setImage(pauseImage);
@@ -262,11 +263,19 @@ public class MyTunesController {
     @FXML void handleNextSong(ActionEvent e) {
         player.next();
         update();
+        if (player.getListStatus() == Player.ListStatus.ALL_SONGS)
+            songTableView.getSelectionModel().select(player.getCurrentSong());
+        else if (player.getListStatus() == Player.ListStatus.PLAYLIST)
+            songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
     }
 
     @FXML void handlePreviousSong(ActionEvent e) {
         player.previous();
         update();
+        if (player.getListStatus() == Player.ListStatus.ALL_SONGS)
+            songTableView.getSelectionModel().select(player.getCurrentSong());
+        else if (player.getListStatus() == Player.ListStatus.PLAYLIST)
+            songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
     }
 
     @FXML void handleMuteUnmute(ActionEvent e) {
@@ -321,6 +330,7 @@ public class MyTunesController {
                 player = new Player();
             } else {
                 player = new Player(songObservableList, songObservableList.get(0));
+                songTableView.getSelectionModel().select(player.getCurrentSong());
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -353,6 +363,10 @@ public class MyTunesController {
                 progressSlider.setValue(0);
                 player.next();
                 currentSongLabel.setText(player.getCurrentSong().toString());
+                if (player.getListStatus() == Player.ListStatus.ALL_SONGS)
+                    songTableView.getSelectionModel().select(player.getCurrentSong());
+                else if (player.getListStatus() == Player.ListStatus.PLAYLIST)
+                    songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
                 update(); //recursively calls the method when at end of media
             }
         });
