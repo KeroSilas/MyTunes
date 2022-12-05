@@ -21,7 +21,7 @@
    <children>
       <HBox spacing="6.0" VBox.vgrow="ALWAYS">
          <children>
-            <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <VBox spacing="6.0" HBox.hgrow="ALWAYS">
                <children>
                   <GridPane hgap="6.0">
                     <columnConstraints>
@@ -34,10 +34,16 @@
                       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" text="Playlists" />
+                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" text=" Playlists">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets top="16.0" />
+                           </padding></Label>
                         <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddPlaylist" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1">
                            <graphic>
-                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/add.png" />
                                  </image>
@@ -71,7 +77,7 @@
                   </TableView>
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="6.0" HBox.hgrow="ALWAYS">
                <children>
                   <GridPane hgap="6.0">
                     <columnConstraints>
@@ -84,10 +90,16 @@
                       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" text="Songs in playlist" />
+                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" text=" Songs in playlist">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets top="16.0" />
+                           </padding></Label>
                         <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleMoveSongUp" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1">
                            <graphic>
-                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/up.png" />
                                  </image>
@@ -96,7 +108,7 @@
                         </Button>
                         <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleMoveSongDown" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="2">
                            <graphic>
-                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/down.png" />
                                  </image>
@@ -118,17 +130,17 @@
             </VBox>
             <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddSongToPlaylist" prefHeight="30.0" prefWidth="30.0">
                <HBox.margin>
-                  <Insets top="34.0" />
+                  <Insets top="36.0" />
                </HBox.margin>
                <graphic>
-                  <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/left.png" />
                      </image>
                   </ImageView>
                </graphic>
             </Button>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0" HBox.hgrow="ALWAYS">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="6.0" HBox.hgrow="ALWAYS">
                <children>
                   <GridPane hgap="6.0">
                     <columnConstraints>
@@ -136,7 +148,7 @@
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="10.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="5.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="175.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
                     </columnConstraints>
@@ -144,10 +156,16 @@
                       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" text="All songs" />
+                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" text=" All songs">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets top="16.0" />
+                           </padding></Label>
                         <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddSong" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1">
                            <graphic>
-                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/add.png" />
                                  </image>
@@ -197,7 +215,7 @@
             <Insets bottom="8.0" />
          </VBox.margin>
       </HBox>
-      <VBox alignment="BOTTOM_LEFT" prefHeight="80.0" VBox.vgrow="NEVER">
+      <VBox alignment="BOTTOM_LEFT" VBox.vgrow="NEVER">
          <children>
             <GridPane>
               <columnConstraints>
@@ -205,11 +223,11 @@
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label fx:id="currentTimeLabel" text="00:00" />
-                  <Label fx:id="totalDurationLabel" text="00:00" GridPane.columnIndex="1" />
+                  <Label fx:id="currentTimeLabel" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" text="00:00" />
+                  <Label fx:id="totalDurationLabel" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" text="00:00" GridPane.columnIndex="1" />
                </children>
                <padding>
                   <Insets left="6.0" right="6.0" />
@@ -217,51 +235,79 @@
             </GridPane>
             <Slider fx:id="progressSlider" onMouseReleased="#handleProgressSlider">
                <VBox.margin>
-                  <Insets bottom="8.0" top="8.0" />
+                  <Insets bottom="6.0" top="4.0" />
                </VBox.margin>
             </Slider>
-            <HBox alignment="CENTER_LEFT" spacing="6.0">
+            <GridPane alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="-Infinity" prefWidth="200.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="-Infinity" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="-Infinity" prefWidth="200.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <GridPane hgap="6.0">
+                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="currentSongTitleLabel" text="N/A">
+                           <font>
+                              <Font name="Arial Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="currentSongArtistLabel" text="N/A" textFill="#515151">
+                           <font>
+                              <Font name="Arial" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets left="6.0" right="6.0" />
+                     </padding>
+                  </VBox>
+                  <GridPane alignment="CENTER" hgap="3.0" GridPane.columnIndex="1">
                     <columnConstraints>
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="45.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="47.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
+                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePreviousSong" prefHeight="30.0" prefWidth="30.0">
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePreviousSong" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 50;" GridPane.columnIndex="1">
                            <graphic>
-                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/previous.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePlayPause" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1">
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePlayPause" prefHeight="47.0" prefWidth="47.0" style="-fx-background-radius: 50;" GridPane.columnIndex="2">
                            <graphic>
-                              <ImageView fx:id="playPauseImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="playPauseImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/play.png" />
                                  </image>
                               </ImageView>
                            </graphic>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
                         </Button>
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleNextSong" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="2">
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleNextSong" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 50;" GridPane.columnIndex="3">
                            <graphic>
-                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/next.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleRepeat" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="3">
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleRepeat" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 50;" GridPane.columnIndex="4">
                            <graphic>
                               <ImageView fx:id="repeatUnrepeatImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -270,46 +316,54 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleMuteUnmute" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="4">
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleShuffle" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 50;">
                            <graphic>
-                              <ImageView fx:id="muteUnmuteImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="shuffleUnshuffleImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/unmuted.png" />
+                                    <Image url="@../images/repeat.png" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Button>
                      </children>
                   </GridPane>
-                  <Slider fx:id="volumeSlider">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2">
+                     <children>
+                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleMuteUnmute" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 15;">
+                           <graphic>
+                              <ImageView fx:id="muteUnmuteImage" fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/unmuted.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets right="4.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Slider fx:id="volumeSlider" prefWidth="120.0" HBox.hgrow="NEVER">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Slider>
+                        <Label fx:id="volumeLabel" maxHeight="1.7976931348623157E308" prefWidth="31.0" text="50%">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="4.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
                      <padding>
-                        <Insets left="4.0" />
+                        <Insets left="6.0" right="6.0" />
                      </padding>
-                  </Slider>
-                  <Label fx:id="volumeLabel" maxHeight="1.7976931348623157E308" text="50%">
-                     <font>
-                        <Font name="Arial" size="12.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="currentSongLabel" alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" text="(none)" textFill="#3560b5" HBox.hgrow="ALWAYS">
-                     <font>
-                        <Font name="Arial" size="16.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Label>
+                  </HBox>
                </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <padding>
-                  <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-               </padding>
-            </HBox>
+            </GridPane>
          </children>
          <VBox.margin>
-            <Insets top="4.0" />
+            <Insets />
          </VBox.margin>
       </VBox>
    </children>

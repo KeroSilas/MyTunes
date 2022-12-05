@@ -66,7 +66,7 @@ public class MyTunesController {
 
     @FXML private Button newPlaylistButton, editPlaylistButton, newSongButton, editSongButton;
 
-    @FXML private Label currentSongLabel, currentTimeLabel, totalDurationLabel, volumeLabel;
+    @FXML private Label currentSongTitleLabel, currentSongArtistLabel, currentTimeLabel, totalDurationLabel, volumeLabel;
 
     @FXML private ImageView playPauseImage, muteUnmuteImage, repeatUnrepeatImage, searchUnsearchImage;
 
@@ -76,7 +76,6 @@ public class MyTunesController {
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
             if (selectedPlaylist.getNumberOfSongs() > 0 && e.getClickCount() == 2) {
                 songTableView.getSelectionModel().clearSelection();
-                player.stop();
                 player.load(selectedPlaylist, selectedPlaylist.getSongs().get(0));
                 update();
                 songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
@@ -91,7 +90,6 @@ public class MyTunesController {
         selectedSong = songTableView.getSelectionModel().getSelectedItem();
         if (selectedSong != null && e.getClickCount() == 2) {
             songsInPlaylistListView.getSelectionModel().clearSelection();
-            player.stop();
             player.load(songObservableList, selectedSong);
             update();
             player.play();
@@ -104,13 +102,11 @@ public class MyTunesController {
         selectedSongInPlaylist = songsInPlaylistListView.getSelectionModel().getSelectedItem();
         if (selectedSongInPlaylist != null && e.getClickCount() == 2) {
             songTableView.getSelectionModel().clearSelection();
-            player.stop();
             player.load(selectedPlaylist, selectedSongInPlaylist);
             update();
             player.play();
 
             playPauseImage.setImage(pauseImage);
-            currentSongLabel.setText(player.getCurrentSong().toString());
         }
     }
 
@@ -260,22 +256,18 @@ public class MyTunesController {
         }
     }
 
+    @FXML void handleShuffle(ActionEvent e) {
+
+    }
+
     @FXML void handleNextSong(ActionEvent e) {
         player.next();
         update();
-        if (player.getListStatus() == Player.ListStatus.ALL_SONGS)
-            songTableView.getSelectionModel().select(player.getCurrentSong());
-        else if (player.getListStatus() == Player.ListStatus.PLAYLIST)
-            songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
     }
 
     @FXML void handlePreviousSong(ActionEvent e) {
         player.previous();
         update();
-        if (player.getListStatus() == Player.ListStatus.ALL_SONGS)
-            songTableView.getSelectionModel().select(player.getCurrentSong());
-        else if (player.getListStatus() == Player.ListStatus.PLAYLIST)
-            songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
     }
 
     @FXML void handleMuteUnmute(ActionEvent e) {
@@ -358,11 +350,21 @@ public class MyTunesController {
     //refreshes listeners
     //this is necessary because when a new media file is loaded, the listeners don't get updated
     private void update() {
+        player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
+            if(!progressSlider.isPressed())
+                progressSlider.setValue(newValue.toMillis() / player.getCycleDuration().toMillis() * 100);
+                //fun little anecdote: had to switch to "getCycleDuration()" rather than "getTotalDuration()", or else the progress slider would break when loading a new song
+                //functionally it doesn't make a difference though
+
+            int currentTime = (int) newValue.toSeconds();
+            int minutes = (currentTime % 3600) / 60;
+            int seconds = currentTime % 60;
+            currentTimeLabel.setText(String.format("%02d:%02d", minutes, seconds));
+        });
+
         player.setOnEndOfMedia(() -> {
             if(!player.isRepeating()) {
-                progressSlider.setValue(0);
                 player.next();
-                currentSongLabel.setText(player.getCurrentSong().toString());
                 if (player.getListStatus() == Player.ListStatus.ALL_SONGS)
                     songTableView.getSelectionModel().select(player.getCurrentSong());
                 else if (player.getListStatus() == Player.ListStatus.PLAYLIST)
@@ -371,18 +373,14 @@ public class MyTunesController {
             }
         });
 
-        player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
-            if(!progressSlider.isPressed())
-                progressSlider.setValue(newValue.toMillis() / player.getTotalDuration().toMillis() * 100);
-
-            int currentTime = (int) newValue.toSeconds();
-            int minutes = (currentTime % 3600) / 60;
-            int seconds = currentTime % 60;
-            currentTimeLabel.setText(String.format("%02d:%02d", minutes, seconds));
-        });
+        if (player.getListStatus() == Player.ListStatus.ALL_SONGS)
+            songTableView.getSelectionModel().select(player.getCurrentSong());
+        else if (player.getListStatus() == Player.ListStatus.PLAYLIST)
+            songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
 
         totalDurationLabel.setText(player.getCurrentSong().getDurationInString());
-        currentSongLabel.setText(player.getCurrentSong().toString());
+        currentSongTitleLabel.setText(player.getCurrentSong().getTitle());
+        currentSongArtistLabel.setText(player.getCurrentSong().getArtist());
     }
 
     private void openNewEditSongDialog() throws IOException {

@@ -22,6 +22,7 @@ public class Player {
     private double volumeBeforeMediaChange;
     private boolean isPlayingBeforeMediaChange;
     private boolean isMutedBeforeMediaChange;
+    private boolean isRepeatingBeforeMediaChange;
 
     private ListStatus listStatus;
 
@@ -39,7 +40,7 @@ public class Player {
         mediaPlayer = new MediaPlayer(media);
     }
 
-    public Player(ObservableList<Song> allSongs, Song song) throws SQLException {
+    public Player(ObservableList<Song> songs, Song song) throws SQLException {
         setListStatus(ListStatus.ALL_SONGS);
 
         path = Path.of("src/main/resources/com/mytunes/music/" + song.getPath());
@@ -47,7 +48,7 @@ public class Player {
         mediaPlayer = new MediaPlayer(media);
 
         currentSong = song;
-        this.allSongs = allSongs;
+        allSongs = songs;
     }
 
     //only used in methods next() and previous()
@@ -58,19 +59,23 @@ public class Player {
         volumeBeforeMediaChange = mediaPlayer.getVolume();
         isPlayingBeforeMediaChange = mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);
         isMutedBeforeMediaChange = isMuted();
+        isRepeatingBeforeMediaChange = isRepeating();
 
         mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
+
         mediaPlayer.setVolume(volumeBeforeMediaChange);
         if (isPlayingBeforeMediaChange)
             mediaPlayer.play();
         if (isMutedBeforeMediaChange)
             mediaPlayer.setMute(true);
+        if (isRepeatingBeforeMediaChange)
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         currentSong = song;
     }
 
-    public void load(ObservableList<Song> allSongs, Song song) {
+    public void load(ObservableList<Song> songs, Song song) {
         setListStatus(ListStatus.ALL_SONGS);
 
         path = Path.of("src/main/resources/com/mytunes/music/" + song.getPath());
@@ -78,14 +83,19 @@ public class Player {
 
         volumeBeforeMediaChange = mediaPlayer.getVolume();
         isMutedBeforeMediaChange = isMuted();
+        isRepeatingBeforeMediaChange = isRepeating();
 
+        mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
+
         mediaPlayer.setVolume(volumeBeforeMediaChange);
         if (isMutedBeforeMediaChange)
             mediaPlayer.setMute(true);
+        if (isRepeatingBeforeMediaChange)
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         currentSong = song;
-        this.allSongs = allSongs;
+        allSongs = songs;
     }
 
     public void load(Playlist playlist, Song song) {
@@ -95,9 +105,17 @@ public class Player {
         media = new Media(path.toUri().toString());
 
         volumeBeforeMediaChange = mediaPlayer.getVolume();
+        isMutedBeforeMediaChange = isMuted();
+        isRepeatingBeforeMediaChange = isRepeating();
 
+        mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
+
         mediaPlayer.setVolume(volumeBeforeMediaChange);
+        if (isMutedBeforeMediaChange)
+            mediaPlayer.setMute(true);
+        if (isRepeatingBeforeMediaChange)
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         currentSong = song;
         currentPlaylist = playlist;
@@ -186,8 +204,9 @@ public class Player {
         return mediaPlayer.getCurrentTime();
     }
 
-    public Duration getTotalDuration() {
-        return mediaPlayer.getTotalDuration();
+    public Duration getCycleDuration() {
+        return mediaPlayer.getCycleDuration();
+
     }
 
     public Song getCurrentSong() {
@@ -245,5 +264,9 @@ public class Player {
 
     public void setOnEndOfMedia(Runnable runnable) {
         mediaPlayer.setOnEndOfMedia(runnable);
+    }
+
+    public Runnable getOnReady() {
+        return mediaPlayer.getOnReady();
     }
 }
