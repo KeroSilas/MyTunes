@@ -8,10 +8,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="gridPane" hgap="12.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="6.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mytunes.controllers.NewEditSongController">
+<GridPane fx:id="gridPane" hgap="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mytunes.controllers.NewEditSongController">
     <columnConstraints>
         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
     </columnConstraints>
     <rowConstraints>
@@ -20,26 +20,26 @@
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <padding>
-        <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
     </padding>
-    <Button fx:id="saveButton" mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="72.0" text="Save" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-    <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="72.0" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+    <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="72.0" text="Save" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
+    <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="72.0" text="Cancel" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
         <GridPane.margin>
-          <Insets right="78.0" />
+          <Insets right="80.0" />
         </GridPane.margin>
     </Button>
-    <TextField fx:id="titleTextField" GridPane.columnIndex="1" />
+    <TextField fx:id="titleTextField" promptText="Enter the song title" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" />
     <Label text="Title:" />
     <Label text="Artist:" GridPane.rowIndex="1" />
     <Label text="Category:" GridPane.rowIndex="2" />
     <Label text="Duration:" GridPane.rowIndex="3" />
     <Label text="File:" GridPane.rowIndex="4" />
-    <TextField fx:id="artistTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-    <TextField fx:id="categoryTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-    <TextField fx:id="durationTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-    <TextField fx:id="fileTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <TextField fx:id="artistTextField" promptText="Enter the song artist" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+    <TextField fx:id="categoryTextField" promptText="Enter the song category" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+    <TextField fx:id="durationTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+    <TextField fx:id="fileTextField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     <Button mnemonicParsing="false" onAction="#handleChooseSong" prefHeight="25.0" prefWidth="72.0" text="Choose..." GridPane.columnIndex="2" GridPane.rowIndex="4" />
 </GridPane>

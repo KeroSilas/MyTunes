@@ -27,13 +27,21 @@ public class MyTunesController {
 
     private Player player;
     private final Path playPath = Path.of("src/main/resources/com/mytunes/images/play.png");
-    private final Path pausePath = Path.of("src/main/resources/com/mytunes/images/pus.png");
-    private final Path mutePath = Path.of("src/main/resources/com/mytunes/images/M.png");
-    private final Path unmutePath = Path.of("src/main/resources/com/mytunes/images/L.png");
+    private final Path pausePath = Path.of("src/main/resources/com/mytunes/images/pause.png");
+    private final Path mutePath = Path.of("src/main/resources/com/mytunes/images/muted.png");
+    private final Path unmutePath = Path.of("src/main/resources/com/mytunes/images/unmuted.png");
+    private final Path repeatPath = Path.of("src/main/resources/com/mytunes/images/repeat.png");
+    private final Path unrepeatPath = Path.of("src/main/resources/com/mytunes/images/repeating.png");
+    private final Path searchPath = Path.of("src/main/resources/com/mytunes/images/search.png");
+    private final Path unsearchPath = Path.of("src/main/resources/com/mytunes/images/cancel.png");
     private final Image playImage = new Image(playPath.toUri().toString());
     private final Image pauseImage = new Image(pausePath.toUri().toString());
     private final Image muteImage = new Image(mutePath.toUri().toString());
     private final Image unmuteImage = new Image(unmutePath.toUri().toString());
+    private final Image repeatImage = new Image(repeatPath.toUri().toString());
+    private final Image unrepeatImage = new Image(unrepeatPath.toUri().toString());
+    private final Image searchImage = new Image(searchPath.toUri().toString());
+    private final Image unsearchImage = new Image(unsearchPath.toUri().toString());
 
     private SongDao songDao;
     private PlaylistDao playlistDao;
@@ -58,9 +66,9 @@ public class MyTunesController {
 
     @FXML private Button newPlaylistButton, editPlaylistButton, newSongButton, editSongButton;
 
-    @FXML private Label currentSongLabel, currentTimeLabel, totalDurationLabel;
+    @FXML private Label currentSongLabel, currentTimeLabel, totalDurationLabel, volumeLabel;
 
-    @FXML private ImageView playPauseImage, muteUnmuteImage, repeatImage;
+    @FXML private ImageView playPauseImage, muteUnmuteImage, repeatUnrepeatImage, searchUnsearchImage;
 
     @FXML void handlePlaylistClick(MouseEvent e) {
         selectedPlaylist = playlistTableView.getSelectionModel().getSelectedItem();
@@ -110,10 +118,12 @@ public class MyTunesController {
         try {
             if(!isSearching && !searchTextField.getText().isEmpty()) {
                 songObservableList.setAll(songDao.searchSong(searchTextField.getText()));
+                searchUnsearchImage.setImage(unsearchImage);
                 isSearching = true;
             } else {
                 searchTextField.clear();
                 songObservableList.setAll(songDao.getAllSongs());
+                searchUnsearchImage.setImage(searchImage);
                 isSearching = false;
             }
         } catch (SQLException ex) {
@@ -123,15 +133,8 @@ public class MyTunesController {
 
     //temporary implementation
     @FXML void handleAddPlaylist(ActionEvent e) {
-        Button button = (Button) e.getSource();
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
-            //fxmlLoader.setController(new NewEditPlaylistController());
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(scene);
-            stage.showAndWait();
+            openNewEditPlaylistDialog();
             playlistObservableList.setAll(playlistDao.getAllPlaylists());
         } catch (IOException | SQLException ex) {
             ex.printStackTrace();
@@ -141,14 +144,17 @@ public class MyTunesController {
     //temporary implementation
     @FXML void handleAddSong(ActionEvent e) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditSong.fxml"));
-            //fxmlLoader.setController(new NewEditPlaylistController());
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(scene);
-            stage.showAndWait();
+            openNewEditSongDialog();
             songObservableList.setAll(songDao.getAllSongs());
+        } catch (IOException | SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML void handleEditPlaylist(ActionEvent e) {
+        try {
+            openNewEditPlaylistDialog();
+            playlistObservableList.setAll(playlistDao.getAllPlaylists());
         } catch (IOException | SQLException ex) {
             ex.printStackTrace();
         }
@@ -156,28 +162,9 @@ public class MyTunesController {
 
     @FXML void handleEditSong(ActionEvent e) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/????.fxml"));
-            //fxmlLoader.setController(new NewEditPlaylistController());
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(scene);
-            stage.showAndWait();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML void handleEditPlaylist(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
-            //fxmlLoader.setController(new NewEditPlaylistController());
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(scene);
-            stage.showAndWait();
-        } catch (IOException ex) {
+            openNewEditSongDialog();
+            songObservableList.setAll(songDao.getAllSongs());
+        } catch (IOException | SQLException ex) {
             ex.printStackTrace();
         }
     }
@@ -262,7 +249,14 @@ public class MyTunesController {
     }
 
     @FXML void handleRepeat(ActionEvent e) {
-        player.repeat(!player.isRepeating());
+        if (player.isRepeating()) {
+            player.repeat(false);
+            repeatUnrepeatImage.setImage(repeatImage);
+        }
+        else {
+            player.repeat(true);
+            repeatUnrepeatImage.setImage(unrepeatImage);
+        }
     }
 
     @FXML void handleNextSong(ActionEvent e) {
@@ -328,14 +322,15 @@ public class MyTunesController {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        //set default volume to 50%
-        player.setVolume(0.5);
-        volumeSlider.setValue(player.getVolume() * 100);
 
         //add listener to volumeSlider
-        volumeSlider.valueProperty().addListener((ov, oldValue, newValue) ->
-                player.setVolume(newValue.doubleValue() / 100)
-        );
+        volumeSlider.valueProperty().addListener((ov, oldValue, newValue) -> {
+            player.setVolume(newValue.doubleValue() / 100);
+            volumeLabel.setText(String.format("%s%%", newValue.intValue()));
+        });
+
+        //set default volume to 50%
+        volumeSlider.setValue(50);
 
         update();
     }
@@ -364,5 +359,27 @@ public class MyTunesController {
 
         totalDurationLabel.setText(player.getCurrentSong().getDurationInString());
         currentSongLabel.setText(player.getCurrentSong().toString());
+    }
+
+    private void openNewEditSongDialog() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditSong.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/edit.png"));
+        stage.setResizable(false);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.showAndWait();
+    }
+
+    private void openNewEditPlaylistDialog() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        Stage stage = new Stage();
+        stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/edit.png"));
+        stage.setResizable(false);
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.showAndWait();
     }
 }
