@@ -131,7 +131,6 @@ public class MyTunesController {
         }
     }
 
-    //temporary implementation
     @FXML void handleAddPlaylist(ActionEvent e) {
         try {
             openNewEditPlaylistDialog();
@@ -141,7 +140,6 @@ public class MyTunesController {
         }
     }
 
-    //temporary implementation
     @FXML void handleAddSong(ActionEvent e) {
         try {
             openNewEditSongDialog();
@@ -226,12 +224,14 @@ public class MyTunesController {
     @FXML void handleMoveSongUp(ActionEvent e) {
         Collections.swap(selectedPlaylist.getSongs(), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist) - 1);
         songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+        songsInPlaylistListView.getSelectionModel().select(selectedSongInPlaylist);
         player.updateCurrentPlaylist(selectedPlaylist);
     }
 
     @FXML void handleMoveSongDown(ActionEvent e) {
         Collections.swap(selectedPlaylist.getSongs(), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist) + 1);
         songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+        songsInPlaylistListView.getSelectionModel().select(selectedSongInPlaylist);
         player.updateCurrentPlaylist(selectedPlaylist);
     }
 
@@ -272,13 +272,16 @@ public class MyTunesController {
     @FXML void handleMuteUnmute(ActionEvent e) {
         if (player.isMuted()) {
             player.mute(false);
-            volumeSlider.setDisable(false);
             muteUnmuteImage.setImage(unmuteImage);
         }
         else {
             player.mute(true);
-            volumeSlider.setDisable(true);
             muteUnmuteImage.setImage(muteImage);
+        }
+        if (player.getVolume() == 0) {
+            player.mute(false);
+            volumeSlider.setValue(20);
+            muteUnmuteImage.setImage(unmuteImage);
         }
     }
 
@@ -327,6 +330,13 @@ public class MyTunesController {
         volumeSlider.valueProperty().addListener((ov, oldValue, newValue) -> {
             player.setVolume(newValue.doubleValue() / 100);
             volumeLabel.setText(String.format("%s%%", newValue.intValue()));
+            if (!Objects.equals(oldValue, newValue) && player.getVolume() == 0) {
+                muteUnmuteImage.setImage(muteImage);
+            }
+            else if (!Objects.equals(oldValue, newValue) && player.getVolume() > 0) {
+                player.mute(false);
+                muteUnmuteImage.setImage(unmuteImage);
+            }
         });
 
         //set default volume to 50%

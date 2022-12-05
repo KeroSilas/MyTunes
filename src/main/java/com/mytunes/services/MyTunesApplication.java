@@ -15,20 +15,8 @@ public class MyTunesApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("MyTunes");
         stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/logo.png"));
-        stage.widthProperty().addListener((o, oldValue, newValue)->{
-            if(newValue.intValue() < 1044.0) {
-                stage.setResizable(false);
-                stage.setWidth(1044);
-                stage.setResizable(true);
-            }
-        });
-        stage.heightProperty().addListener((o, oldValue, newValue)->{
-            if(newValue.intValue() < 600) {
-                stage.setResizable(false);
-                stage.setHeight(600);
-                stage.setResizable(true);
-            }
-        });
+        stage.setMinWidth(1044);
+        stage.setMinHeight(286);
         stage.setScene(scene);
         stage.show();
     }

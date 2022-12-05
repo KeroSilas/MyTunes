@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1028.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mytunes.controllers.MyTunesController">
+<VBox prefHeight="650.0" prefWidth="1028.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mytunes.controllers.MyTunesController">
    <children>
       <HBox spacing="6.0" VBox.vgrow="ALWAYS">
          <children>
@@ -62,7 +62,7 @@
                         </Button>
                      </children>
                   </GridPane>
-                  <TableView fx:id="playlistTableView" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handlePlaylistClick" prefWidth="300.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="playlistTableView" minWidth="-Infinity" onMouseClicked="#handlePlaylistClick" prefWidth="300.0" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="nameColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="166.0" text="Name" />
                       <TableColumn fx:id="songsColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="64.0" text="Songs" />
@@ -113,7 +113,7 @@
                         </Button>
                      </children>
                   </GridPane>
-                  <ListView fx:id="songsInPlaylistListView" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleSongInPlaylistClick" prefWidth="250.0" VBox.vgrow="ALWAYS" />
+                  <ListView fx:id="songsInPlaylistListView" minWidth="-Infinity" onMouseClicked="#handleSongInPlaylistClick" prefWidth="250.0" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddSongToPlaylist" prefHeight="30.0" prefWidth="30.0">
@@ -182,7 +182,7 @@
                         <TextField fx:id="searchTextField" prefHeight="30.0" GridPane.columnIndex="5" />
                      </children>
                   </GridPane>
-                  <TableView fx:id="songTableView" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleSongClick" prefWidth="400.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="songTableView" minWidth="-Infinity" onMouseClicked="#handleSongClick" prefWidth="400.0" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="titleColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="145.0" text="Title" />
                       <TableColumn fx:id="artistColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="115.0" text="Artist" />

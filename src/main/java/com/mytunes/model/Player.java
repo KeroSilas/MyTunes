@@ -225,11 +225,10 @@ public class Player {
     }
 
     public boolean isMuted() {
-        return mediaPlayer.isMute();
-    }
+        mediaPlayer.muteProperty().addListener((ov, oldValue, newValue) -> {
 
-    public boolean isEndOfMedia() {
-        return mediaPlayer.getCurrentTime().toSeconds() == mediaPlayer.getTotalDuration().toSeconds();
+        });
+        return mediaPlayer.isMute();
     }
 
     public void updateCurrentPlaylist(Playlist playlist) {
