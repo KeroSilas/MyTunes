@@ -16,6 +16,7 @@ public class MyTunesApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("MyTunes");
         stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/play.png"));
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
         stage.setOnCloseRequest(t -> {

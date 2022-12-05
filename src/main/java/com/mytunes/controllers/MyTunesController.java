@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -50,15 +48,17 @@ public class MyTunesController {
     @FXML private TableView<Playlist> playlistTableView;
     @FXML private TableColumn<Playlist, String> nameColumn, totalDurationColumn;
     @FXML private TableColumn<Playlist, Integer> songsColumn;
-
     @FXML private TableView<Song> songTableView;
     @FXML private TableColumn<Song, String> titleColumn, artistColumn, categoryColumn, durationColumn;
-
     @FXML private ListView<Song> songsInPlaylistListView;
 
     @FXML private TextField searchTextField;
 
     @FXML private Slider volumeSlider, progressSlider;
+
+    @FXML private Button newPlaylistButton, editPlaylistButton, newSongButton, editSongButton;
+
+    @FXML private Label currentSongLabel, currentTimeLabel, totalDurationLabel;
 
     @FXML private ImageView playPauseImage, muteUnmuteImage, repeatImage;
 
@@ -70,7 +70,9 @@ public class MyTunesController {
                 songTableView.getSelectionModel().clearSelection();
                 player.stop();
                 player.load(selectedPlaylist, selectedPlaylist.getSongs().get(0));
+                update();
                 player.play();
+
                 playPauseImage.setImage(pauseImage);
             }
         }
@@ -82,7 +84,9 @@ public class MyTunesController {
             songsInPlaylistListView.getSelectionModel().clearSelection();
             player.stop();
             player.load(songObservableList, selectedSong);
+            update();
             player.play();
+
             playPauseImage.setImage(pauseImage);
         }
     }
@@ -93,8 +97,11 @@ public class MyTunesController {
             songTableView.getSelectionModel().clearSelection();
             player.stop();
             player.load(selectedPlaylist, selectedSongInPlaylist);
+            update();
             player.play();
+
             playPauseImage.setImage(pauseImage);
+            currentSongLabel.setText(player.getCurrentSong().toString());
         }
     }
 
@@ -119,7 +126,7 @@ public class MyTunesController {
         Button button = (Button) e.getSource();
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
-            fxmlLoader.setController(new NewEditPlaylistController());
+            //fxmlLoader.setController(new NewEditPlaylistController());
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -134,8 +141,8 @@ public class MyTunesController {
     //temporary implementation
     @FXML void handleAddSong(ActionEvent e) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/????.fxml"));
-            fxmlLoader.setController(new NewEditPlaylistController());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditSong.fxml"));
+            //fxmlLoader.setController(new NewEditPlaylistController());
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -150,7 +157,7 @@ public class MyTunesController {
     @FXML void handleEditSong(ActionEvent e) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/????.fxml"));
-            fxmlLoader.setController(new NewEditPlaylistController());
+            //fxmlLoader.setController(new NewEditPlaylistController());
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -164,7 +171,7 @@ public class MyTunesController {
     @FXML void handleEditPlaylist(ActionEvent e) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
-            fxmlLoader.setController(new NewEditPlaylistController());
+            //fxmlLoader.setController(new NewEditPlaylistController());
             Scene scene = new Scene(fxmlLoader.load());
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -260,10 +267,12 @@ public class MyTunesController {
 
     @FXML void handleNextSong(ActionEvent e) {
         player.next();
+        update();
     }
 
     @FXML void handlePreviousSong(ActionEvent e) {
         player.previous();
+        update();
     }
 
     @FXML void handleMuteUnmute(ActionEvent e) {
@@ -328,39 +337,32 @@ public class MyTunesController {
                 player.setVolume(newValue.doubleValue() / 100)
         );
 
-        /*
-        //add listener to currentTime in player, this is what makes the progressBar move by itself
-        player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
-            if(!progressSlider.isPressed())
-                progressSlider.setValue(newValue.toSeconds() / player.getTotalDuration().toMillis() * 100);
-        });
+        update();
+    }
 
-        //runnable that runs when a song has reached the end
+    //refreshes listeners
+    //this is necessary because when a new media file is loaded, the listeners don't get updated
+    private void update() {
         player.setOnEndOfMedia(() -> {
             if(!player.isRepeating()) {
                 progressSlider.setValue(0);
                 player.next();
+                currentSongLabel.setText(player.getCurrentSong().toString());
+                update(); //recursively calls the method when at end of media
             }
         });
-        */
 
-        //automatically update progressSlider, unless progressSlider is being dragged
-        Timer progressTimer = new Timer();
-        progressTimer.schedule(new TimerTask() {
-            @Override public void run() {
-                if (!progressSlider.isPressed()) {
-                    progressSlider.setValue(player.getCurrentTime().toMillis() / player.getTotalDuration().toMillis() * 100);
-                }
-                if (player.isEndOfMedia() && !player.isRepeating()) {
-                    player.next();
-                }
-                if (player.isEndOfMedia() && !player.isRepeating() && player.getListStatus() == Player.ListStatus.DEFAULT) {
-                    player.pause();
-                    player.reset();
-                    playPauseImage.setImage(playImage);
-                }
+        player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
+            if(!progressSlider.isPressed())
+                progressSlider.setValue(newValue.toMillis() / player.getTotalDuration().toMillis() * 100);
 
-            }
-        }, 0L, 20L);
+            int currentTime = (int) newValue.toSeconds();
+            int minutes = (currentTime % 3600) / 60;
+            int seconds = currentTime % 60;
+            currentTimeLabel.setText(String.format("%02d:%02d", minutes, seconds));
+        });
+
+        totalDurationLabel.setText(player.getCurrentSong().getDurationInString());
+        currentSongLabel.setText(player.getCurrentSong().toString());
     }
 }
