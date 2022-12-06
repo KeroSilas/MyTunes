@@ -149,6 +149,7 @@ public class MyTunesController {
             isNewPressed = true;
             openNewEditSongDialog();
             songObservableList.setAll(songDao.getAllSongs());
+            player.updateCurrentAllSongs(songObservableList);
         } catch (IOException | SQLException ex) {
             ex.printStackTrace();
         }
@@ -179,6 +180,7 @@ public class MyTunesController {
             if (selectedPlaylist != null && selectedSong != null) {
                 selectedPlaylist.addSong(selectedSong);
                 songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+                playlistObservableList.setAll(playlistDao.getAllPlaylists());
                 player.updateCurrentPlaylist(selectedPlaylist);
             }
         } catch (SQLException ex) {
@@ -235,6 +237,7 @@ public class MyTunesController {
             if (result.isPresent() && result.get() == ButtonType.YES) {
                 selectedPlaylist.removeSong(selectedSongInPlaylist);
                 songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+                playlistObservableList.setAll(playlistDao.getAllPlaylists());
                 player.updateCurrentPlaylist(selectedPlaylist);
                 selectedSongInPlaylist = null;
             }
@@ -450,18 +453,18 @@ public class MyTunesController {
         player.setOnEndOfMedia(() -> {
             if(!player.isRepeating()) {
                 player.next();
-                if (player.getListStatus() == Player.ListStatus.ALL_SONGS)
-                    songTableView.getSelectionModel().select(player.getCurrentSong());
-                else if (player.getListStatus() == Player.ListStatus.PLAYLIST)
-                    songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
                 update(); //recursively calls the method when at end of media
             }
         });
 
-        if (player.getListStatus() == Player.ListStatus.ALL_SONGS)
+        if (player.getListStatus() == Player.ListStatus.ALL_SONGS) {
             songTableView.getSelectionModel().select(player.getCurrentSong());
-        else if (player.getListStatus() == Player.ListStatus.PLAYLIST)
+            selectedSong = songTableView.getSelectionModel().getSelectedItem();
+        }
+        else if (player.getListStatus() == Player.ListStatus.PLAYLIST) {
             songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
+            selectedSongInPlaylist = songsInPlaylistListView.getSelectionModel().getSelectedItem();
+        }
 
         totalDurationLabel.setText(player.getCurrentSong().getDurationInString());
         currentSongTitleLabel.setText(player.getCurrentSong().getTitle());

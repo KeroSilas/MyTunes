@@ -8,6 +8,7 @@ import javafx.util.Duration;
 
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.util.Collections;
 
 public class Player {
 
@@ -133,10 +134,7 @@ public class Player {
 
     public void next() {
         if (getListStatus() == Player.ListStatus.ALL_SONGS) {
-            if (isShuffling()) {
-                load(allSongs.get((int)(allSongs.size() * Math.random())));
-            }
-            else if (allSongs.indexOf(getCurrentSong()) == allSongs.size() - 1) {
+            if (allSongs.indexOf(getCurrentSong()) == allSongs.size() - 1) {
                 load(allSongs.get(0));
             }
             else {
@@ -145,10 +143,7 @@ public class Player {
             }
         }
         else if (getListStatus() == Player.ListStatus.PLAYLIST) {
-            if (isShuffling()) {
-                load(currentPlaylist.getSongs().get((int)(currentPlaylist.getSongs().size() * Math.random())));
-            }
-            else if (getCurrentPlaylist().getSongs().indexOf(getCurrentSong()) == getCurrentPlaylist().getSongs().size() - 1) {
+            if (getCurrentPlaylist().getSongs().indexOf(getCurrentSong()) == getCurrentPlaylist().getSongs().size() - 1) {
                 load(getCurrentPlaylist().getSongs().get(0));
             }
             else {
