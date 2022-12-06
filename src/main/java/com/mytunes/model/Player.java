@@ -195,6 +195,10 @@ public class Player {
         }
     }
 
+    public void shuffle(boolean shuffle) {
+
+    }
+
     public double getVolume() {
         return mediaPlayer.getVolume();
     }
