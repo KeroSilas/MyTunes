@@ -68,12 +68,15 @@
                         </Button>
                      </children>
                   </GridPane>
-                  <TableView fx:id="playlistTableView" minWidth="-Infinity" onMouseClicked="#handlePlaylistClick" prefWidth="300.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="playlistTableView" minWidth="-Infinity" onMouseClicked="#handlePlaylistClick" prefWidth="250.0" VBox.vgrow="ALWAYS">
                     <columns>
-                      <TableColumn fx:id="nameColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="166.0" text="Name" />
-                      <TableColumn fx:id="songsColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="64.0" text="Songs" />
-                        <TableColumn fx:id="totalDurationColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="69.0" text="Duration" />
+                      <TableColumn fx:id="nameColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="146.0" resizable="false" text="Name" />
+                      <TableColumn fx:id="songsColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="51.0" resizable="false" text="Songs" />
+                        <TableColumn fx:id="totalDurationColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="68.0" resizable="false" text="Duration" />
                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
                </children>
             </VBox>
@@ -202,11 +205,14 @@
                   </GridPane>
                   <TableView fx:id="songTableView" minWidth="-Infinity" onMouseClicked="#handleSongClick" prefWidth="400.0" VBox.vgrow="ALWAYS">
                     <columns>
-                      <TableColumn fx:id="titleColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="145.0" text="Title" />
-                      <TableColumn fx:id="artistColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="115.0" text="Artist" />
-                        <TableColumn fx:id="categoryColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="77.0" text="Category" />
-                        <TableColumn fx:id="durationColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="61.0" text="Duration" />
+                      <TableColumn fx:id="titleColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="133.0" resizable="false" text="Title" />
+                      <TableColumn fx:id="artistColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" resizable="false" text="Artist" />
+                        <TableColumn fx:id="categoryColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="93.0" resizable="false" text="Category" />
+                        <TableColumn fx:id="durationColumn" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="68.0" resizable="false" text="Duration" />
                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
                </children>
             </VBox>
