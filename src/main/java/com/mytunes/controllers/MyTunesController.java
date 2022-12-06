@@ -66,7 +66,7 @@ public class MyTunesController {
 
     @FXML private Slider volumeSlider, progressSlider;
 
-    @FXML private Button editPlaylistButton, deletePlaylistButton, editSongButton, deleteSongButton, moveSongUpButton, moveSongDownButton, deleteSongFromPlaylistButton, addSongToPlaylistButton;
+    @FXML private Button editPlaylistButton, deletePlaylistButton, editSongButton, deleteSongButton, moveSongUpButton, moveSongDownButton, deleteSongFromPlaylistButton, addSongToPlaylistButton, playButton;
 
     @FXML private Label currentSongTitleLabel, currentSongArtistLabel, currentTimeLabel, totalDurationLabel, volumeLabel;
 
@@ -351,7 +351,16 @@ public class MyTunesController {
 
         //add listener to volumeSlider
         volumeSlider.valueProperty().addListener((ov, oldValue, newValue) -> {
-            player.setVolume(newValue.doubleValue() / 100);
+            double percentage = newValue.doubleValue();
+            player.setVolume(percentage / 100);
+            String style = String.format(
+                    "-track-color: linear-gradient(to right, " +
+                            "-fx-accent 0%%, " +
+                            "-fx-accent %1$.1f%%, " +
+                            "-default-track-color %1$.1f%%, " +
+                            "-default-track-color 100%%);",
+                    percentage);
+            volumeSlider.setStyle(style);
             volumeLabel.setText(String.format("%s%%", newValue.intValue()));
             if (!Objects.equals(oldValue, newValue) && player.getVolume() == 0) {
                 muteUnmuteImage.setImage(muteImage);
@@ -361,14 +370,6 @@ public class MyTunesController {
                 muteUnmuteImage.setImage(unmuteImage);
             }
         });
-
-        editPlaylistButton.setDisable(true);
-        deletePlaylistButton.setDisable(true);
-        editSongButton.setDisable(true);
-        deleteSongButton.setDisable(true);
-        moveSongUpButton.setDisable(true);
-        moveSongDownButton.setDisable(true);
-        deleteSongFromPlaylistButton.setDisable(true);
 
         playlistTableView.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> {
             if (!Objects.equals(oldValue, newValue) && playlistTableView.getSelectionModel().getSelectedItem() == null) {
@@ -417,10 +418,19 @@ public class MyTunesController {
     //this is necessary because when a new media file is loaded, the listeners don't get updated
     private void update() {
         player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
+            double percentage = newValue.toMillis() / player.getCycleDuration().toMillis() * 100;
+            //fun little anecdote: had to switch to "getCycleDuration()" rather than "getTotalDuration()", or else the progress slider would break when loading a new song
+            //functionally it doesn't make a difference though
             if(!progressSlider.isPressed())
-                progressSlider.setValue(newValue.toMillis() / player.getCycleDuration().toMillis() * 100);
-                //fun little anecdote: had to switch to "getCycleDuration()" rather than "getTotalDuration()", or else the progress slider would break when loading a new song
-                //functionally it doesn't make a difference though
+                progressSlider.setValue(percentage);
+            String style = String.format(
+                    "-track-color: linear-gradient(to right, " +
+                            "-fx-accent 0%%, " +
+                            "-fx-accent %1$.1f%%, " +
+                            "-default-track-color %1$.1f%%, " +
+                            "-default-track-color 100%%);",
+                    percentage);
+            progressSlider.setStyle(style);
 
             int currentTime = (int) newValue.toSeconds();
             int minutes = (currentTime % 3600) / 60;

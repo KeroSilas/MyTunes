@@ -1,0 +1,28 @@
+.root {
+	-fx-accent: #2d61e3;
+	-fx-focus-color: #2d61e3;
+}
+
+.slider .track {
+    -fx-pref-height:8;
+}
+
+.slider:vertical .track {
+    -fx-pref-width:8;
+}
+
+.slider .thumb {
+    -fx-pref-height: 16;
+    -fx-pref-width: 16;
+}
+
+.slider {
+    -default-track-color: -fx-control-inner-background;
+    -track-color: -default-track-color;
+}
+
+.slider .track {
+    -fx-background-color: -fx-shadow-highlight-color,
+          linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
+          -track-color;
+}
