@@ -66,7 +66,10 @@ public class NewEditSongController {
 
     @FXML void handleSave(ActionEvent e) {
         try {
-            songDao.createSong(titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
+            if (MyTunesController.isNewPressed)
+                songDao.createSong(titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
+            else
+                songDao.updateSong(MyTunesController.selectedSong.getId(), titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -77,5 +80,14 @@ public class NewEditSongController {
 
     public void initialize() {
         songDao = new SongDaoImpl();
+
+        if (!MyTunesController.isNewPressed) {
+            titleTextField.setText(MyTunesController.selectedSong.getTitle());
+            artistTextField.setText(MyTunesController.selectedSong.getArtist());
+            categoryTextField.setText(MyTunesController.selectedSong.getCategory());
+            durationTextField.setText(MyTunesController.selectedSong.getDurationInString());
+            duration = MyTunesController.selectedSong.getDurationInInteger();
+            fileTextField.setText(MyTunesController.selectedSong.getPath());
+        }
     }
 }

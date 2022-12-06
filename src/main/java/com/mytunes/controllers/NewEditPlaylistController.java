@@ -25,7 +25,10 @@ public class NewEditPlaylistController {
 
     @FXML void handleSave(ActionEvent e) {
         try {
-            playlistDao.createPlaylist(nameTextField.getText());
+            if (MyTunesController.isNewPressed)
+                playlistDao.createPlaylist(nameTextField.getText());
+            else
+                playlistDao.updatePlaylist(MyTunesController.selectedPlaylist.getId(), nameTextField.getText());
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -36,5 +39,9 @@ public class NewEditPlaylistController {
 
     public void initialize() {
         playlistDao = new PlaylistDaoImpl();
+
+        if (!MyTunesController.isNewPressed) {
+            nameTextField.setText(MyTunesController.selectedPlaylist.getName());
+        }
     }
 }

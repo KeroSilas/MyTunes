@@ -46,12 +46,14 @@ public class MyTunesController {
     private SongDao songDao;
     private PlaylistDao playlistDao;
     private boolean isSearching = false;
+    protected static boolean isNewPressed;
 
     private final ObservableList<Playlist> playlistObservableList = FXCollections.observableArrayList();
     private final ObservableList<Song> songObservableList = FXCollections.observableArrayList();
     private final ObservableList<Song> songInPlaylistObservableList = FXCollections.observableArrayList();
-    private Playlist selectedPlaylist;
-    private Song selectedSong, selectedSongInPlaylist;
+    protected static Playlist selectedPlaylist;
+    protected static Song selectedSong;
+    private Song selectedSongInPlaylist;
 
     @FXML private TableView<Playlist> playlistTableView;
     @FXML private TableColumn<Playlist, String> nameColumn, totalDurationColumn;
@@ -64,7 +66,7 @@ public class MyTunesController {
 
     @FXML private Slider volumeSlider, progressSlider;
 
-    @FXML private Button newPlaylistButton, editPlaylistButton, newSongButton, editSongButton;
+    @FXML private Button editPlaylistButton, deletePlaylistButton, editSongButton, deleteSongButton, moveSongUpButton, moveSongDownButton, deleteSongFromPlaylistButton, addSongToPlaylistButton;
 
     @FXML private Label currentSongTitleLabel, currentSongArtistLabel, currentTimeLabel, totalDurationLabel, volumeLabel;
 
@@ -130,6 +132,7 @@ public class MyTunesController {
 
     @FXML void handleAddPlaylist(ActionEvent e) {
         try {
+            isNewPressed = true;
             openNewEditPlaylistDialog();
             playlistObservableList.setAll(playlistDao.getAllPlaylists());
         } catch (IOException | SQLException ex) {
@@ -139,6 +142,7 @@ public class MyTunesController {
 
     @FXML void handleAddSong(ActionEvent e) {
         try {
+            isNewPressed = true;
             openNewEditSongDialog();
             songObservableList.setAll(songDao.getAllSongs());
         } catch (IOException | SQLException ex) {
@@ -148,6 +152,7 @@ public class MyTunesController {
 
     @FXML void handleEditPlaylist(ActionEvent e) {
         try {
+            isNewPressed = false;
             openNewEditPlaylistDialog();
             playlistObservableList.setAll(playlistDao.getAllPlaylists());
         } catch (IOException | SQLException ex) {
@@ -157,6 +162,7 @@ public class MyTunesController {
 
     @FXML void handleEditSong(ActionEvent e) {
         try {
+            isNewPressed = false;
             openNewEditSongDialog();
             songObservableList.setAll(songDao.getAllSongs());
         } catch (IOException | SQLException ex) {
@@ -338,6 +344,51 @@ public class MyTunesController {
             else if (!Objects.equals(oldValue, newValue) && player.getVolume() > 0) {
                 player.mute(false);
                 muteUnmuteImage.setImage(unmuteImage);
+            }
+        });
+
+        editPlaylistButton.setDisable(true);
+        deletePlaylistButton.setDisable(true);
+        editSongButton.setDisable(true);
+        deleteSongButton.setDisable(true);
+        moveSongUpButton.setDisable(true);
+        moveSongDownButton.setDisable(true);
+        deleteSongFromPlaylistButton.setDisable(true);
+
+        playlistTableView.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> {
+            if (!Objects.equals(oldValue, newValue) && playlistTableView.getSelectionModel().getSelectedItem() == null) {
+                editPlaylistButton.setDisable(true);
+                deletePlaylistButton.setDisable(true);
+            }
+            else if (!Objects.equals(oldValue, newValue)) {
+                editPlaylistButton.setDisable(false);
+                deletePlaylistButton.setDisable(false);
+            }
+        });
+
+        songTableView.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> {
+            if (!Objects.equals(oldValue, newValue) && songTableView.getSelectionModel().getSelectedItem() == null) {
+                editSongButton.setDisable(true);
+                deleteSongButton.setDisable(true);
+                addSongToPlaylistButton.setDisable(true);
+            }
+            else if (!Objects.equals(oldValue, newValue)) {
+                editSongButton.setDisable(false);
+                deleteSongButton.setDisable(false);
+                addSongToPlaylistButton.setDisable(false);
+            }
+        });
+
+        songsInPlaylistListView.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> {
+            if (!Objects.equals(oldValue, newValue) && songsInPlaylistListView.getSelectionModel().getSelectedItem() == null) {
+                moveSongUpButton.setDisable(true);
+                moveSongDownButton.setDisable(true);
+                deleteSongFromPlaylistButton.setDisable(true);
+            }
+            else if (!Objects.equals(oldValue, newValue)) {
+                moveSongUpButton.setDisable(false);
+                moveSongDownButton.setDisable(false);
+                deleteSongFromPlaylistButton.setDisable(false);
             }
         });
 
