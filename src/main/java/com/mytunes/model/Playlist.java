@@ -53,7 +53,7 @@ public class Playlist {
     public String getDurationInString() {
         int duration = getDurationInInteger();
         int hours = duration / 3600;
-        int minutes = (duration % 3600) / 60;
+        int minutes = (duration / 60) % 60;
         int seconds = duration % 60;
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }

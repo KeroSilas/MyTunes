@@ -39,29 +39,31 @@ public class NewEditSongController {
         fc.getExtensionFilters().add(extFilter);
         File file = fc.showOpenDialog(stage);
 
-        Media media = new Media(file.toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        if (file != null) {
+            Media media = new Media(file.toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
 
-        fileTextField.setText(file.getName());
+            fileTextField.setText(file.getName());
 
-        media.getMetadata().addListener((MapChangeListener.Change<? extends String, ?> c) -> {
-            if (c.wasAdded()) {
-                if ("title".equals(c.getKey())) {
-                    titleTextField.setText(c.getValueAdded().toString());
-                } else if ("artist".equals(c.getKey())) {
-                    artistTextField.setText(c.getValueAdded().toString());
-                } else if ("genre".equals(c.getKey())) {
-                    categoryTextField.setText(c.getValueAdded().toString());
+            media.getMetadata().addListener((MapChangeListener.Change<? extends String, ?> c) -> {
+                if (c.wasAdded()) {
+                    if ("title".equals(c.getKey())) {
+                        titleTextField.setText(c.getValueAdded().toString());
+                    } else if ("artist".equals(c.getKey())) {
+                        artistTextField.setText(c.getValueAdded().toString());
+                    } else if ("genre".equals(c.getKey())) {
+                        categoryTextField.setText(c.getValueAdded().toString());
+                    }
                 }
-            }
-        });
+            });
 
-        mediaPlayer.setOnReady(() -> {
-            duration = (int) mediaPlayer.getTotalDuration().toSeconds();
-            int minutes = (duration % 3600) / 60;
-            int seconds = duration % 60;
-            durationTextField.setText(String.format("%02d:%02d", minutes, seconds));
-        });
+            mediaPlayer.setOnReady(() -> {
+                duration = (int) mediaPlayer.getTotalDuration().toSeconds();
+                int minutes = (duration % 3600) / 60;
+                int seconds = duration % 60;
+                durationTextField.setText(String.format("%02d:%02d", minutes, seconds));
+            });
+        }
     }
 
     @FXML void handleSave(ActionEvent e) {
