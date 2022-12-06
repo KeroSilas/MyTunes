@@ -184,12 +184,17 @@ public class MyTunesController {
 
     @FXML void handleDeleteSong(ActionEvent e) {
         try {
-            songDao.deleteSong(selectedSong.getId());
-            songObservableList.remove(selectedSong);
-            selectedPlaylist.getSongs().remove(selectedSong);
-            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-            player.updateCurrentPlaylist(selectedPlaylist);
-            selectedSong = null;
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this song?", ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                songDao.deleteSong(selectedSong.getId());
+                songObservableList.remove(selectedSong);
+                selectedPlaylist.getSongs().remove(selectedSong);
+                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+                player.updateCurrentPlaylist(selectedPlaylist);
+                selectedSong = null;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -197,17 +202,22 @@ public class MyTunesController {
 
     @FXML void handleDeletePlaylist(ActionEvent e) {
         try {
-            playlistDao.deletePlaylist(selectedPlaylist.getId());
-            playlistObservableList.remove(selectedPlaylist);
-            selectedPlaylist.getSongs().clear();
-            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-            //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
-            if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
-                player.stop();
-                playPauseImage.setImage(playImage);
-                player.load(songObservableList, songObservableList.get(0));
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this playlist?", ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                playlistDao.deletePlaylist(selectedPlaylist.getId());
+                playlistObservableList.remove(selectedPlaylist);
+                selectedPlaylist.getSongs().clear();
+                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+                //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
+                if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
+                    player.stop();
+                    playPauseImage.setImage(playImage);
+                    player.load(songObservableList, songObservableList.get(0));
+                }
+                selectedPlaylist = null;
             }
-            selectedPlaylist = null;
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -215,10 +225,15 @@ public class MyTunesController {
 
     @FXML void handleDeleteSongFromPlaylist(ActionEvent e) {
         try {
-            selectedPlaylist.removeSong(selectedSongInPlaylist);
-            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-            player.updateCurrentPlaylist(selectedPlaylist);
-            selectedSongInPlaylist = null;
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this song from the playlist?", ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                selectedPlaylist.removeSong(selectedSongInPlaylist);
+                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+                player.updateCurrentPlaylist(selectedPlaylist);
+                selectedSongInPlaylist = null;
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
