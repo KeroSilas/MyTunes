@@ -438,7 +438,13 @@ public class MyTunesController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditSong.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/edit.png"));
+        if (isNewPressed) {
+            stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/add.png"));
+            stage.setTitle("New Song");
+        } else {
+            stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/edit.png"));
+            stage.setTitle("Edit Song");
+        }
         stage.setResizable(false);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
@@ -449,7 +455,13 @@ public class MyTunesController {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
-        stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/edit.png"));
+        if (isNewPressed) {
+            stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/add.png"));
+            stage.setTitle("New Playlist");
+        } else {
+            stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/edit.png"));
+            stage.setTitle("Edit Playlist");
+        }
         stage.setResizable(false);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
