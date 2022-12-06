@@ -32,6 +32,8 @@ public class MyTunesController {
     private final Path unmutePath = Path.of("src/main/resources/com/mytunes/images/unmuted.png");
     private final Path repeatPath = Path.of("src/main/resources/com/mytunes/images/repeat.png");
     private final Path unrepeatPath = Path.of("src/main/resources/com/mytunes/images/repeating.png");
+    private final Path shufflePath = Path.of("src/main/resources/com/mytunes/images/shuffle.png");
+    private final Path unshufflePath = Path.of("src/main/resources/com/mytunes/images/shuffling.png");
     private final Path searchPath = Path.of("src/main/resources/com/mytunes/images/search.png");
     private final Path unsearchPath = Path.of("src/main/resources/com/mytunes/images/cancel.png");
     private final Image playImage = new Image(playPath.toUri().toString());
@@ -40,6 +42,8 @@ public class MyTunesController {
     private final Image unmuteImage = new Image(unmutePath.toUri().toString());
     private final Image repeatImage = new Image(repeatPath.toUri().toString());
     private final Image unrepeatImage = new Image(unrepeatPath.toUri().toString());
+    private final Image shuffleImage = new Image(shufflePath.toUri().toString());
+    private final Image unshuffleImage = new Image(unshufflePath.toUri().toString());
     private final Image searchImage = new Image(searchPath.toUri().toString());
     private final Image unsearchImage = new Image(unsearchPath.toUri().toString());
 
@@ -70,7 +74,7 @@ public class MyTunesController {
 
     @FXML private Label currentSongTitleLabel, currentSongArtistLabel, currentTimeLabel, totalDurationLabel, volumeLabel;
 
-    @FXML private ImageView playPauseImage, muteUnmuteImage, repeatUnrepeatImage, searchUnsearchImage;
+    @FXML private ImageView playPauseImage, muteUnmuteImage, repeatUnrepeatImage, searchUnsearchImage, shuffleUnshuffleImage;
 
     @FXML void handlePlaylistClick(MouseEvent e) {
         selectedPlaylist = playlistTableView.getSelectionModel().getSelectedItem();
@@ -278,7 +282,12 @@ public class MyTunesController {
     }
 
     @FXML void handleShuffle(ActionEvent e) {
-
+        if (player.isShuffling()) {
+            player.shuffle(false);
+        }
+        else {
+            player.shuffle(true);
+        }
     }
 
     @FXML void handleNextSong(ActionEvent e) {

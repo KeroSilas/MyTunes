@@ -24,6 +24,8 @@ public class Player {
     private boolean isMutedBeforeMediaChange;
     private boolean isRepeatingBeforeMediaChange;
 
+    private boolean isShuffling;
+
     private ListStatus listStatus;
 
     public enum ListStatus {
@@ -131,7 +133,10 @@ public class Player {
 
     public void next() {
         if (getListStatus() == Player.ListStatus.ALL_SONGS) {
-            if (allSongs.indexOf(getCurrentSong()) == allSongs.size() - 1) {
+            if (isShuffling()) {
+                load(allSongs.get((int)(allSongs.size() * Math.random())));
+            }
+            else if (allSongs.indexOf(getCurrentSong()) == allSongs.size() - 1) {
                 load(allSongs.get(0));
             }
             else {
@@ -140,7 +145,10 @@ public class Player {
             }
         }
         else if (getListStatus() == Player.ListStatus.PLAYLIST) {
-            if (getCurrentPlaylist().getSongs().indexOf(getCurrentSong()) == getCurrentPlaylist().getSongs().size() - 1) {
+            if (isShuffling()) {
+                load(currentPlaylist.getSongs().get((int)(currentPlaylist.getSongs().size() * Math.random())));
+            }
+            else if (getCurrentPlaylist().getSongs().indexOf(getCurrentSong()) == getCurrentPlaylist().getSongs().size() - 1) {
                 load(getCurrentPlaylist().getSongs().get(0));
             }
             else {
@@ -196,7 +204,7 @@ public class Player {
     }
 
     public void shuffle(boolean shuffle) {
-
+        isShuffling = shuffle;
     }
 
     public double getVolume() {
@@ -247,10 +255,11 @@ public class Player {
         return mediaPlayer.getCycleCount() == MediaPlayer.INDEFINITE;
     }
 
-    public boolean isMuted() {
-        mediaPlayer.muteProperty().addListener((ov, oldValue, newValue) -> {
+    public boolean isShuffling() {
+        return isShuffling;
+    }
 
-        });
+    public boolean isMuted() {
         return mediaPlayer.isMute();
     }
 
