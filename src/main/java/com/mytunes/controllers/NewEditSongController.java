@@ -35,6 +35,8 @@ public class NewEditSongController {
     @FXML void handleChooseSong(ActionEvent e) {
         Stage stage = (Stage) gridPane.getScene().getWindow();
         FileChooser fc = new FileChooser();
+        File defaultPath = new File("src/main/resources/com/mytunes/music/");
+        fc.setInitialDirectory(defaultPath);
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Audio Files", "*.mp3", "*.wav");
         fc.getExtensionFilters().add(extFilter);
         File file = fc.showOpenDialog(stage);
