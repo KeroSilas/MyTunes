@@ -12,12 +12,12 @@ public class Playlist {
 
     private final int id;
     private final String name;
-    private List<Song> songs;
+    private final List<Song> songs;
 
     public Playlist(int id, String name) throws SQLException {
         this.id = id;
         this.name = name;
-        songs = songsInPlaylistDao.getPlaylist(id);
+        songs = songsInPlaylistDao.getPlaylist(id); //retrieves the songs on the playlist from the database
     }
 
     public int getId() {
@@ -34,7 +34,7 @@ public class Playlist {
 
     public void addSong(Song song) throws SQLException {
         songs.add(song);
-        songsInPlaylistDao.moveSongToPlaylist(getId(), song.getId());
+        songsInPlaylistDao.moveSongToPlaylist(getId(), song.getId()); //adds the song to the database as well
     }
 
     public void removeSong(Song song) throws SQLException {
@@ -42,6 +42,7 @@ public class Playlist {
         songsInPlaylistDao.deleteSongFromPlaylist(getId(), song.getId());
     }
 
+    //returns the playlist duration in seconds
     public int getDurationInInteger() {
         int duration = 0;
         for (Song song : songs) {
@@ -50,6 +51,7 @@ public class Playlist {
         return duration;
     }
 
+    //returns the playlist duration in a string such as this: "02:32:23"
     public String getDurationInString() {
         int duration = getDurationInInteger();
         int hours = duration / 3600;

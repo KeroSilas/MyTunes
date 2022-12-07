@@ -14,8 +14,8 @@ public class MyTunesApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/MyTunes.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("MyTunes");
-        stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/logo.png"));
-        stage.setMinWidth(1044);
+        stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/logo.png")); //adds an icon to the title-bar
+        stage.setMinWidth(1044); //restricts resizing to a minimum size
         stage.setMinHeight(286);
         stage.setScene(scene);
         stage.show();

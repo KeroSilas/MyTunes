@@ -1,6 +1,5 @@
 package com.mytunes.model;
 
-
 import javafx.util.Duration;
 
 public class Song {
@@ -41,10 +40,12 @@ public class Song {
         return new Duration(duration);
     }
 
+    //returns the song duration in seconds
     public int getDurationInInteger() {
         return duration;
     }
 
+    //returns the song duration in a string such as this: "02:23"
     public String getDurationInString() {
         int duration = getDurationInInteger();
         int minutes = (duration % 3600) / 60;

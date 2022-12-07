@@ -8,6 +8,7 @@ public class DatabaseConnector {
 
     private final SQLServerDataSource dataSource;
 
+    //constructor that defines the connection to the SQL server
     public DatabaseConnector() {
         dataSource = new SQLServerDataSource();
         dataSource.setServerName("kero.database.windows.net");
