@@ -4,6 +4,7 @@ import com.mytunes.dao.*;
 import com.mytunes.model.Player;
 import com.mytunes.model.Playlist;
 import com.mytunes.model.Song;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,32 +20,19 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.*;
 
 public class MyTunesController {
 
     private Player player;
-    private final Path playPath = Path.of("src/main/resources/com/mytunes/images/play.png");
-    private final Path pausePath = Path.of("src/main/resources/com/mytunes/images/pause.png");
-    private final Path mutePath = Path.of("src/main/resources/com/mytunes/images/muted.png");
-    private final Path unmutePath = Path.of("src/main/resources/com/mytunes/images/unmuted.png");
-    private final Path repeatPath = Path.of("src/main/resources/com/mytunes/images/repeat.png");
-    private final Path unrepeatPath = Path.of("src/main/resources/com/mytunes/images/repeating.png");
-    private final Path shufflePath = Path.of("src/main/resources/com/mytunes/images/shuffle.png");
-    private final Path unshufflePath = Path.of("src/main/resources/com/mytunes/images/shuffling.png");
-    private final Path searchPath = Path.of("src/main/resources/com/mytunes/images/search.png");
-    private final Path unsearchPath = Path.of("src/main/resources/com/mytunes/images/cancel.png");
-    private final Image playImage = new Image(playPath.toUri().toString());
-    private final Image pauseImage = new Image(pausePath.toUri().toString());
-    private final Image muteImage = new Image(mutePath.toUri().toString());
-    private final Image unmuteImage = new Image(unmutePath.toUri().toString());
-    private final Image repeatImage = new Image(repeatPath.toUri().toString());
-    private final Image unrepeatImage = new Image(unrepeatPath.toUri().toString());
-    private final Image shuffleImage = new Image(shufflePath.toUri().toString());
-    private final Image unshuffleImage = new Image(unshufflePath.toUri().toString());
-    private final Image searchImage = new Image(searchPath.toUri().toString());
-    private final Image unsearchImage = new Image(unsearchPath.toUri().toString());
+    private final Image playImage = new Image("file:src/main/resources/com/mytunes/images/play.png");
+    private final Image pauseImage = new Image("file:src/main/resources/com/mytunes/images/pause.png");
+    private final Image muteImage = new Image("file:src/main/resources/com/mytunes/images/muted.png");
+    private final Image unmuteImage = new Image("file:src/main/resources/com/mytunes/images/unmuted.png");
+    private final Image repeatImage = new Image("file:src/main/resources/com/mytunes/images/repeat.png");
+    private final Image unrepeatImage = new Image("file:src/main/resources/com/mytunes/images/repeating.png");
+    private final Image searchImage = new Image("file:src/main/resources/com/mytunes/images/search.png");
+    private final Image unsearchImage = new Image("file:src/main/resources/com/mytunes/images/cancel.png");
 
     private SongDao songDao;
     private PlaylistDao playlistDao;
@@ -73,7 +61,7 @@ public class MyTunesController {
 
     @FXML private Label currentSongTitleLabel, currentSongArtistLabel, currentTimeLabel, totalDurationLabel, volumeLabel;
 
-    @FXML private ImageView playPauseImage, muteUnmuteImage, repeatUnrepeatImage, searchUnsearchImage, shuffleUnshuffleImage;
+    @FXML private ImageView playPauseImage, muteUnmuteImage, repeatUnrepeatImage, searchUnsearchImage;
 
     ///// --- LIST AND SELECTION METHODS --- /////
 
@@ -323,20 +311,14 @@ public class MyTunesController {
         } else {
             player = new Player(songObservableList, songObservableList.get(0));
             songTableView.getSelectionModel().select(player.getCurrentSong());
+            Platform.runLater(() -> songTableView.requestFocus());
         }
 
         //add listener to volumeSlider
         volumeSlider.valueProperty().addListener((ov, oldValue, newValue) -> {
             double percentage = newValue.doubleValue();
             player.setVolume(percentage / 100);
-            String style = String.format(
-                    "-track-color: linear-gradient(to right, " +
-                            "-fx-accent 0%%, " +
-                            "-fx-accent %1$.1f%%, " +
-                            "-default-track-color %1$.1f%%, " +
-                            "-default-track-color 100%%);",
-                    percentage);
-            volumeSlider.setStyle(style);
+            volumeSlider.setStyle(sliderProgressStyle(percentage));
             volumeLabel.setText(String.format("%s%%", newValue.intValue()));
             if (!Objects.equals(oldValue, newValue) && player.getVolume() == 0) {
                 muteUnmuteImage.setImage(muteImage);
@@ -384,24 +366,17 @@ public class MyTunesController {
         volumeSlider.setValue(50);
 
         update();
+        Platform.runLater(() -> songTableView.requestFocus());
     }
 
     //refreshes listeners
     //this is necessary because when a new media file is loaded, the listeners don't get updated
     private void update() {
         player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
-            double progressPercentage = newValue.toSeconds() / player.getCurrentSong().getDurationInInteger() * 100;
+            double percentage = newValue.toSeconds() / player.getCurrentSong().getDurationInInteger() * 100;
             if (!progressSlider.isPressed())
-                progressSlider.setValue(progressPercentage);
-
-            String style = String.format(
-                    "-track-color: linear-gradient(to right, " +
-                            "-fx-accent 0%%, " +
-                            "-fx-accent %1$.1f%%, " +
-                            "-default-track-color %1$.1f%%, " +
-                            "-default-track-color 100%%);",
-                    progressPercentage);
-            progressSlider.setStyle(style);
+                progressSlider.setValue(percentage);
+            progressSlider.setStyle(sliderProgressStyle(percentage));
 
             int currentTime = (int) newValue.toSeconds();
             int minutes = (currentTime % 3600) / 60;
@@ -468,5 +443,15 @@ public class MyTunesController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    private String sliderProgressStyle(double percentage) {
+        return String.format(
+                "-track-color: linear-gradient(to right, " +
+                        "-fx-accent 0%%, " +
+                        "-fx-accent %1$.1f%%, " +
+                        "-default-track-color %1$.1f%%, " +
+                        "-default-track-color 100%%);",
+                percentage);
     }
 }

@@ -176,7 +176,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="editSongButton" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleEditSong" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="2">
+                        <Button fx:id="editSongButton" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleEditSong" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="2">
                            <graphic>
                               <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -184,7 +184,7 @@
                                  </image></ImageView>
                            </graphic>
                         </Button>
-                        <Button fx:id="deleteSongButton" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteSong" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="3">
+                        <Button fx:id="deleteSongButton" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteSong" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="3">
                            <graphic>
                               <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

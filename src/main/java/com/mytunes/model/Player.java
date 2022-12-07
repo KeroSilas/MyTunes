@@ -102,17 +102,14 @@ public class Player {
         if (getListStatus() == Player.ListStatus.ALL_SONGS) {
             if (allSongs.indexOf(getCurrentSong()) == allSongs.size() - 1) { //checks if current song is at the end of the list
                 load(allSongs.get(0)); //returns to first song on the list
-            }
-            else {
+            } else {
                 Song nextSong = allSongs.get(allSongs.indexOf(getCurrentSong()) + 1); //gets next song on the list
                 load(nextSong);
             }
-        }
-        else if (getListStatus() == Player.ListStatus.PLAYLIST) {
+        } else if (getListStatus() == Player.ListStatus.PLAYLIST) {
             if (currentPlaylist.getSongs().indexOf(getCurrentSong()) == currentPlaylist.getSongs().size() - 1) {
                 load(currentPlaylist.getSongs().get(0));
-            }
-            else {
+            } else {
                 Song nextSong = currentPlaylist.getSongs().get(currentPlaylist.getSongs().indexOf(getCurrentSong()) + 1);
                 load(nextSong);
             }
@@ -123,21 +120,17 @@ public class Player {
     public void previous() {
         if (getCurrentTime().toSeconds() > 3) { //checks if less than 3 seconds have passed
             reset(); //resets currently playing song
-        }
-        else if (getListStatus() == Player.ListStatus.ALL_SONGS) {
+        } else if (getListStatus() == Player.ListStatus.ALL_SONGS) {
             if (allSongs.indexOf(getCurrentSong()) == 0) { //checks if current song is at the start of the list
                 reset();
-            }
-            else {
+            } else {
                 Song previousSong = allSongs.get(allSongs.indexOf(getCurrentSong()) - 1); //gets previous song on the list
                 load(previousSong);
             }
-        }
-        else if (getListStatus() == Player.ListStatus.PLAYLIST) {
+        } else if (getListStatus() == Player.ListStatus.PLAYLIST) {
             if (currentPlaylist.getSongs().indexOf(getCurrentSong()) == 0) {
                 reset();
-            }
-            else {
+            } else {
                 Song previousSong = currentPlaylist.getSongs().get(currentPlaylist.getSongs().indexOf(getCurrentSong()) - 1);
                 load(previousSong);
             }
@@ -155,8 +148,7 @@ public class Player {
     public void repeat(boolean repeat) {
         if (repeat) {
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        }
-        else {
+        } else {
             mediaPlayer.setCycleCount(1);
         }
     }
