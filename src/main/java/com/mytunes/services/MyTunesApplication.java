@@ -15,8 +15,8 @@ public class MyTunesApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("MyTunes");
         stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/logo.png")); //adds an icon to the title-bar
-        stage.setMinWidth(1044); //restricts resizing to a minimum size
-        stage.setMinHeight(286);
+        stage.setMinWidth(1086); //restricts resizing to a minimum size
+        stage.setMinHeight(276);
         stage.setScene(scene);
         stage.show();
     }

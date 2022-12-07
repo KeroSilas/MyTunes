@@ -337,17 +337,17 @@ public class MyTunesController {
             artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
             categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
             durationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
+            songObservableList.addAll(songDao.getAllSongs());
             songTableView.setItems(songObservableList);
             songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-            songObservableList.addAll(songDao.getAllSongs());
 
             //Set up the table columns and cells for the playlist table
             nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
             songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
             totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
+            playlistObservableList.addAll(playlistDao.getAllPlaylists());
             playlistTableView.setItems(playlistObservableList);
             playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-            playlistObservableList.addAll(playlistDao.getAllPlaylists());
 
             songsInPlaylistListView.setItems(songInPlaylistObservableList);
             songsInPlaylistListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
