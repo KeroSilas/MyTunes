@@ -63,18 +63,16 @@ public class Player {
         volumeBeforeMediaChange = mediaPlayer.getVolume();
         isPlayingBeforeMediaChange = mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);
         isMutedBeforeMediaChange = isMuted();
-        isRepeatingBeforeMediaChange = isRepeating();
 
         mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         mediaPlayer.setVolume(volumeBeforeMediaChange);
         if (isPlayingBeforeMediaChange)
             mediaPlayer.play();
         if (isMutedBeforeMediaChange)
             mediaPlayer.setMute(true);
-        if (isRepeatingBeforeMediaChange)
-            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         currentSong = song;
     }
@@ -87,16 +85,14 @@ public class Player {
 
         volumeBeforeMediaChange = mediaPlayer.getVolume();
         isMutedBeforeMediaChange = isMuted();
-        isRepeatingBeforeMediaChange = isRepeating();
 
         mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         mediaPlayer.setVolume(volumeBeforeMediaChange);
         if (isMutedBeforeMediaChange)
             mediaPlayer.setMute(true);
-        if (isRepeatingBeforeMediaChange)
-            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         currentSong = song;
         allSongs = songs;
@@ -110,16 +106,14 @@ public class Player {
 
         volumeBeforeMediaChange = mediaPlayer.getVolume();
         isMutedBeforeMediaChange = isMuted();
-        isRepeatingBeforeMediaChange = isRepeating();
 
         mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         mediaPlayer.setVolume(volumeBeforeMediaChange);
         if (isMutedBeforeMediaChange)
             mediaPlayer.setMute(true);
-        if (isRepeatingBeforeMediaChange)
-            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         currentSong = song;
         currentPlaylist = playlist;
@@ -207,14 +201,8 @@ public class Player {
         return mediaPlayer.getVolume();
     }
 
-    //returns current time of song in seconds
     public Duration getCurrentTime() {
         return mediaPlayer.getCurrentTime();
-    }
-
-    public Duration getCycleDuration() {
-        return mediaPlayer.getCycleDuration();
-
     }
 
     public Song getCurrentSong() {
@@ -240,7 +228,7 @@ public class Player {
 
     //progress value must be between 0 and 1
     public void setProgress(double progress) {
-        mediaPlayer.seek(mediaPlayer.getMedia().getDuration().multiply(progress));
+        mediaPlayer.seek(media.getDuration().multiply(progress));
     }
 
     public boolean isPlaying() {

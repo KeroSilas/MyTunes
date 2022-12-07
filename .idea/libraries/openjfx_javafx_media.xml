@@ -3,11 +3,11 @@
     <properties maven-id="org.openjfx:javafx-media:18.0.1" />
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/javafx-media-18.0.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/javafx-media-18.0.1-win.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-18.0.1-mac.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-18.0.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-18.0.1-win.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-18.0.1-mac.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/javafx-base-18.0.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/javafx-base-18.0.1-win.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-18.0.1-mac.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
