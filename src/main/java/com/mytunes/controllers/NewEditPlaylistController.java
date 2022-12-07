@@ -8,8 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import java.sql.SQLException;
-
 public class NewEditPlaylistController {
 
     private PlaylistDao playlistDao;
@@ -24,14 +22,10 @@ public class NewEditPlaylistController {
     }
 
     @FXML void handleSave(ActionEvent e) {
-        try {
-            if (MyTunesController.isNewPressed)
-                playlistDao.createPlaylist(nameTextField.getText());
-            else
-                playlistDao.updatePlaylist(MyTunesController.selectedPlaylist.getId(), nameTextField.getText());
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        if (MyTunesController.isNewPressed)
+            playlistDao.createPlaylist(nameTextField.getText());
+        else
+            playlistDao.updatePlaylist(MyTunesController.selectedPlaylist.getId(), nameTextField.getText());
 
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();

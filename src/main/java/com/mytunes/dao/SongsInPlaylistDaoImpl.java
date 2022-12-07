@@ -15,7 +15,7 @@ public class SongsInPlaylistDaoImpl implements SongsInPlaylistDao {
     }
 
     @Override
-    public List<Song> getPlaylist(int playlistId) throws SQLException {
+    public List<Song> getPlaylist(int playlistId) {
         List<Song> playlist = new ArrayList<>();
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "SELECT SongsInPlaylist.playlistID, Songs.songID, Songs.title, Songs.artist, Songs.category, Songs.duration, Songs.path " +
@@ -39,29 +39,35 @@ public class SongsInPlaylistDaoImpl implements SongsInPlaylistDao {
                     playlist.add(song);
                 }
             }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return playlist;
     }
 
     @Override
-    public void deleteSongFromPlaylist(int playlistId, int songId) throws SQLException {
+    public void deleteSongFromPlaylist(int playlistId, int songId) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE FROM SongsInPlaylist WHERE playlistID = ? AND songID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, playlistId);
             statement.setInt(2, songId);
             statement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
     @Override
-    public void moveSongToPlaylist(int playlistId, int songId) throws SQLException {
+    public void moveSongToPlaylist(int playlistId, int songId) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO SongsInPlaylist (playlistID, songID) VALUES (?, ?);";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, playlistId);
             statement.setInt(2, songId);
             statement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 }

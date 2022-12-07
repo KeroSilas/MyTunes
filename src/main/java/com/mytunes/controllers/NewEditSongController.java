@@ -14,7 +14,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.sql.SQLException;
 
 public class NewEditSongController {
 
@@ -34,12 +33,11 @@ public class NewEditSongController {
 
     @FXML void handleChooseSong(ActionEvent e) {
         Stage stage = (Stage) gridPane.getScene().getWindow();
-        FileChooser fc = new FileChooser();
-        File defaultPath = new File("src/main/resources/com/mytunes/music/");
-        fc.setInitialDirectory(defaultPath);
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Audio Files", "*.mp3", "*.wav");
-        fc.getExtensionFilters().add(extFilter);
-        File file = fc.showOpenDialog(stage);
+        FileChooser chooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Audio files", "*.mp3", "*.wav");
+        chooser.getExtensionFilters().add(extFilter);
+        chooser.setInitialDirectory(new File("src/main/resources/com/mytunes/music/"));
+        File file = chooser.showOpenDialog(stage);
 
         if (file != null) {
             Media media = new Media(file.toURI().toString());
@@ -69,14 +67,10 @@ public class NewEditSongController {
     }
 
     @FXML void handleSave(ActionEvent e) {
-        try {
-            if (MyTunesController.isNewPressed)
-                songDao.createSong(titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
-            else
-                songDao.updateSong(MyTunesController.selectedSong.getId(), titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+        if (MyTunesController.isNewPressed)
+            songDao.createSong(titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
+        else
+            songDao.updateSong(MyTunesController.selectedSong.getId(), titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
 
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();

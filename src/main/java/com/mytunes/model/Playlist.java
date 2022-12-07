@@ -3,7 +3,6 @@ package com.mytunes.model;
 import com.mytunes.dao.SongsInPlaylistDao;
 import com.mytunes.dao.SongsInPlaylistDaoImpl;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class Playlist {
@@ -14,7 +13,7 @@ public class Playlist {
     private final String name;
     private final List<Song> songs;
 
-    public Playlist(int id, String name) throws SQLException {
+    public Playlist(int id, String name) {
         this.id = id;
         this.name = name;
         songs = songsInPlaylistDao.getPlaylist(id); //retrieves the songs on the playlist from the database
@@ -32,18 +31,18 @@ public class Playlist {
         return songs;
     }
 
-    public void addSong(Song song) throws SQLException {
+    public void addSong(Song song) {
         songs.add(song);
         songsInPlaylistDao.moveSongToPlaylist(getId(), song.getId()); //adds the song to the database as well
     }
 
-    public void removeSong(Song song) throws SQLException {
+    public void removeSong(Song song) {
         songs.remove(song);
         songsInPlaylistDao.deleteSongFromPlaylist(getId(), song.getId());
     }
 
     //returns the playlist duration in seconds
-    public int getDurationInInteger() {
+    private int getDurationInInteger() {
         int duration = 0;
         for (Song song : songs) {
             duration += song.getDurationInInteger();

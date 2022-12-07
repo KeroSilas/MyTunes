@@ -15,7 +15,7 @@ public class SongDaoImpl implements SongDao{
     }
 
     @Override
-    public List<Song> getAllSongs() throws SQLException {
+    public List<Song> getAllSongs() {
         List<Song> songs = new ArrayList<>();
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "SELECT * FROM Songs;";
@@ -34,22 +34,26 @@ public class SongDaoImpl implements SongDao{
                     songs.add(song);
                 }
             }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return songs;
     }
 
     @Override
-    public void deleteSong(int id) throws SQLException {
+    public void deleteSong(int id) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE FROM Songs WHERE songID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
     @Override
-    public void updateSong(int id, String title, String artist, String category, int duration, String path) throws SQLException {
+    public void updateSong(int id, String title, String artist, String category, int duration, String path) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "UPDATE Songs SET title = ?, artist = ?, category = ?, duration = ?, path = ? WHERE songID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -60,11 +64,13 @@ public class SongDaoImpl implements SongDao{
             statement.setString(5, path);
             statement.setInt(6, id);
             statement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
     @Override
-    public void createSong(String title, String artist, String category, int duration, String path) throws SQLException {
+    public void createSong(String title, String artist, String category, int duration, String path) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO Songs (title, artist, category, duration, path) VALUES (?, ?, ?, ?, ?);";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -74,11 +80,13 @@ public class SongDaoImpl implements SongDao{
             statement.setInt(4, duration);
             statement.setString(5, path);
             statement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
     @Override
-    public List<Song> searchSong(String search) throws SQLException {
+    public List<Song> searchSong(String search) {
         List<Song> songs = new ArrayList<>();
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "SELECT * FROM Songs WHERE title LIKE ? OR artist LIKE ?;";
@@ -99,6 +107,8 @@ public class SongDaoImpl implements SongDao{
                     songs.add(song);
                 }
             }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return songs;
     }

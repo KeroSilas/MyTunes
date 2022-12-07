@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.sql.SQLException;
 import java.util.*;
 
 public class MyTunesController {
@@ -76,6 +75,8 @@ public class MyTunesController {
 
     @FXML private ImageView playPauseImage, muteUnmuteImage, repeatUnrepeatImage, searchUnsearchImage, shuffleUnshuffleImage;
 
+    ///// --- LIST AND SELECTION METHODS --- /////
+
     @FXML void handlePlaylistClick(MouseEvent e) {
         selectedPlaylist = playlistTableView.getSelectionModel().getSelectedItem();
         if (selectedPlaylist != null) {
@@ -116,138 +117,6 @@ public class MyTunesController {
         }
     }
 
-    //searches for songs in the database
-    @FXML void handleSearch(ActionEvent e) {
-        try {
-            if(!isSearching && !searchTextField.getText().isEmpty()) {
-                songObservableList.setAll(songDao.searchSong(searchTextField.getText()));
-                searchUnsearchImage.setImage(unsearchImage);
-                selectedSong = null;
-                isSearching = true;
-            } else {
-                searchTextField.clear();
-                songObservableList.setAll(songDao.getAllSongs());
-                searchUnsearchImage.setImage(searchImage);
-                selectedSong = null;
-                isSearching = false;
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML void handleAddPlaylist(ActionEvent e) {
-        try {
-            isNewPressed = true;
-            openNewEditPlaylistWindow();
-            playlistObservableList.setAll(playlistDao.getAllPlaylists());
-        } catch (IOException | SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML void handleAddSong(ActionEvent e) {
-        try {
-            isNewPressed = true;
-            openNewEditSongWindow();
-            songObservableList.setAll(songDao.getAllSongs());
-            player.updateCurrentAllSongs(songObservableList);
-        } catch (IOException | SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML void handleEditPlaylist(ActionEvent e) {
-        try {
-            isNewPressed = false;
-            openNewEditPlaylistWindow();
-            playlistObservableList.setAll(playlistDao.getAllPlaylists());
-        } catch (IOException | SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML void handleEditSong(ActionEvent e) {
-        try {
-            isNewPressed = false;
-            openNewEditSongWindow();
-            songObservableList.setAll(songDao.getAllSongs());
-        } catch (IOException | SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML void handleAddSongToPlaylist(ActionEvent e) {
-        try {
-            if (selectedPlaylist != null && selectedSong != null) {
-                selectedPlaylist.addSong(selectedSong);
-                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-                playlistObservableList.setAll(playlistDao.getAllPlaylists());
-                player.updateCurrentPlaylist(selectedPlaylist);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML void handleDeleteSong(ActionEvent e) {
-        try {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this song?", ButtonType.YES, ButtonType.NO);
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (result.isPresent() && result.get() == ButtonType.YES) {
-                songDao.deleteSong(selectedSong.getId());
-                songObservableList.remove(selectedSong);
-                selectedPlaylist.getSongs().remove(selectedSong); //FIX: only deletes the song from the selected playlist, won't be removed from other playlists until all playlists are refreshed from the server
-                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-                player.updateCurrentPlaylist(selectedPlaylist);
-                selectedSong = null;
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML void handleDeletePlaylist(ActionEvent e) {
-        try {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this playlist?", ButtonType.YES, ButtonType.NO);
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (result.isPresent() && result.get() == ButtonType.YES) {
-                playlistDao.deletePlaylist(selectedPlaylist.getId());
-                playlistObservableList.remove(selectedPlaylist);
-                selectedPlaylist.getSongs().clear();
-                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-                //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
-                if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
-                    playPauseImage.setImage(playImage);
-                    player.load(songObservableList, songObservableList.get(0));
-                    update();
-                }
-                selectedPlaylist = null;
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @FXML void handleDeleteSongFromPlaylist(ActionEvent e) {
-        try {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this song from the playlist?", ButtonType.YES, ButtonType.NO);
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (result.isPresent() && result.get() == ButtonType.YES) {
-                selectedPlaylist.removeSong(selectedSongInPlaylist);
-                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-                playlistObservableList.setAll(playlistDao.getAllPlaylists());
-                player.updateCurrentPlaylist(selectedPlaylist);
-                selectedSongInPlaylist = null;
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-    }
-
     @FXML void handleMoveSongUp(ActionEvent e) {
         Collections.swap(selectedPlaylist.getSongs(), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist) - 1);
         songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
@@ -262,13 +131,113 @@ public class MyTunesController {
         player.updateCurrentPlaylist(selectedPlaylist);
     }
 
+    ///// --- DAO CONTROLS --- /////
+
+    //searches for songs in the database
+    @FXML void handleSearch(ActionEvent e) {
+        if (!isSearching && !searchTextField.getText().isEmpty()) {
+            songObservableList.setAll(songDao.searchSong(searchTextField.getText()));
+            searchUnsearchImage.setImage(unsearchImage);
+            selectedSong = null;
+            isSearching = true;
+        } else {
+            searchTextField.clear();
+            songObservableList.setAll(songDao.getAllSongs());
+            searchUnsearchImage.setImage(searchImage);
+            selectedSong = null;
+            isSearching = false;
+        }
+    }
+
+    @FXML void handleAddPlaylist(ActionEvent e) {
+        isNewPressed = true;
+        openNewEditPlaylistWindow();
+        playlistObservableList.setAll(playlistDao.getAllPlaylists());
+    }
+
+    @FXML void handleAddSong(ActionEvent e) {
+        isNewPressed = true;
+        openNewEditSongWindow();
+        songObservableList.setAll(songDao.getAllSongs());
+        player.updateCurrentAllSongs(songObservableList);
+    }
+
+    @FXML void handleEditPlaylist(ActionEvent e) {
+        isNewPressed = false;
+        openNewEditPlaylistWindow();
+        playlistObservableList.setAll(playlistDao.getAllPlaylists());
+    }
+
+    @FXML void handleEditSong(ActionEvent e) {
+        isNewPressed = false;
+        openNewEditSongWindow();
+        songObservableList.setAll(songDao.getAllSongs());
+    }
+
+    @FXML void handleAddSongToPlaylist(ActionEvent e) {
+        if (selectedPlaylist != null && selectedSong != null) {
+            selectedPlaylist.addSong(selectedSong);
+            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            playlistObservableList.setAll(playlistDao.getAllPlaylists());
+            player.updateCurrentPlaylist(selectedPlaylist);
+        }
+    }
+
+    @FXML void handleDeleteSong(ActionEvent e) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this song?", ButtonType.YES, ButtonType.NO);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            songDao.deleteSong(selectedSong.getId());
+            songObservableList.remove(selectedSong);
+            selectedPlaylist.getSongs().remove(selectedSong); //TO FIX: only deletes the song from the selected playlist, won't be removed from other playlists until all playlists are refreshed from the server
+            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            player.updateCurrentPlaylist(selectedPlaylist);
+            player.updateCurrentAllSongs(songObservableList);
+            selectedSong = null;
+        }
+    }
+
+    @FXML void handleDeletePlaylist(ActionEvent e) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this playlist?", ButtonType.YES, ButtonType.NO);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            playlistDao.deletePlaylist(selectedPlaylist.getId());
+            playlistObservableList.remove(selectedPlaylist);
+            selectedPlaylist.getSongs().clear();
+            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
+            if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
+                playPauseImage.setImage(playImage);
+                player.load(songObservableList, songObservableList.get(0));
+                update();
+            }
+            selectedPlaylist = null;
+        }
+    }
+
+    @FXML void handleDeleteSongFromPlaylist(ActionEvent e) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this song from the playlist?", ButtonType.YES, ButtonType.NO);
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            selectedPlaylist.removeSong(selectedSongInPlaylist);
+            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            playlistObservableList.setAll(playlistDao.getAllPlaylists());
+            player.updateCurrentPlaylist(selectedPlaylist);
+            selectedSongInPlaylist = null;
+        }
+    }
+
+    ///// --- PLAYER CONTROLS --- /////
+
     //determines whether the player is playing or paused and changes the buttons action accordingly
     @FXML void handlePlayPause(ActionEvent e) {
         if (player.isPlaying()) {
             player.pause();
             playPauseImage.setImage(playImage);
-        }
-        else {
+        } else {
             player.setProgress(progressSlider.getValue() / 100);
             player.play();
             playPauseImage.setImage(pauseImage);
@@ -279,8 +248,7 @@ public class MyTunesController {
         if (player.isRepeating()) {
             player.repeat(false);
             repeatUnrepeatImage.setImage(repeatImage);
-        }
-        else {
+        } else {
             player.repeat(true);
             repeatUnrepeatImage.setImage(unrepeatImage);
         }
@@ -289,8 +257,7 @@ public class MyTunesController {
     @FXML void handleShuffle(ActionEvent e) {
         if (player.isShuffling()) {
             player.shuffle(false);
-        }
-        else {
+        } else {
             player.shuffle(true);
         }
     }
@@ -309,8 +276,7 @@ public class MyTunesController {
         if (player.isMuted()) {
             player.mute(false);
             muteUnmuteImage.setImage(unmuteImage);
-        }
-        else {
+        } else {
             player.mute(true);
             muteUnmuteImage.setImage(muteImage);
         }
@@ -331,36 +297,32 @@ public class MyTunesController {
         songDao = new SongDaoImpl();
         playlistDao = new PlaylistDaoImpl();
 
-        try {
-            //Set up the table columns and cells for the song table
-            titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
-            artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
-            categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
-            durationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
-            songObservableList.addAll(songDao.getAllSongs());
-            songTableView.setItems(songObservableList);
-            songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        //Set up the table columns and cells for the song table
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
+        categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
+        durationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
+        songObservableList.addAll(songDao.getAllSongs());
+        songTableView.setItems(songObservableList);
+        songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-            //Set up the table columns and cells for the playlist table
-            nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
-            songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
-            totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
-            playlistObservableList.addAll(playlistDao.getAllPlaylists());
-            playlistTableView.setItems(playlistObservableList);
-            playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        //Set up the table columns and cells for the playlist table
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
+        totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
+        playlistObservableList.addAll(playlistDao.getAllPlaylists());
+        playlistTableView.setItems(playlistObservableList);
+        playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-            songsInPlaylistListView.setItems(songInPlaylistObservableList);
-            songsInPlaylistListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        songsInPlaylistListView.setItems(songInPlaylistObservableList);
+        songsInPlaylistListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-            //initialize player with first song on Songs list if there is any
-            if (songObservableList.isEmpty()) {
-                player = new Player();
-            } else {
-                player = new Player(songObservableList, songObservableList.get(0));
-                songTableView.getSelectionModel().select(player.getCurrentSong());
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+        //initialize player with first song on Songs list if there is any
+        if (songObservableList.isEmpty()) {
+            player = new Player();
+        } else {
+            player = new Player(songObservableList, songObservableList.get(0));
+            songTableView.getSelectionModel().select(player.getCurrentSong());
         }
 
         //add listener to volumeSlider
@@ -378,8 +340,7 @@ public class MyTunesController {
             volumeLabel.setText(String.format("%s%%", newValue.intValue()));
             if (!Objects.equals(oldValue, newValue) && player.getVolume() == 0) {
                 muteUnmuteImage.setImage(muteImage);
-            }
-            else if (!Objects.equals(oldValue, newValue) && player.getVolume() > 0) {
+            } else if (!Objects.equals(oldValue, newValue) && player.getVolume() > 0) {
                 player.mute(false);
                 muteUnmuteImage.setImage(unmuteImage);
             }
@@ -389,8 +350,7 @@ public class MyTunesController {
             if (!Objects.equals(oldValue, newValue) && playlistTableView.getSelectionModel().getSelectedItem() == null) {
                 editPlaylistButton.setDisable(true);
                 deletePlaylistButton.setDisable(true);
-            }
-            else if (!Objects.equals(oldValue, newValue)) {
+            } else if (!Objects.equals(oldValue, newValue)) {
                 editPlaylistButton.setDisable(false);
                 deletePlaylistButton.setDisable(false);
             }
@@ -401,8 +361,7 @@ public class MyTunesController {
                 editSongButton.setDisable(true);
                 deleteSongButton.setDisable(true);
                 addSongToPlaylistButton.setDisable(true);
-            }
-            else if (!Objects.equals(oldValue, newValue)) {
+            } else if (!Objects.equals(oldValue, newValue)) {
                 editSongButton.setDisable(false);
                 deleteSongButton.setDisable(false);
                 addSongToPlaylistButton.setDisable(false);
@@ -414,8 +373,7 @@ public class MyTunesController {
                 moveSongUpButton.setDisable(true);
                 moveSongDownButton.setDisable(true);
                 deleteSongFromPlaylistButton.setDisable(true);
-            }
-            else if (!Objects.equals(oldValue, newValue)) {
+            } else if (!Objects.equals(oldValue, newValue)) {
                 moveSongUpButton.setDisable(false);
                 moveSongDownButton.setDisable(false);
                 deleteSongFromPlaylistButton.setDisable(false);
@@ -433,7 +391,7 @@ public class MyTunesController {
     private void update() {
         player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
             double progressPercentage = newValue.toSeconds() / player.getCurrentSong().getDurationInInteger() * 100;
-            if(!progressSlider.isPressed())
+            if (!progressSlider.isPressed())
                 progressSlider.setValue(progressPercentage);
 
             String style = String.format(
@@ -459,8 +417,7 @@ public class MyTunesController {
         if (player.getListStatus() == Player.ListStatus.ALL_SONGS) {
             songTableView.getSelectionModel().select(player.getCurrentSong());
             selectedSong = songTableView.getSelectionModel().getSelectedItem();
-        }
-        else if (player.getListStatus() == Player.ListStatus.PLAYLIST) {
+        } else if (player.getListStatus() == Player.ListStatus.PLAYLIST) {
             songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
             selectedSongInPlaylist = songsInPlaylistListView.getSelectionModel().getSelectedItem();
         }
@@ -470,37 +427,46 @@ public class MyTunesController {
         currentSongArtistLabel.setText(player.getCurrentSong().getArtist());
     }
 
-    private void openNewEditSongWindow() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditSong.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = new Stage();
-        if (isNewPressed) {
-            stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/add.png"));
-            stage.setTitle("New Song");
-        } else {
-            stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/edit.png"));
-            stage.setTitle("Edit Song");
+    private void openNewEditSongWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditSong.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            if (isNewPressed) {
+                stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/add.png"));
+                stage.setTitle("New Song");
+            } else {
+                stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/edit.png"));
+                stage.setTitle("Edit Song");
+            }
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
-        stage.setResizable(false);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-        stage.showAndWait();
     }
 
-    private void openNewEditPlaylistWindow() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = new Stage();
-        if (isNewPressed) {
-            stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/add.png"));
-            stage.setTitle("New Playlist");
-        } else {
-            stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/edit.png"));
-            stage.setTitle("Edit Playlist");
+    private void openNewEditPlaylistWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = new Stage();
+            if (isNewPressed) {
+                stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/add.png"));
+                stage.setTitle("New Playlist");
+            } else {
+                stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/edit.png"));
+                stage.setTitle("Edit Playlist");
+            }
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.showAndWait();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
-        stage.setResizable(false);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setScene(scene);
-        stage.showAndWait();
     }
 }

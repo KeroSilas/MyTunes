@@ -15,7 +15,7 @@ public class PlaylistDaoImpl implements PlaylistDao {
     }
 
     @Override
-    public List<Playlist> getAllPlaylists() throws SQLException {
+    public List<Playlist> getAllPlaylists() {
         List<Playlist> playlists = new ArrayList<>();
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "SELECT * FROM Playlists;";
@@ -30,38 +30,46 @@ public class PlaylistDaoImpl implements PlaylistDao {
                     playlists.add(playlist);
                 }
             }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return playlists;
     }
 
     @Override
-    public void deletePlaylist(int id) throws SQLException {
+    public void deletePlaylist(int id) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "DELETE FROM Playlists WHERE playlistID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             statement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
     @Override
-    public void updatePlaylist(int id, String name) throws SQLException {
+    public void updatePlaylist(int id, String name) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "UPDATE Playlists SET name = ? WHERE playlistID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, name);
             statement.setInt(2, id);
             statement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
     @Override
-    public void createPlaylist(String name) throws SQLException {
+    public void createPlaylist(String name) {
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO Playlists (name) VALUES (?);";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, name);
             statement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 }
