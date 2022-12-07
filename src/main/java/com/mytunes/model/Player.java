@@ -31,16 +31,15 @@ public class Player {
     public enum ListStatus {
         ALL_SONGS,
         PLAYLIST,
-        DEFAULT,
     }
 
     public Player() {
-        setListStatus(ListStatus.DEFAULT);
-
         path = Path.of("src/main/resources/com/mytunes/music/default.mp3");
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.setStartTime(new Duration(0));
+        mediaPlayer.setStopTime(new Duration(0));
     }
 
     public Player(ObservableList<Song> songs, Song song) throws SQLException {
@@ -50,9 +49,15 @@ public class Player {
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.setStartTime(new Duration(0));
+        mediaPlayer.setStopTime(mediaPlayer.getStopTime());
 
         currentSong = song;
         allSongs = songs;
+    }
+
+    private void load() {
+
     }
 
     //only used in methods next() and previous()
@@ -67,6 +72,8 @@ public class Player {
         mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.setStartTime(new Duration(0));
+        mediaPlayer.setStopTime(mediaPlayer.getStopTime());
 
         mediaPlayer.setVolume(volumeBeforeMediaChange);
         if (isPlayingBeforeMediaChange)
@@ -89,6 +96,8 @@ public class Player {
         mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.setStartTime(new Duration(0));
+        mediaPlayer.setStopTime(mediaPlayer.getStopTime());
 
         mediaPlayer.setVolume(volumeBeforeMediaChange);
         if (isMutedBeforeMediaChange)
@@ -110,6 +119,8 @@ public class Player {
         mediaPlayer.stop();
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.setStartTime(new Duration(0));
+        mediaPlayer.setStopTime(mediaPlayer.getStopTime());
 
         mediaPlayer.setVolume(volumeBeforeMediaChange);
         if (isMutedBeforeMediaChange)

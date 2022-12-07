@@ -1,5 +1,8 @@
 package com.mytunes.model;
 
+
+import javafx.util.Duration;
+
 public class Song {
 
     private final int id;
@@ -32,6 +35,10 @@ public class Song {
 
     public String getCategory() {
         return category;
+    }
+
+    public Duration getDuration() {
+        return new Duration(duration);
     }
 
     public int getDurationInInteger() {
