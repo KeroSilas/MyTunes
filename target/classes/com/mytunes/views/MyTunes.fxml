@@ -234,11 +234,11 @@
                 <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label fx:id="currentTimeLabel" focusTraversable="false" maxHeight="1.7976931348623157E308" text="00:00">
+                  <Label fx:id="currentTimeLabel" focusTraversable="false" text="00:00" translateY="-1.0">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font></Label>
-                  <Label fx:id="totalDurationLabel" focusTraversable="false" maxHeight="1.7976931348623157E308" text="00:00" GridPane.columnIndex="2">
+                  <Label fx:id="totalDurationLabel" focusTraversable="false" text="00:00" translateY="-1.0" GridPane.columnIndex="2">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font></Label>
