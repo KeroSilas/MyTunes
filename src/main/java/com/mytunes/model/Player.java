@@ -8,7 +8,6 @@ import javafx.util.Duration;
 
 import java.nio.file.Path;
 import java.sql.SQLException;
-import java.util.Collections;
 
 public class Player {
 
@@ -41,6 +40,7 @@ public class Player {
         path = Path.of("src/main/resources/com/mytunes/music/default.mp3");
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
     public Player(ObservableList<Song> songs, Song song) throws SQLException {
@@ -49,6 +49,7 @@ public class Player {
         path = Path.of("src/main/resources/com/mytunes/music/" + song.getPath());
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
         currentSong = song;
         allSongs = songs;

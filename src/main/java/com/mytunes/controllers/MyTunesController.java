@@ -70,7 +70,7 @@ public class MyTunesController {
 
     @FXML private Slider volumeSlider, progressSlider;
 
-    @FXML private Button editPlaylistButton, deletePlaylistButton, editSongButton, deleteSongButton, moveSongUpButton, moveSongDownButton, deleteSongFromPlaylistButton, addSongToPlaylistButton, playButton;
+    @FXML private Button editPlaylistButton, deletePlaylistButton, editSongButton, deleteSongButton, moveSongUpButton, moveSongDownButton, deleteSongFromPlaylistButton, addSongToPlaylistButton;
 
     @FXML private Label currentSongTitleLabel, currentSongArtistLabel, currentTimeLabel, totalDurationLabel, volumeLabel;
 
@@ -122,11 +122,13 @@ public class MyTunesController {
             if(!isSearching && !searchTextField.getText().isEmpty()) {
                 songObservableList.setAll(songDao.searchSong(searchTextField.getText()));
                 searchUnsearchImage.setImage(unsearchImage);
+                selectedSong = null;
                 isSearching = true;
             } else {
                 searchTextField.clear();
                 songObservableList.setAll(songDao.getAllSongs());
                 searchUnsearchImage.setImage(searchImage);
+                selectedSong = null;
                 isSearching = false;
             }
         } catch (SQLException ex) {
@@ -137,7 +139,7 @@ public class MyTunesController {
     @FXML void handleAddPlaylist(ActionEvent e) {
         try {
             isNewPressed = true;
-            openNewEditPlaylistDialog();
+            openNewEditPlaylistWindow();
             playlistObservableList.setAll(playlistDao.getAllPlaylists());
         } catch (IOException | SQLException ex) {
             ex.printStackTrace();
@@ -147,7 +149,7 @@ public class MyTunesController {
     @FXML void handleAddSong(ActionEvent e) {
         try {
             isNewPressed = true;
-            openNewEditSongDialog();
+            openNewEditSongWindow();
             songObservableList.setAll(songDao.getAllSongs());
             player.updateCurrentAllSongs(songObservableList);
         } catch (IOException | SQLException ex) {
@@ -158,7 +160,7 @@ public class MyTunesController {
     @FXML void handleEditPlaylist(ActionEvent e) {
         try {
             isNewPressed = false;
-            openNewEditPlaylistDialog();
+            openNewEditPlaylistWindow();
             playlistObservableList.setAll(playlistDao.getAllPlaylists());
         } catch (IOException | SQLException ex) {
             ex.printStackTrace();
@@ -168,7 +170,7 @@ public class MyTunesController {
     @FXML void handleEditSong(ActionEvent e) {
         try {
             isNewPressed = false;
-            openNewEditSongDialog();
+            openNewEditSongWindow();
             songObservableList.setAll(songDao.getAllSongs());
         } catch (IOException | SQLException ex) {
             ex.printStackTrace();
@@ -196,7 +198,7 @@ public class MyTunesController {
             if (result.isPresent() && result.get() == ButtonType.YES) {
                 songDao.deleteSong(selectedSong.getId());
                 songObservableList.remove(selectedSong);
-                selectedPlaylist.getSongs().remove(selectedSong);
+                selectedPlaylist.getSongs().remove(selectedSong); //FIX: only deletes the song from the selected playlist, won't be removed from other playlists until all playlists are refreshed from the server
                 songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
                 player.updateCurrentPlaylist(selectedPlaylist);
                 selectedSong = null;
@@ -430,18 +432,17 @@ public class MyTunesController {
     //this is necessary because when a new media file is loaded, the listeners don't get updated
     private void update() {
         player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
-            double percentage = newValue.toMillis() / player.getCycleDuration().toMillis() * 100;
-            //fun little anecdote: had to switch to "getCycleDuration()" rather than "getTotalDuration()", or else the progress slider would break when loading a new song
-            //functionally it doesn't make a difference though
+            double progressPercentage = newValue.toSeconds() / player.getCurrentSong().getDurationInInteger() * 100;
             if(!progressSlider.isPressed())
-                progressSlider.setValue(percentage);
+                progressSlider.setValue(progressPercentage);
+
             String style = String.format(
                     "-track-color: linear-gradient(to right, " +
                             "-fx-accent 0%%, " +
                             "-fx-accent %1$.1f%%, " +
                             "-default-track-color %1$.1f%%, " +
                             "-default-track-color 100%%);",
-                    percentage);
+                    progressPercentage);
             progressSlider.setStyle(style);
 
             int currentTime = (int) newValue.toSeconds();
@@ -451,10 +452,8 @@ public class MyTunesController {
         });
 
         player.setOnEndOfMedia(() -> {
-            if(!player.isRepeating()) {
-                player.next();
-                update(); //recursively calls the method when at end of media
-            }
+            player.next();
+            update(); //recursively calls the method when at end of media
         });
 
         if (player.getListStatus() == Player.ListStatus.ALL_SONGS) {
@@ -471,7 +470,7 @@ public class MyTunesController {
         currentSongArtistLabel.setText(player.getCurrentSong().getArtist());
     }
 
-    private void openNewEditSongDialog() throws IOException {
+    private void openNewEditSongWindow() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditSong.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();
@@ -488,7 +487,7 @@ public class MyTunesController {
         stage.showAndWait();
     }
 
-    private void openNewEditPlaylistDialog() throws IOException {
+    private void openNewEditPlaylistWindow() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = new Stage();

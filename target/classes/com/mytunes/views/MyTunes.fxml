@@ -317,7 +317,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleRepeat" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 50;" GridPane.columnIndex="4">
+                        <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleRepeat" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 50;" GridPane.columnIndex="4">
                            <graphic>
                               <ImageView fx:id="repeatUnrepeatImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
