@@ -220,9 +220,9 @@ public class MyTunesController {
                 songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
                 //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
                 if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
-                    player.stop();
                     playPauseImage.setImage(playImage);
                     player.load(songObservableList, songObservableList.get(0));
+                    update();
                 }
                 selectedPlaylist = null;
             }
