@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Playlist {
 
-    private final SongsInPlaylistDao songsInPlaylistDao = new SongsInPlaylistDaoImpl();
+    private final SongsInPlaylistDao songsInPlaylistDao;
 
     private final int id;
     private final String name;
@@ -16,6 +16,7 @@ public class Playlist {
     public Playlist(int id, String name) {
         this.id = id;
         this.name = name;
+        songsInPlaylistDao = new SongsInPlaylistDaoImpl();
         songs = songsInPlaylistDao.getPlaylist(id); //retrieves the songs on the playlist from the database
     }
 

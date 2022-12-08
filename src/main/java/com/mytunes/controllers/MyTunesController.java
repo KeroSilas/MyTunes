@@ -1,9 +1,7 @@
 package com.mytunes.controllers;
 
 import com.mytunes.dao.*;
-import com.mytunes.model.Player;
-import com.mytunes.model.Playlist;
-import com.mytunes.model.Song;
+import com.mytunes.model.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
@@ -39,6 +37,8 @@ public class MyTunesController {
 
     private SongDao songDao;
     private PlaylistDao playlistDao;
+    private SongsManager songsManager;
+    private PlaylistsManager playlistsManager;
     private boolean isSearching = false;
     protected static boolean isNewPressed;
 
@@ -129,12 +129,14 @@ public class MyTunesController {
     @FXML void handleAddPlaylist() {
         isNewPressed = true;
         openNewEditPlaylistWindow();
+        //playlistObservableList.setAll(playlistsManager.getAllPlaylists());
         playlistObservableList.setAll(playlistDao.getAllPlaylists());
     }
 
     @FXML void handleAddSong() {
         isNewPressed = true;
         openNewEditSongWindow();
+        //songObservableList.setAll(songsManager.getAllSongs());
         songObservableList.setAll(songDao.getAllSongs());
         player.updateCurrentAllSongs(songObservableList);
     }
@@ -142,12 +144,14 @@ public class MyTunesController {
     @FXML void handleEditPlaylist() {
         isNewPressed = false;
         openNewEditPlaylistWindow();
+        //playlistObservableList.setAll(playlistsManager.getAllPlaylists());
         playlistObservableList.setAll(playlistDao.getAllPlaylists());
     }
 
     @FXML void handleEditSong() {
         isNewPressed = false;
         openNewEditSongWindow();
+        //songObservableList.setAll(songsManager.getAllSongs());
         songObservableList.setAll(songDao.getAllSongs());
     }
 
@@ -155,6 +159,7 @@ public class MyTunesController {
         if (selectedPlaylist != null && selectedSong != null) {
             selectedPlaylist.addSong(selectedSong);
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            //playlistObservableList.setAll(playlistsManager.getAllPlaylists());
             playlistObservableList.setAll(playlistDao.getAllPlaylists());
             player.updateCurrentPlaylist(selectedPlaylist);
         }
@@ -165,6 +170,7 @@ public class MyTunesController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
+            //songsManager.removeSong(selectedSong);
             songDao.deleteSong(selectedSong.getId());
             songObservableList.remove(selectedSong);
             selectedPlaylist.getSongs().remove(selectedSong); //TO FIX: only deletes the song from the selected playlist, won't be removed from other playlists until all playlists are refreshed from the server
@@ -179,6 +185,7 @@ public class MyTunesController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
+            //playlistsManager.removePlaylist(selectedPlaylist);
             playlistDao.deletePlaylist(selectedPlaylist.getId());
             playlistObservableList.remove(selectedPlaylist);
             selectedPlaylist.getSongs().clear();
@@ -197,6 +204,7 @@ public class MyTunesController {
         if (result.isPresent() && result.get() == ButtonType.YES) {
             selectedPlaylist.removeSong(selectedSongInPlaylist);
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            //playlistObservableList.setAll(playlistsManager.getAllPlaylists());
             playlistObservableList.setAll(playlistDao.getAllPlaylists());
             player.updateCurrentPlaylist(selectedPlaylist);
         }
@@ -265,6 +273,8 @@ public class MyTunesController {
 
     public void initialize() {
         //initialize DAOs
+        songsManager = new SongsManager();
+        playlistsManager = new PlaylistsManager();
         songDao = new SongDaoImpl();
         playlistDao = new PlaylistDaoImpl();
 
@@ -273,6 +283,7 @@ public class MyTunesController {
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
+        //songObservableList.addAll(songsManager.getAllSongs());
         songObservableList.addAll(songDao.getAllSongs());
         songTableView.setItems(songObservableList);
         songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -281,6 +292,7 @@ public class MyTunesController {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
         songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
         totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
+        //playlistObservableList.addAll(playlistsManager.getAllPlaylists());
         playlistObservableList.addAll(playlistDao.getAllPlaylists());
         playlistTableView.setItems(playlistObservableList);
         playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -356,7 +368,7 @@ public class MyTunesController {
         });
     }
 
-    //refreshes listeners: this is necessary because when a new media file is loaded, the listeners don't get updated
+    //refreshes some listeners and runnables: this is necessary because when a new media file is loaded, the listeners don't get updated with the new media-player object
     private void update() {
         //automatically moves progress slider with current time on song
         player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
