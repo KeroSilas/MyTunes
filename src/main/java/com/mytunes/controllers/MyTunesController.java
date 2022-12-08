@@ -349,6 +349,11 @@ public class MyTunesController {
         volumeSlider.setValue(50);
 
         update();
+        //calls on the update method whenever a new song is loaded
+        player.currentSongProperty().addListener((ov, oldValue, newValue) -> {
+            if (!Objects.equals(oldValue, newValue))
+                update();
+        });
     }
 
     //refreshes listeners: this is necessary because when a new media file is loaded, the listeners don't get updated
@@ -402,13 +407,6 @@ public class MyTunesController {
                 if ("image".equals(c.getKey())) {
                     albumCoverImage.setImage((Image) c.getValueAdded());
                 }
-            }
-        });
-
-        //recursively calls this method when song changes
-        player.currentSongProperty().addListener((ov, oldValue, newValue) -> {
-            if (!Objects.equals(oldValue, newValue)) {
-                update();
             }
         });
     }
