@@ -356,7 +356,7 @@ public class MyTunesController {
         update();
     }
 
-    //refreshes listeners; this is necessary because when a new media file is loaded, the listeners don't get updated
+    //refreshes listeners: this is necessary because when a new media file is loaded, the listeners don't get updated
     private void update() {
         //automatically moves progress slider with current time on song
         player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
@@ -410,9 +410,10 @@ public class MyTunesController {
             }
         });
 
+        //recursively calls this method when song changes
         player.currentSongProperty().addListener((ov, oldValue, newValue) -> {
             if (!Objects.equals(oldValue, newValue)) {
-                update(); //recursively calls this method when song changes
+                update();
             }
         });
     }
