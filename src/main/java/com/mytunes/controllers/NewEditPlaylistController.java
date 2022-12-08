@@ -2,7 +2,6 @@ package com.mytunes.controllers;
 
 import com.mytunes.dao.PlaylistDao;
 import com.mytunes.dao.PlaylistDaoImpl;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -16,12 +15,12 @@ public class NewEditPlaylistController {
 
     @FXML private TextField nameTextField;
 
-    @FXML void handleCancel(ActionEvent e) {
+    @FXML void handleCancel() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
-    @FXML void handleSave(ActionEvent e) {
+    @FXML void handleSave() {
         if (MyTunesController.isNewPressed)
             playlistDao.createPlaylist(nameTextField.getText());
         else

@@ -3,7 +3,6 @@ package com.mytunes.controllers;
 import com.mytunes.dao.SongDao;
 import com.mytunes.dao.SongDaoImpl;
 import javafx.collections.MapChangeListener;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -26,12 +25,12 @@ public class NewEditSongController {
 
     @FXML private Button cancelButton, saveButton;
 
-    @FXML void handleCancel(ActionEvent e) {
+    @FXML void handleCancel() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
-    @FXML void handleChooseSong(ActionEvent e) {
+    @FXML void handleChooseSong() {
         Stage stage = (Stage) gridPane.getScene().getWindow();
         FileChooser chooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Audio files", "*.mp3", "*.wav");
@@ -66,7 +65,7 @@ public class NewEditSongController {
         }
     }
 
-    @FXML void handleSave(ActionEvent e) {
+    @FXML void handleSave() {
         if (MyTunesController.isNewPressed)
             songDao.createSong(titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
         else

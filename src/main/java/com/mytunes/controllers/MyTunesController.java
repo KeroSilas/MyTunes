@@ -8,7 +8,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -100,14 +99,14 @@ public class MyTunesController {
         }
     }
 
-    @FXML void handleMoveSongUp(ActionEvent e) {
+    @FXML void handleMoveSongUp() {
         Collections.swap(selectedPlaylist.getSongs(), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist) - 1);
         songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
         songsInPlaylistListView.getSelectionModel().select(selectedSongInPlaylist);
         player.updateCurrentPlaylist(selectedPlaylist);
     }
 
-    @FXML void handleMoveSongDown(ActionEvent e) {
+    @FXML void handleMoveSongDown() {
         Collections.swap(selectedPlaylist.getSongs(), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist), selectedPlaylist.getSongs().indexOf(selectedSongInPlaylist) + 1);
         songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
         songsInPlaylistListView.getSelectionModel().select(selectedSongInPlaylist);
@@ -117,7 +116,7 @@ public class MyTunesController {
     ///// --- DAO CONTROLS --- /////
 
     //searches for songs in the database
-    @FXML void handleSearch(ActionEvent e) {
+    @FXML void handleSearch() {
         if (!isSearching && !searchTextField.getText().isEmpty()) {
             songObservableList.setAll(songDao.searchSong(searchTextField.getText()));
             searchUnsearchImage.setImage(unsearchImage);
@@ -132,32 +131,32 @@ public class MyTunesController {
         }
     }
 
-    @FXML void handleAddPlaylist(ActionEvent e) {
+    @FXML void handleAddPlaylist() {
         isNewPressed = true;
         openNewEditPlaylistWindow();
         playlistObservableList.setAll(playlistDao.getAllPlaylists());
     }
 
-    @FXML void handleAddSong(ActionEvent e) {
+    @FXML void handleAddSong() {
         isNewPressed = true;
         openNewEditSongWindow();
         songObservableList.setAll(songDao.getAllSongs());
         player.updateCurrentAllSongs(songObservableList);
     }
 
-    @FXML void handleEditPlaylist(ActionEvent e) {
+    @FXML void handleEditPlaylist() {
         isNewPressed = false;
         openNewEditPlaylistWindow();
         playlistObservableList.setAll(playlistDao.getAllPlaylists());
     }
 
-    @FXML void handleEditSong(ActionEvent e) {
+    @FXML void handleEditSong() {
         isNewPressed = false;
         openNewEditSongWindow();
         songObservableList.setAll(songDao.getAllSongs());
     }
 
-    @FXML void handleAddSongToPlaylist(ActionEvent e) {
+    @FXML void handleAddSongToPlaylist() {
         if (selectedPlaylist != null && selectedSong != null) {
             selectedPlaylist.addSong(selectedSong);
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
@@ -166,7 +165,7 @@ public class MyTunesController {
         }
     }
 
-    @FXML void handleDeleteSong(ActionEvent e) {
+    @FXML void handleDeleteSong() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this song?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> result = alert.showAndWait();
 
@@ -181,7 +180,7 @@ public class MyTunesController {
         }
     }
 
-    @FXML void handleDeletePlaylist(ActionEvent e) {
+    @FXML void handleDeletePlaylist() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this playlist?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> result = alert.showAndWait();
 
@@ -199,7 +198,7 @@ public class MyTunesController {
         }
     }
 
-    @FXML void handleDeleteSongFromPlaylist(ActionEvent e) {
+    @FXML void handleDeleteSongFromPlaylist() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this song from the playlist?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> result = alert.showAndWait();
 
@@ -215,7 +214,7 @@ public class MyTunesController {
     ///// --- PLAYER CONTROLS --- /////
 
     //determines whether the player is playing or paused and changes the buttons action accordingly
-    @FXML void handlePlayPause(ActionEvent e) {
+    @FXML void handlePlayPause() {
         if (player.isPlaying()) {
             player.pause();
             playPauseImage.setImage(playImage);
@@ -225,7 +224,7 @@ public class MyTunesController {
         }
     }
 
-    @FXML void handleRepeat(ActionEvent e) {
+    @FXML void handleRepeat() {
         if (player.isRepeating()) {
             player.repeat(false);
             repeatUnrepeatImage.setImage(repeatImage);
@@ -235,7 +234,7 @@ public class MyTunesController {
         }
     }
 
-    @FXML void handleShuffle(ActionEvent e) {
+    @FXML void handleShuffle() {
         if (player.isShuffling()) {
             player.shuffle(false);
             shuffleUnshuffleImage.setImage(shuffleImage);
@@ -245,17 +244,17 @@ public class MyTunesController {
         }
     }
 
-    @FXML void handleNextSong(ActionEvent e) {
+    @FXML void handleNextSong() {
         player.next();
         update();
     }
 
-    @FXML void handlePreviousSong(ActionEvent e) {
+    @FXML void handlePreviousSong() {
         player.previous();
         update();
     }
 
-    @FXML void handleMuteUnmute(ActionEvent e) {
+    @FXML void handleMuteUnmute() {
         if (player.isMuted()) {
             player.mute(false);
             muteUnmuteImage.setImage(unmuteImage);
@@ -271,7 +270,7 @@ public class MyTunesController {
     }
 
     //changes progress of player when mouse click is released
-    @FXML void handleProgressSlider(MouseEvent e) {
+    @FXML void handleProgressSlider() {
         player.setProgress(progressSlider.getValue() / 100);
     }
 
@@ -387,9 +386,7 @@ public class MyTunesController {
             }
         });
 
-        player.setOnPlaying(() -> {
-            playPauseImage.setImage(pauseImage);
-        });
+        player.setOnPlaying(() -> playPauseImage.setImage(pauseImage));
 
         //updates selection and focus toward currently playing song
         if (player.getListStatus() == Player.ListStatus.ALL_SONGS) {
