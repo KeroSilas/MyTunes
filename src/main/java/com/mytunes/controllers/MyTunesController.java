@@ -393,12 +393,13 @@ public class MyTunesController {
         if (player.getListStatus() == Player.ListStatus.ALL_SONGS) {
             songTableView.getSelectionModel().select(player.getCurrentSong());
             songTableView.requestFocus();
+            songTableView.scrollTo(player.getCurrentSong());
             selectedSong = songTableView.getSelectionModel().getSelectedItem();
 
         } else if (player.getListStatus() == Player.ListStatus.PLAYLIST) {
-            playlistTableView.getSelectionModel().select(player.getCurrentPlaylist());
             songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
             songsInPlaylistListView.requestFocus();
+            songsInPlaylistListView.scrollTo(player.getCurrentSong());
             selectedSongInPlaylist = songsInPlaylistListView.getSelectionModel().getSelectedItem();
         }
 
