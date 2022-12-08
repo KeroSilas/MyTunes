@@ -362,7 +362,7 @@ public class MyTunesController {
 
         update();
         //calls on the update method whenever a new song is loaded
-        player.currentSongProperty().addListener((ov, oldValue, newValue) -> {
+        player.hasLoadedProperty().addListener((ov, oldValue, newValue) -> {
             if (!Objects.equals(oldValue, newValue))
                 update();
         });
