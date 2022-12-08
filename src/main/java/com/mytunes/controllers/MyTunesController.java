@@ -376,21 +376,23 @@ public class MyTunesController {
         update();
     }
 
-    //refreshes listeners
-    //this is necessary because when a new media file is loaded, the listeners don't get updated
+    //refreshes listeners; this is necessary because when a new media file is loaded, the listeners don't get updated
     private void update() {
+        //automatically moves progress slider with current time on song
         player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
             double percentage = newValue.toSeconds() / player.getCurrentSong().getDurationInInteger() * 100;
             if (!progressSlider.isPressed())
                 progressSlider.setValue(percentage);
             progressSlider.setStyle(sliderProgressStyle(percentage));
 
+            //keeps current time label updated
             int currentTime = (int) newValue.toSeconds();
             int minutes = (currentTime % 3600) / 60;
             int seconds = currentTime % 60;
             currentTimeLabel.setText(String.format("%02d:%02d", minutes, seconds));
         });
 
+        //if repeat button isn't toggled on, automatically loads next song on end of media
         player.setOnEndOfMedia(() -> {
             if (!player.isRepeating()) {
                 player.next();
@@ -398,12 +400,12 @@ public class MyTunesController {
             }
         });
 
+        //updates selection and focus toward currently playing song
         if (player.getListStatus() == Player.ListStatus.ALL_SONGS) {
             songTableView.getSelectionModel().select(player.getCurrentSong());
             songTableView.requestFocus();
             songTableView.scrollTo(player.getCurrentSong());
             selectedSong = songTableView.getSelectionModel().getSelectedItem();
-
         } else if (player.getListStatus() == Player.ListStatus.PLAYLIST) {
             songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
             songsInPlaylistListView.requestFocus();
@@ -411,11 +413,13 @@ public class MyTunesController {
             selectedSongInPlaylist = songsInPlaylistListView.getSelectionModel().getSelectedItem();
         }
 
+        //updates all relevant labels for currently playing song
         totalDurationLabel.setText(player.getCurrentSong().getDurationInString());
         currentSongTitleLabel.setText(player.getCurrentSong().getTitle());
         currentSongArtistLabel.setText(player.getCurrentSong().getArtist());
-        albumCoverImage.setImage(defaultAlbumImage);
 
+        //retrieves album cover on currently playing song
+        albumCoverImage.setImage(defaultAlbumImage);
         player.getMedia().getMetadata().addListener((MapChangeListener.Change<? extends String, ?> c) -> {
             if (c.wasAdded()) {
                 if ("image".equals(c.getKey())) {
