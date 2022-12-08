@@ -303,7 +303,11 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <children>
-                        <ImageView fx:id="albumCoverImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER" />
+                        <ImageView fx:id="albumCoverImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                           <image>
+                              <Image url="@../images/default-album-art.png" />
+                           </image>
+                        </ImageView>
                         <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="currentSongTitleLabel" focusTraversable="false" text="N/A">
@@ -423,7 +427,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Slider fx:id="volumeSlider" cache="true" focusTraversable="false" prefWidth="120.0" HBox.hgrow="NEVER">
+                        <Slider fx:id="volumeSlider" cache="true" focusTraversable="false" prefWidth="120.0" value="50.0" HBox.hgrow="NEVER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
