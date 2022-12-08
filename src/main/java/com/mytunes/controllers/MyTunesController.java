@@ -117,13 +117,11 @@ public class MyTunesController {
         if (!isSearching && !searchTextField.getText().isEmpty()) {
             songObservableList.setAll(songDao.searchSong(searchTextField.getText()));
             searchUnsearchImage.setImage(unsearchImage);
-            selectedSong = null;
             isSearching = true;
         } else {
             searchTextField.clear();
             songObservableList.setAll(songDao.getAllSongs());
             searchUnsearchImage.setImage(searchImage);
-            selectedSong = null;
             isSearching = false;
         }
     }
@@ -173,7 +171,6 @@ public class MyTunesController {
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
             player.updateCurrentPlaylist(selectedPlaylist);
             player.updateCurrentAllSongs(songObservableList);
-            selectedSong = null;
         }
     }
 
@@ -190,7 +187,6 @@ public class MyTunesController {
             if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
                 player.load(songObservableList, songObservableList.get(0));
             }
-            selectedPlaylist = null;
         }
     }
 
@@ -203,7 +199,6 @@ public class MyTunesController {
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
             playlistObservableList.setAll(playlistDao.getAllPlaylists());
             player.updateCurrentPlaylist(selectedPlaylist);
-            selectedSongInPlaylist = null;
         }
     }
 
