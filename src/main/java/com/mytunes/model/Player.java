@@ -1,6 +1,7 @@
 package com.mytunes.model;
 
 import javafx.beans.property.ReadOnlyObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -15,6 +16,7 @@ public class Player {
     private Media media;
     private MediaPlayer mediaPlayer;
 
+    private final SimpleObjectProperty<Song> currentSongProperty = new SimpleObjectProperty<>();
     private Song currentSong;
     private Playlist currentPlaylist;
     private ObservableList<Song> allSongs;
@@ -42,6 +44,7 @@ public class Player {
         load(path);
 
         currentSong = song;
+        currentSongProperty.set(song);
         allSongs = songs;
     }
 
@@ -72,6 +75,7 @@ public class Player {
         play();
 
         currentSong = song;
+        currentSongProperty.set(song);
     }
 
     //used when clicking a song on the all songs list
@@ -228,6 +232,10 @@ public class Player {
 
     public ReadOnlyObjectProperty<Duration> currentTimeProperty() {
         return mediaPlayer.currentTimeProperty();
+    }
+
+    public ReadOnlyObjectProperty<Song> currentSongProperty() {
+        return currentSongProperty;
     }
 
     public void setOnEndOfMedia(Runnable runnable) {

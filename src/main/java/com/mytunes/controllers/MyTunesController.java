@@ -75,7 +75,6 @@ public class MyTunesController {
             if (selectedPlaylist.getNumberOfSongs() > 0 && e.getClickCount() == 2) {
                 songTableView.getSelectionModel().clearSelection();
                 player.load(selectedPlaylist, selectedPlaylist.getSongs().get(0));
-                update();
                 songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
             }
         }
@@ -86,7 +85,6 @@ public class MyTunesController {
         if (selectedSong != null && e.getClickCount() == 2) {
             songsInPlaylistListView.getSelectionModel().clearSelection();
             player.load(songObservableList, selectedSong);
-            update();
         }
     }
 
@@ -95,7 +93,6 @@ public class MyTunesController {
         if (selectedSongInPlaylist != null && e.getClickCount() == 2) {
             songTableView.getSelectionModel().clearSelection();
             player.load(selectedPlaylist, selectedSongInPlaylist);
-            update();
         }
     }
 
@@ -192,7 +189,6 @@ public class MyTunesController {
             //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
             if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
                 player.load(songObservableList, songObservableList.get(0));
-                update();
             }
             selectedPlaylist = null;
         }
@@ -246,12 +242,10 @@ public class MyTunesController {
 
     @FXML void handleNextSong() {
         player.next();
-        update();
     }
 
     @FXML void handlePreviousSong() {
         player.previous();
-        update();
     }
 
     @FXML void handleMuteUnmute() {
@@ -382,10 +376,10 @@ public class MyTunesController {
         player.setOnEndOfMedia(() -> {
             if (!player.isRepeating()) {
                 player.next();
-                update(); //recursively calls the method when at end of media
             }
         });
 
+        //changes play button icon whenever a song is playing (from either pressing play, clicking on a song or pressing next/prev)
         player.setOnPlaying(() -> playPauseImage.setImage(pauseImage));
 
         //updates selection and focus toward currently playing song
@@ -413,6 +407,12 @@ public class MyTunesController {
                 if ("image".equals(c.getKey())) {
                     albumCoverImage.setImage((Image) c.getValueAdded());
                 }
+            }
+        });
+
+        player.currentSongProperty().addListener((ov, oldValue, newValue) -> {
+            if (!Objects.equals(oldValue, newValue)) {
+                update(); //recursively calls this method when song changes
             }
         });
     }
@@ -454,7 +454,6 @@ public class MyTunesController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.showAndWait();
-
         } catch (IOException ex) {
             ex.printStackTrace();
         }
