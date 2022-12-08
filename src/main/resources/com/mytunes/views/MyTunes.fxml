@@ -301,23 +301,28 @@
                 <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="45.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <children>
-                        <Label fx:id="currentSongTitleLabel" focusTraversable="false" text="N/A">
-                           <font>
-                              <Font name="Arial Bold" size="16.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="currentSongArtistLabel" focusTraversable="false" text="N/A" textFill="#515151">
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                        </Label>
+                        <ImageView fx:id="albumCoverImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER" />
+                        <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="currentSongTitleLabel" focusTraversable="false" text="N/A">
+                                 <font>
+                                    <Font name="Arial Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="currentSongArtistLabel" focusTraversable="false" text="N/A" textFill="#515151">
+                                 <font>
+                                    <Font name="Arial" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="8.0" right="6.0" />
+                           </padding>
+                        </VBox>
                      </children>
-                     <padding>
-                        <Insets left="6.0" right="6.0" />
-                     </padding>
-                  </VBox>
+                  </HBox>
                   <GridPane alignment="CENTER" hgap="3.0" GridPane.columnIndex="1">
                     <columnConstraints>
                         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="40.0" />

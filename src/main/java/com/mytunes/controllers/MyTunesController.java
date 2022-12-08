@@ -6,6 +6,7 @@ import com.mytunes.model.Playlist;
 import com.mytunes.model.Song;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,6 +36,7 @@ public class MyTunesController {
     private final Image unshuffleImage = new Image("file:src/main/resources/com/mytunes/images/shuffling.png");
     private final Image searchImage = new Image("file:src/main/resources/com/mytunes/images/search.png");
     private final Image unsearchImage = new Image("file:src/main/resources/com/mytunes/images/cancel.png");
+    private final Image defaultAlbumImage = new Image("file:src/main/resources/com/mytunes/images/default-album-art.png");
 
     private SongDao songDao;
     private PlaylistDao playlistDao;
@@ -63,7 +65,7 @@ public class MyTunesController {
 
     @FXML private Label currentSongTitleLabel, currentSongArtistLabel, currentTimeLabel, totalDurationLabel, volumeLabel;
 
-    @FXML private ImageView playPauseImage, muteUnmuteImage, repeatUnrepeatImage, shuffleUnshuffleImage, searchUnsearchImage;
+    @FXML private ImageView playPauseImage, muteUnmuteImage, repeatUnrepeatImage, shuffleUnshuffleImage, searchUnsearchImage, albumCoverImage;
 
     ///// --- LIST AND SELECTION METHODS --- /////
 
@@ -412,6 +414,15 @@ public class MyTunesController {
         totalDurationLabel.setText(player.getCurrentSong().getDurationInString());
         currentSongTitleLabel.setText(player.getCurrentSong().getTitle());
         currentSongArtistLabel.setText(player.getCurrentSong().getArtist());
+        albumCoverImage.setImage(defaultAlbumImage);
+
+        player.getMedia().getMetadata().addListener((MapChangeListener.Change<? extends String, ?> c) -> {
+            if (c.wasAdded()) {
+                if ("image".equals(c.getKey())) {
+                    albumCoverImage.setImage((Image) c.getValueAdded());
+                }
+            }
+        });
     }
 
     private void openNewEditSongWindow() {

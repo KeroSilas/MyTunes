@@ -179,6 +179,10 @@ public class Player {
         return currentPlaylist;
     }
 
+    public Media getMedia() {
+        return mediaPlayer.getMedia();
+    }
+
     public ListStatus getListStatus() {
         return listStatus;
     }
