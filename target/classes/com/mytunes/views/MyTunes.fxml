@@ -28,12 +28,12 @@
                   <GridPane hgap="6.0">
                     <columnConstraints>
                       <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label alignment="BOTTOM_LEFT" focusTraversable="false" maxHeight="1.7976931348623157E308" text=" Playlists">
@@ -43,9 +43,9 @@
                            <padding>
                               <Insets top="16.0" />
                            </padding></Label>
-                        <Button cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddPlaylist" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1">
+                        <Button cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddPlaylist" prefHeight="25.0" prefWidth="25.0" GridPane.columnIndex="1">
                            <graphic>
-                              <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/add.png" />
                                  </image>
@@ -55,9 +55,9 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="editPlaylistButton" cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleEditPlaylist" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="2">
+                        <Button fx:id="editPlaylistButton" cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleEditPlaylist" prefHeight="25.0" prefWidth="25.0" GridPane.columnIndex="2">
                            <graphic>
-                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/edit.png" />
                                  </image></ImageView>
@@ -66,9 +66,9 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="deletePlaylistButton" cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeletePlaylist" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="3">
+                        <Button fx:id="deletePlaylistButton" cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeletePlaylist" prefHeight="25.0" prefWidth="25.0" GridPane.columnIndex="3">
                            <graphic>
-                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/delete.png" />
                                  </image></ImageView>
@@ -99,12 +99,12 @@
                   <GridPane hgap="6.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label alignment="BOTTOM_LEFT" focusTraversable="false" maxHeight="1.7976931348623157E308" text=" Songs in playlist">
@@ -114,9 +114,9 @@
                            <padding>
                               <Insets top="16.0" />
                            </padding></Label>
-                        <Button fx:id="moveSongUpButton" cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleMoveSongUp" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1">
+                        <Button fx:id="moveSongUpButton" cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleMoveSongUp" prefHeight="25.0" prefWidth="25.0" GridPane.columnIndex="1">
                            <graphic>
-                              <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/up.png" />
                                  </image>
@@ -126,9 +126,9 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="moveSongDownButton" cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleMoveSongDown" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="2">
+                        <Button fx:id="moveSongDownButton" cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleMoveSongDown" prefHeight="25.0" prefWidth="25.0" GridPane.columnIndex="2">
                            <graphic>
-                              <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/down.png" />
                                  </image>
@@ -138,9 +138,9 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="deleteSongFromPlaylistButton" cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteSongFromPlaylist" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="3">
+                        <Button fx:id="deleteSongFromPlaylistButton" cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteSongFromPlaylist" prefHeight="25.0" prefWidth="25.0" GridPane.columnIndex="3">
                            <graphic>
-                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/delete.png" />
                                  </image></ImageView>
@@ -154,12 +154,12 @@
                   <ListView fx:id="songsInPlaylistListView" minWidth="-Infinity" onMouseClicked="#handleSongInPlaylistClick" prefWidth="250.0" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
-            <Button fx:id="addSongToPlaylistButton" cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddSongToPlaylist" prefHeight="30.0" prefWidth="30.0">
+            <Button fx:id="addSongToPlaylistButton" cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddSongToPlaylist" prefHeight="25.0" prefWidth="25.0">
                <HBox.margin>
-                  <Insets top="36.0" />
+                  <Insets top="31.0" />
                </HBox.margin>
                <graphic>
-                  <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="12.0" fitWidth="10.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/left.png" />
                      </image>
@@ -174,15 +174,15 @@
                   <GridPane hgap="6.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="5.0" />
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="175.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="30.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="25.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label alignment="BOTTOM_LEFT" focusTraversable="false" maxHeight="1.7976931348623157E308" text=" All songs">
@@ -192,9 +192,9 @@
                            <padding>
                               <Insets top="16.0" />
                            </padding></Label>
-                        <Button cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddSong" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1">
+                        <Button cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddSong" prefHeight="25.0" prefWidth="25.0" GridPane.columnIndex="1">
                            <graphic>
-                              <ImageView fitHeight="14.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="12.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/add.png" />
                                  </image>
@@ -204,9 +204,9 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="editSongButton" cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleEditSong" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="2">
+                        <Button fx:id="editSongButton" cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleEditSong" prefHeight="25.0" prefWidth="25.0" GridPane.columnIndex="2">
                            <graphic>
-                              <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/edit.png" />
                                  </image></ImageView>
@@ -215,9 +215,9 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="deleteSongButton" cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteSong" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="3">
+                        <Button fx:id="deleteSongButton" cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleDeleteSong" prefHeight="25.0" prefWidth="25.0" GridPane.columnIndex="3">
                            <graphic>
-                              <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/delete.png" />
                                  </image></ImageView>
@@ -226,9 +226,9 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSearch" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="6">
+                        <Button cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSearch" prefHeight="25.0" prefWidth="25.0" GridPane.columnIndex="6">
                            <graphic>
-                              <ImageView fx:id="searchUnsearchImage" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="searchUnsearchImage" fitHeight="11.0" fitWidth="11.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/search.png" />
                                  </image>
@@ -238,7 +238,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <TextField fx:id="searchTextField" cache="true" focusTraversable="false" prefHeight="30.0" GridPane.columnIndex="5">
+                        <TextField fx:id="searchTextField" cache="true" focusTraversable="false" prefHeight="25.0" GridPane.columnIndex="5">
                            <cursor>
                               <Cursor fx:constant="TEXT" />
                            </cursor></TextField>
@@ -303,7 +303,11 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <children>
-                        <ImageView fx:id="albumCoverImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER" />
+                        <ImageView fx:id="albumCoverImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                           <image>
+                              <Image url="@../images/default-album-art.png" />
+                           </image>
+                        </ImageView>
                         <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="currentSongTitleLabel" focusTraversable="false" text="N/A">
@@ -423,7 +427,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Slider fx:id="volumeSlider" cache="true" focusTraversable="false" prefWidth="120.0" HBox.hgrow="NEVER">
+                        <Slider fx:id="volumeSlider" cache="true" focusTraversable="false" prefWidth="120.0" value="49.0" HBox.hgrow="NEVER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>

@@ -78,9 +78,6 @@ public class MyTunesController {
                 player.load(selectedPlaylist, selectedPlaylist.getSongs().get(0));
                 update();
                 songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
-                player.play();
-
-                playPauseImage.setImage(pauseImage);
             }
         }
     }
@@ -91,9 +88,6 @@ public class MyTunesController {
             songsInPlaylistListView.getSelectionModel().clearSelection();
             player.load(songObservableList, selectedSong);
             update();
-            player.play();
-
-            playPauseImage.setImage(pauseImage);
         }
     }
 
@@ -103,9 +97,6 @@ public class MyTunesController {
             songTableView.getSelectionModel().clearSelection();
             player.load(selectedPlaylist, selectedSongInPlaylist);
             update();
-            player.play();
-
-            playPauseImage.setImage(pauseImage);
         }
     }
 
@@ -201,7 +192,6 @@ public class MyTunesController {
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
             //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
             if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
-                playPauseImage.setImage(playImage);
                 player.load(songObservableList, songObservableList.get(0));
                 update();
             }
@@ -232,7 +222,6 @@ public class MyTunesController {
         } else {
             player.setProgress(progressSlider.getValue() / 100);
             player.play();
-            playPauseImage.setImage(pauseImage);
         }
     }
 
@@ -259,13 +248,11 @@ public class MyTunesController {
     @FXML void handleNextSong(ActionEvent e) {
         player.next();
         update();
-        playPauseImage.setImage(pauseImage);
     }
 
     @FXML void handlePreviousSong(ActionEvent e) {
         player.previous();
         update();
-        playPauseImage.setImage(pauseImage);
     }
 
     @FXML void handleMuteUnmute(ActionEvent e) {
@@ -398,6 +385,10 @@ public class MyTunesController {
                 player.next();
                 update(); //recursively calls the method when at end of media
             }
+        });
+
+        player.setOnPlaying(() -> {
+            playPauseImage.setImage(pauseImage);
         });
 
         //updates selection and focus toward currently playing song

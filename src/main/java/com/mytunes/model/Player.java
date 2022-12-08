@@ -28,7 +28,7 @@ public class Player {
         PLAYLIST,
     }
 
-    //default constructor for when there is no songs
+    //default constructor for when there are no songs
     public Player() {
         path = Path.of("src/main/resources/com/mytunes/music/default.mp3");
         load(path);
@@ -232,5 +232,9 @@ public class Player {
 
     public void setOnEndOfMedia(Runnable runnable) {
         mediaPlayer.setOnEndOfMedia(runnable);
+    }
+
+    public void setOnPlaying(Runnable runnable) {
+        mediaPlayer.setOnPlaying(runnable);
     }
 }
