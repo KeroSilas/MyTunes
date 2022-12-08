@@ -55,7 +55,6 @@ public class Player {
     private void load(Song song) {
         //stores player values in temporary variables so that they can be reapplied on the new media-player object
         double volumeBeforeMediaChange = mediaPlayer.getVolume();
-        boolean isPlayingBeforeMediaChange = mediaPlayer.getStatus().equals(MediaPlayer.Status.PLAYING);
         boolean isMutedBeforeMediaChange = isMuted();
         boolean isRepeatingBeforeMediaChange = isRepeating();
         mediaPlayer.dispose();
@@ -65,12 +64,11 @@ public class Player {
 
         //reapplies player values from before
         mediaPlayer.setVolume(volumeBeforeMediaChange);
-        if (isPlayingBeforeMediaChange)
-            play();
         if (isMutedBeforeMediaChange)
             mute(true);
         if (isRepeatingBeforeMediaChange)
             repeat(true);
+        play();
 
         currentSong = song;
     }

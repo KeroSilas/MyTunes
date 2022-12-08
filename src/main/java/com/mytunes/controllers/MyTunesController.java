@@ -253,11 +253,13 @@ public class MyTunesController {
     @FXML void handleNextSong(ActionEvent e) {
         player.next();
         update();
+        playPauseImage.setImage(pauseImage);
     }
 
     @FXML void handlePreviousSong(ActionEvent e) {
         player.previous();
         update();
+        playPauseImage.setImage(pauseImage);
     }
 
     @FXML void handleMuteUnmute(ActionEvent e) {
@@ -366,7 +368,6 @@ public class MyTunesController {
         volumeSlider.setValue(50);
 
         update();
-        Platform.runLater(() -> songTableView.requestFocus());
     }
 
     //refreshes listeners
@@ -391,9 +392,13 @@ public class MyTunesController {
 
         if (player.getListStatus() == Player.ListStatus.ALL_SONGS) {
             songTableView.getSelectionModel().select(player.getCurrentSong());
+            songTableView.requestFocus();
             selectedSong = songTableView.getSelectionModel().getSelectedItem();
+
         } else if (player.getListStatus() == Player.ListStatus.PLAYLIST) {
+            playlistTableView.getSelectionModel().select(player.getCurrentPlaylist());
             songsInPlaylistListView.getSelectionModel().select(player.getCurrentSong());
+            songsInPlaylistListView.requestFocus();
             selectedSongInPlaylist = songsInPlaylistListView.getSelectionModel().getSelectedItem();
         }
 
