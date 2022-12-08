@@ -31,6 +31,8 @@ public class MyTunesController {
     private final Image unmuteImage = new Image("file:src/main/resources/com/mytunes/images/unmuted.png");
     private final Image repeatImage = new Image("file:src/main/resources/com/mytunes/images/repeat.png");
     private final Image unrepeatImage = new Image("file:src/main/resources/com/mytunes/images/repeating.png");
+    private final Image shuffleImage = new Image("file:src/main/resources/com/mytunes/images/shuffle.png");
+    private final Image unshuffleImage = new Image("file:src/main/resources/com/mytunes/images/shuffling.png");
     private final Image searchImage = new Image("file:src/main/resources/com/mytunes/images/search.png");
     private final Image unsearchImage = new Image("file:src/main/resources/com/mytunes/images/cancel.png");
 
@@ -61,7 +63,7 @@ public class MyTunesController {
 
     @FXML private Label currentSongTitleLabel, currentSongArtistLabel, currentTimeLabel, totalDurationLabel, volumeLabel;
 
-    @FXML private ImageView playPauseImage, muteUnmuteImage, repeatUnrepeatImage, searchUnsearchImage;
+    @FXML private ImageView playPauseImage, muteUnmuteImage, repeatUnrepeatImage, shuffleUnshuffleImage, searchUnsearchImage;
 
     ///// --- LIST AND SELECTION METHODS --- /////
 
@@ -245,8 +247,10 @@ public class MyTunesController {
     @FXML void handleShuffle(ActionEvent e) {
         if (player.isShuffling()) {
             player.shuffle(false);
+            shuffleUnshuffleImage.setImage(shuffleImage);
         } else {
             player.shuffle(true);
+            shuffleUnshuffleImage.setImage(unshuffleImage);
         }
     }
 
@@ -386,8 +390,10 @@ public class MyTunesController {
         });
 
         player.setOnEndOfMedia(() -> {
-            player.next();
-            update(); //recursively calls the method when at end of media
+            if (!player.isRepeating()) {
+                player.next();
+                update(); //recursively calls the method when at end of media
+            }
         });
 
         if (player.getListStatus() == Player.ListStatus.ALL_SONGS) {

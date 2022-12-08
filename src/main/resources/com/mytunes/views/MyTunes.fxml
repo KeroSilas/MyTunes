@@ -282,7 +282,7 @@
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font></Label>
-                  <Slider fx:id="progressSlider" cache="true" focusTraversable="false" onMouseReleased="#handleProgressSlider" stylesheets="@style.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Slider fx:id="progressSlider" cache="true" focusTraversable="false" onMouseReleased="#handleProgressSlider" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Slider>
@@ -369,7 +369,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleRepeat" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 50;" GridPane.columnIndex="4">
+                        <Button cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleRepeat" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 50;" GridPane.columnIndex="4">
                            <graphic>
                               <ImageView fx:id="repeatUnrepeatImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -384,7 +384,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button cache="true" disable="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleShuffle" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 50;">
+                        <Button cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleShuffle" prefHeight="35.0" prefWidth="35.0" style="-fx-background-radius: 50;">
                            <graphic>
                               <ImageView fx:id="shuffleUnshuffleImage" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                                  <image>

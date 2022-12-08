@@ -7,6 +7,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.nio.file.Path;
+import java.util.Random;
 
 public class Player {
 
@@ -48,7 +49,7 @@ public class Player {
     private void load(Path path) {
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        //mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
     //used on end of media or when pressing prev/next
@@ -98,14 +99,21 @@ public class Player {
     //loads next song on either the all songs list or the currently playing playlist
     public void next() {
         if (getListStatus() == Player.ListStatus.ALL_SONGS) {
-            if (allSongs.indexOf(getCurrentSong()) == allSongs.size() - 1) { //checks if current song is at the end of the list
+            if (isShuffling()) {
+                Random random = new Random();
+                load(allSongs.get(random.nextInt(allSongs.size())));
+            } else if (allSongs.indexOf(getCurrentSong()) == allSongs.size() - 1) { //checks if current song is at the end of the list
                 load(allSongs.get(0)); //returns to first song on the list
             } else {
                 Song nextSong = allSongs.get(allSongs.indexOf(getCurrentSong()) + 1); //gets next song on the list
                 load(nextSong);
             }
         } else if (getListStatus() == Player.ListStatus.PLAYLIST) {
-            if (currentPlaylist.getSongs().indexOf(getCurrentSong()) == currentPlaylist.getSongs().size() - 1) {
+            if (isShuffling()) {
+                Random random = new Random();
+                random.nextInt(currentPlaylist.getSongs().size());
+                load(currentPlaylist.getSongs().get(random.nextInt(currentPlaylist.getSongs().size() - 1)));
+            } else if (currentPlaylist.getSongs().indexOf(getCurrentSong()) == currentPlaylist.getSongs().size() - 1) {
                 load(currentPlaylist.getSongs().get(0));
             } else {
                 Song nextSong = currentPlaylist.getSongs().get(currentPlaylist.getSongs().indexOf(getCurrentSong()) + 1);
