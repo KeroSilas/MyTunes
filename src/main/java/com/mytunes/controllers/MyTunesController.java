@@ -1,6 +1,5 @@
 package com.mytunes.controllers;
 
-import com.mytunes.dao.*;
 import com.mytunes.model.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -35,7 +34,6 @@ public class MyTunesController {
     private final Image unsearchImage = new Image("file:src/main/resources/com/mytunes/images/cancel.png");
     private final Image defaultAlbumImage = new Image("file:src/main/resources/com/mytunes/images/default-album-art.png");
 
-    private SongDao songDao;
     private SongsManager songsManager;
     private PlaylistsManager playlistsManager;
     private boolean isSearching = false;
@@ -114,12 +112,12 @@ public class MyTunesController {
     //searches for songs in the database
     @FXML void handleSearch() {
         if (!isSearching && !searchTextField.getText().isEmpty()) {
-            songObservableList.setAll(songDao.searchSong(searchTextField.getText()));
+            songObservableList.setAll(songsManager.searchSongs(searchTextField.getText()));
             searchUnsearchImage.setImage(unsearchImage);
             isSearching = true;
         } else {
             searchTextField.clear();
-            songObservableList.setAll(songDao.getAllSongs());
+            songObservableList.setAll(songsManager.getAllSongs());
             searchUnsearchImage.setImage(searchImage);
             isSearching = false;
         }
@@ -265,10 +263,9 @@ public class MyTunesController {
     }
 
     public void initialize() {
-        //initialize DAOs
+        //initialize song and playlist managers
         songsManager = new SongsManager();
         playlistsManager = new PlaylistsManager();
-        songDao = new SongDaoImpl();
 
         //Set up the table columns and cells for the song table
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));

@@ -33,7 +33,7 @@ public class PlaylistsManager {
     }
 
     public void removePlaylist(Playlist playlist) {
-        allPlaylists.remove(playlist);
+        allPlaylists.removeIf(p -> p.getId() == playlist.getId());
         playlistDao.deletePlaylist(playlist.getId());
     }
 }

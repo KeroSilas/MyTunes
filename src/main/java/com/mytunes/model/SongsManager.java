@@ -32,8 +32,12 @@ public class SongsManager {
         songDao.updateSong(song.getId(), title, artist, category, duration, path);
     }
 
+    public List<Song> searchSongs(String search) {
+        return songDao.searchSong(search);
+    }
+
     public void removeSong(Song song) {
-        allSongs.remove(song);
+        allSongs.removeIf(s -> s.getId() == song.getId());
         songDao.deleteSong(song.getId());
     }
 }
