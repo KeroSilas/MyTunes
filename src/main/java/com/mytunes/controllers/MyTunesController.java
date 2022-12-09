@@ -125,26 +125,26 @@ public class MyTunesController {
 
     @FXML void handleAddPlaylist() {
         isNewPressed = true;
-        openNewEditPlaylistWindow();
+        showNewEditPlaylistWindow();
         playlistObservableList.setAll(playlistsManager.getAllPlaylists());
     }
 
     @FXML void handleAddSong() {
         isNewPressed = true;
-        openNewEditSongWindow();
+        showNewEditSongWindow();
         songObservableList.setAll(songsManager.getAllSongs());
         player.updateCurrentAllSongs(songsManager.getAllSongs());
     }
 
     @FXML void handleEditPlaylist() {
         isNewPressed = false;
-        openNewEditPlaylistWindow();
+        showNewEditPlaylistWindow();
         playlistObservableList.setAll(playlistsManager.getAllPlaylists());
     }
 
     @FXML void handleEditSong() {
         isNewPressed = false;
-        openNewEditSongWindow();
+        showNewEditSongWindow();
         songObservableList.setAll(songsManager.getAllSongs());
     }
 
@@ -158,8 +158,7 @@ public class MyTunesController {
     }
 
     @FXML void handleDeleteSong() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this song?", ButtonType.YES, ButtonType.NO);
-        Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = showAlertWindow("Are you sure you wish to delete this song?");
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
             songsManager.removeSong(selectedSong);
@@ -174,8 +173,7 @@ public class MyTunesController {
     }
 
     @FXML void handleDeletePlaylist() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this playlist?", ButtonType.YES, ButtonType.NO);
-        Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = showAlertWindow("Are you sure you wish to delete this playlist?");
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
             playlistsManager.removePlaylist(selectedPlaylist);
@@ -190,8 +188,7 @@ public class MyTunesController {
     }
 
     @FXML void handleDeleteSongFromPlaylist() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you wish to delete this song from the playlist?", ButtonType.YES, ButtonType.NO);
-        Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = showAlertWindow("Are you sure you wish to delete this song from the playlist?");
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
             selectedPlaylist.removeSong(selectedSongInPlaylist);
@@ -410,7 +407,15 @@ public class MyTunesController {
         });
     }
 
-    private void openNewEditSongWindow() {
+    public SongsManager getSongsManager() {
+        return songsManager;
+    }
+
+    public PlaylistsManager getPlaylistsManager() {
+        return playlistsManager;
+    }
+
+    private void showNewEditSongWindow() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditSong.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
@@ -433,7 +438,7 @@ public class MyTunesController {
         }
     }
 
-    private void openNewEditPlaylistWindow() {
+    private void showNewEditPlaylistWindow() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
@@ -456,14 +461,13 @@ public class MyTunesController {
         }
     }
 
-    public SongsManager getSongsManager() {
-        return songsManager;
+    private Optional<ButtonType> showAlertWindow(String text) {
+        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.YES, ButtonType.NO);
+        alert.setTitle("Confirmation");
+        return alert.showAndWait();
     }
 
-    public PlaylistsManager getPlaylistsManager() {
-        return playlistsManager;
-    }
-
+    //styling that adds the blue fill behind sliders
     private String sliderProgressStyle(double percentage) {
         return String.format(
                 "-track-color: linear-gradient(to right, " +
