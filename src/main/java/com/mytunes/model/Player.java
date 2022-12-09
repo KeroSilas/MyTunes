@@ -15,7 +15,7 @@ public class Player {
     private Media media;
     private MediaPlayer mediaPlayer;
 
-    private final SimpleIntegerProperty hasLoadedProperty = new SimpleIntegerProperty();
+    private final SimpleBooleanProperty hasLoadedProperty = new SimpleBooleanProperty();
     private Song currentSong;
     private Playlist currentPlaylist;
     private List<Song> allSongs;
@@ -74,10 +74,7 @@ public class Player {
 
         currentSong = song;
 
-        if (hasLoadedProperty.get() == 0)
-            hasLoadedProperty.set(1);
-        else
-            hasLoadedProperty.set(0);
+        hasLoadedProperty.set(!hasLoadedProperty.get());
     }
 
     //used when clicking a song on the all songs list
@@ -236,7 +233,7 @@ public class Player {
         return mediaPlayer.currentTimeProperty();
     }
 
-    public ReadOnlyIntegerProperty hasLoadedProperty() {
+    public ReadOnlyBooleanProperty hasLoadedProperty() {
         return hasLoadedProperty;
     }
 
