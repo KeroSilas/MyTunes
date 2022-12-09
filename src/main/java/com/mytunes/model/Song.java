@@ -5,11 +5,11 @@ import javafx.util.Duration;
 public class Song {
 
     private final int id;
-    private final String title;
-    private final String artist;
-    private final String category;
-    private final int duration;
-    private final String path;
+    private String title;
+    private String artist;
+    private String category;
+    private int duration;
+    private String path;
 
     public Song(int id, String title, String artist, String category, int duration, String path) {
         this.id = id;
@@ -55,6 +55,26 @@ public class Song {
 
     public String getPath() {
         return path;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     @Override

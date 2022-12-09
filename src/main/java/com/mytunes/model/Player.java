@@ -1,12 +1,12 @@
 package com.mytunes.model;
 
 import javafx.beans.property.*;
-import javafx.collections.ObservableList;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Random;
 
 public class Player {
@@ -18,7 +18,7 @@ public class Player {
     private final SimpleIntegerProperty hasLoadedProperty = new SimpleIntegerProperty();
     private Song currentSong;
     private Playlist currentPlaylist;
-    private ObservableList<Song> allSongs;
+    private List<Song> allSongs;
 
     private boolean isShuffling;
 
@@ -36,7 +36,7 @@ public class Player {
     }
 
     //constructor for when songs list is not empty
-    public Player(ObservableList<Song> songs, Song song) {
+    public Player(List<Song> songs, Song song) {
         setListStatus(ListStatus.ALL_SONGS);
 
         path = Path.of("src/main/resources/com/mytunes/music/" + song.getPath());
@@ -81,7 +81,7 @@ public class Player {
     }
 
     //used when clicking a song on the all songs list
-    public void load(ObservableList<Song> songs, Song song) {
+    public void load(List<Song> songs, Song song) {
         setListStatus(ListStatus.ALL_SONGS);
         load(song);
         allSongs = songs;
@@ -228,7 +228,7 @@ public class Player {
         currentPlaylist = playlist;
     }
 
-    public void updateCurrentAllSongs(ObservableList<Song> allSongs) {
+    public void updateCurrentAllSongs(List<Song> allSongs) {
         this.allSongs = allSongs;
     }
 

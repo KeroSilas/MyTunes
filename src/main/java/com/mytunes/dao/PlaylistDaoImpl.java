@@ -62,14 +62,19 @@ public class PlaylistDaoImpl implements PlaylistDao {
     }
 
     @Override
-    public void createPlaylist(String name) {
+    public int createPlaylist(String name) {
+        int playlistId = 0;
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO Playlists (name) VALUES (?);";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, name);
             statement.executeUpdate();
+            ResultSet generatedKey = statement.getGeneratedKeys();
+            if (generatedKey.next())
+                playlistId = generatedKey.getInt(1);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        return playlistId;
     }
 }

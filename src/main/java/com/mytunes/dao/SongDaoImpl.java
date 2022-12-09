@@ -70,19 +70,24 @@ public class SongDaoImpl implements SongDao{
     }
 
     @Override
-    public void createSong(String title, String artist, String category, int duration, String path) {
+    public int createSong(String title, String artist, String category, int duration, String path) {
+        int songId = 0;
         try (Connection connection = databaseConnector.getConnection()) {
             String sql = "INSERT INTO Songs (title, artist, category, duration, path) VALUES (?, ?, ?, ?, ?);";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, title);
             statement.setString(2, artist);
             statement.setString(3, category);
             statement.setInt(4, duration);
             statement.setString(5, path);
             statement.executeUpdate();
+            ResultSet generatedKey = statement.getGeneratedKeys();
+            if (generatedKey.next())
+                songId = generatedKey.getInt(1);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        return songId;
     }
 
     @Override

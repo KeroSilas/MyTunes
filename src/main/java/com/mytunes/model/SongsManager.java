@@ -3,7 +3,6 @@ package com.mytunes.model;
 import com.mytunes.dao.SongDao;
 import com.mytunes.dao.SongDaoImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SongsManager {
@@ -20,9 +19,17 @@ public class SongsManager {
         return allSongs;
     }
 
-    public void addSong(Song song) {
-        allSongs.add(song);
-        songDao.createSong(song.getTitle(), song.getArtist(), song.getCategory(), song.getDurationInInteger(), song.getPath());
+    public void addSong(String title, String artist, String category, int duration, String path) {
+        int songId = songDao.createSong(title, artist, category, duration, path);
+        allSongs.add(new Song(songId, title, artist, category, duration, path));
+    }
+
+    public void updateSong(Song song, String title, String artist, String category, int duration, String path) {
+        for (Song s : allSongs) {
+            if (s.getId() == song.getId())
+                allSongs.set(allSongs.indexOf(s), new Song(song.getId(), title, artist, category, duration, path));
+        }
+        songDao.updateSong(song.getId(), title, artist, category, duration, path);
     }
 
     public void removeSong(Song song) {

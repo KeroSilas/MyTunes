@@ -10,7 +10,7 @@ public class Playlist {
     private final SongsInPlaylistDao songsInPlaylistDao;
 
     private final int id;
-    private final String name;
+    private String name;
     private final List<Song> songs;
 
     public Playlist(int id, String name) {
@@ -35,6 +35,10 @@ public class Playlist {
     public void addSong(Song song) {
         songs.add(song);
         songsInPlaylistDao.moveSongToPlaylist(getId(), song.getId()); //adds the song to the database as well
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void removeSong(Song song) {

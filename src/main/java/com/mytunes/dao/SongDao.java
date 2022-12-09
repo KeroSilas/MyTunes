@@ -12,7 +12,7 @@ public interface SongDao {
 
     void updateSong(int id, String title, String artist, String category, int duration, String path);
 
-    void createSong(String title, String artist, String category, int duration, String path);
+    int createSong(String title, String artist, String category, int duration, String path);
 
     List<Song> searchSong(String search);
 

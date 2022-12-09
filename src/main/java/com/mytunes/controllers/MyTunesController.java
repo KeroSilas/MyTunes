@@ -36,7 +36,6 @@ public class MyTunesController {
     private final Image defaultAlbumImage = new Image("file:src/main/resources/com/mytunes/images/default-album-art.png");
 
     private SongDao songDao;
-    private PlaylistDao playlistDao;
     private SongsManager songsManager;
     private PlaylistsManager playlistsManager;
     private boolean isSearching = false;
@@ -129,38 +128,33 @@ public class MyTunesController {
     @FXML void handleAddPlaylist() {
         isNewPressed = true;
         openNewEditPlaylistWindow();
-        //playlistObservableList.setAll(playlistsManager.getAllPlaylists());
-        playlistObservableList.setAll(playlistDao.getAllPlaylists());
+        playlistObservableList.setAll(playlistsManager.getAllPlaylists());
     }
 
     @FXML void handleAddSong() {
         isNewPressed = true;
         openNewEditSongWindow();
-        //songObservableList.setAll(songsManager.getAllSongs());
-        songObservableList.setAll(songDao.getAllSongs());
-        player.updateCurrentAllSongs(songObservableList);
+        songObservableList.setAll(songsManager.getAllSongs());
+        player.updateCurrentAllSongs(songsManager.getAllSongs());
     }
 
     @FXML void handleEditPlaylist() {
         isNewPressed = false;
         openNewEditPlaylistWindow();
-        //playlistObservableList.setAll(playlistsManager.getAllPlaylists());
-        playlistObservableList.setAll(playlistDao.getAllPlaylists());
+        playlistObservableList.setAll(playlistsManager.getAllPlaylists());
     }
 
     @FXML void handleEditSong() {
         isNewPressed = false;
         openNewEditSongWindow();
-        //songObservableList.setAll(songsManager.getAllSongs());
-        songObservableList.setAll(songDao.getAllSongs());
+        songObservableList.setAll(songsManager.getAllSongs());
     }
 
     @FXML void handleAddSongToPlaylist() {
         if (selectedPlaylist != null && selectedSong != null) {
             selectedPlaylist.addSong(selectedSong);
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-            //playlistObservableList.setAll(playlistsManager.getAllPlaylists());
-            playlistObservableList.setAll(playlistDao.getAllPlaylists());
+            playlistObservableList.setAll(playlistsManager.getAllPlaylists());
             player.updateCurrentPlaylist(selectedPlaylist);
         }
     }
@@ -170,11 +164,12 @@ public class MyTunesController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
-            //songsManager.removeSong(selectedSong);
-            songDao.deleteSong(selectedSong.getId());
-            songObservableList.remove(selectedSong);
-            selectedPlaylist.getSongs().remove(selectedSong); //TO FIX: only deletes the song from the selected playlist, won't be removed from other playlists until all playlists are refreshed from the server
-            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            songsManager.removeSong(selectedSong);
+            songObservableList.setAll(songsManager.getAllSongs());
+            if (selectedPlaylist != null) {
+                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+                selectedPlaylist.getSongs().remove(selectedSong); //NEED FIX: only deletes the song from the selected playlist, won't be removed from other playlists until all playlists are refreshed from the server
+            }
             player.updateCurrentPlaylist(selectedPlaylist);
             player.updateCurrentAllSongs(songObservableList);
         }
@@ -185,9 +180,8 @@ public class MyTunesController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
-            //playlistsManager.removePlaylist(selectedPlaylist);
-            playlistDao.deletePlaylist(selectedPlaylist.getId());
-            playlistObservableList.remove(selectedPlaylist);
+            playlistsManager.removePlaylist(selectedPlaylist);
+            playlistObservableList.setAll(playlistsManager.getAllPlaylists());
             selectedPlaylist.getSongs().clear();
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
             //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
@@ -204,8 +198,7 @@ public class MyTunesController {
         if (result.isPresent() && result.get() == ButtonType.YES) {
             selectedPlaylist.removeSong(selectedSongInPlaylist);
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-            //playlistObservableList.setAll(playlistsManager.getAllPlaylists());
-            playlistObservableList.setAll(playlistDao.getAllPlaylists());
+            playlistObservableList.setAll(playlistsManager.getAllPlaylists());
             player.updateCurrentPlaylist(selectedPlaylist);
         }
     }
@@ -276,15 +269,13 @@ public class MyTunesController {
         songsManager = new SongsManager();
         playlistsManager = new PlaylistsManager();
         songDao = new SongDaoImpl();
-        playlistDao = new PlaylistDaoImpl();
 
         //Set up the table columns and cells for the song table
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
-        //songObservableList.addAll(songsManager.getAllSongs());
-        songObservableList.addAll(songDao.getAllSongs());
+        songObservableList.addAll(songsManager.getAllSongs());
         songTableView.setItems(songObservableList);
         songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
@@ -292,8 +283,7 @@ public class MyTunesController {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
         songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
         totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
-        //playlistObservableList.addAll(playlistsManager.getAllPlaylists());
-        playlistObservableList.addAll(playlistDao.getAllPlaylists());
+        playlistObservableList.addAll(playlistsManager.getAllPlaylists());
         playlistTableView.setItems(playlistObservableList);
         playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
@@ -427,6 +417,8 @@ public class MyTunesController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditSong.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
+            NewEditSongController newEditSongController = fxmlLoader.getController();
+            newEditSongController.setMyTunesController(this);
             Stage stage = new Stage();
             if (isNewPressed) {
                 stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/add.png"));
@@ -448,6 +440,8 @@ public class MyTunesController {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
+            NewEditPlaylistController newEditPlaylistController = fxmlLoader.getController();
+            newEditPlaylistController.setMyTunesController(this);
             Stage stage = new Stage();
             if (isNewPressed) {
                 stage.getIcons().add(new Image("file:src/main/resources/com/mytunes/images/add.png"));
@@ -463,6 +457,14 @@ public class MyTunesController {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+    }
+
+    public SongsManager getSongsManager() {
+        return songsManager;
+    }
+
+    public PlaylistsManager getPlaylistsManager() {
+        return playlistsManager;
     }
 
     private String sliderProgressStyle(double percentage) {

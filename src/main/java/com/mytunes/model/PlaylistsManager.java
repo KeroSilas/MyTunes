@@ -19,9 +19,17 @@ public class PlaylistsManager {
         return allPlaylists;
     }
 
-    public void addPlaylist(Playlist playlist) {
-        allPlaylists.add(playlist);
-        playlistDao.createPlaylist(playlist.getName());
+    public void addPlaylist(String name) {
+        int playlistId = playlistDao.createPlaylist(name);
+        allPlaylists.add(new Playlist(playlistId, name));
+    }
+
+    public void updatePlaylist(Playlist playlist, String name) {
+        for (Playlist p : allPlaylists) {
+            if (p.getId() == playlist.getId())
+                allPlaylists.set(allPlaylists.indexOf(p), new Playlist(playlist.getId(), name));
+        }
+        playlistDao.updatePlaylist(playlist.getId(), name);
     }
 
     public void removePlaylist(Playlist playlist) {

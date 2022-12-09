@@ -12,6 +12,6 @@ public interface PlaylistDao {
 
     void updatePlaylist(int id, String name);
 
-    void createPlaylist(String name);
+    int createPlaylist(String name);
 
 }

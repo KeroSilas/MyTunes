@@ -1,7 +1,5 @@
 package com.mytunes.controllers;
 
-import com.mytunes.dao.SongDao;
-import com.mytunes.dao.SongDaoImpl;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,7 +14,7 @@ import java.io.File;
 
 public class NewEditSongController {
 
-    private SongDao songDao;
+    private MyTunesController myTunesController;
     private int duration;
 
     @FXML private GridPane gridPane;
@@ -67,17 +65,15 @@ public class NewEditSongController {
 
     @FXML void handleSave() {
         if (MyTunesController.isNewPressed)
-            songDao.createSong(titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
+            myTunesController.getSongsManager().addSong(titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
         else
-            songDao.updateSong(MyTunesController.selectedSong.getId(), titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
+            myTunesController.getSongsManager().updateSong(MyTunesController.selectedSong, titleTextField.getText(), artistTextField.getText(), categoryTextField.getText(), duration, fileTextField.getText());
 
         Stage stage = (Stage) saveButton.getScene().getWindow();
         stage.close();
     }
 
     public void initialize() {
-        songDao = new SongDaoImpl();
-
         if (!MyTunesController.isNewPressed) {
             titleTextField.setText(MyTunesController.selectedSong.getTitle());
             artistTextField.setText(MyTunesController.selectedSong.getArtist());
@@ -86,5 +82,9 @@ public class NewEditSongController {
             duration = MyTunesController.selectedSong.getDurationInInteger();
             fileTextField.setText(MyTunesController.selectedSong.getPath());
         }
+    }
+
+    public void setMyTunesController(MyTunesController myTunesController) {
+        this.myTunesController = myTunesController;
     }
 }
