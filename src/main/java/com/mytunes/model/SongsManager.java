@@ -26,8 +26,14 @@ public class SongsManager {
 
     public void updateSong(Song song, String title, String artist, String category, int duration, String path) {
         for (Song s : allSongs) {
-            if (s.getId() == song.getId())
-                allSongs.set(allSongs.indexOf(s), new Song(song.getId(), title, artist, category, duration, path));
+            if (s.getId() == song.getId()) {
+                allSongs.get(allSongs.indexOf(s)).setTitle(title);
+                allSongs.get(allSongs.indexOf(s)).setArtist(artist);
+                allSongs.get(allSongs.indexOf(s)).setCategory(category);
+                allSongs.get(allSongs.indexOf(s)).setDuration(duration);
+                allSongs.get(allSongs.indexOf(s)).setPath(path);
+            }
+
         }
         songDao.updateSong(song.getId(), title, artist, category, duration, path);
     }

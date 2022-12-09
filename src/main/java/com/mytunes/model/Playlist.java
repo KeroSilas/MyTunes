@@ -3,6 +3,7 @@ package com.mytunes.model;
 import com.mytunes.dao.SongsInPlaylistDao;
 import com.mytunes.dao.SongsInPlaylistDaoImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Playlist {
@@ -11,13 +12,13 @@ public class Playlist {
 
     private final int id;
     private String name;
-    private final List<Song> songs;
+    private List<Song> songs;
 
     public Playlist(int id, String name) {
         this.id = id;
         this.name = name;
         songsInPlaylistDao = new SongsInPlaylistDaoImpl();
-        songs = songsInPlaylistDao.getPlaylist(id); //retrieves the songs on the playlist from the database
+        songs = new ArrayList<>();
     }
 
     public int getId() {
@@ -30,6 +31,10 @@ public class Playlist {
 
     public List<Song> getSongs() {
         return songs;
+    }
+
+    public void setSongs(List<Song> songs) {
+        this.songs = songs;
     }
 
     public void addSong(Song song) {
