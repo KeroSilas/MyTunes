@@ -308,7 +308,7 @@
                               <Image url="@../images/default-album-art.png" />
                            </image>
                         </ImageView>
-                        <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                        <VBox alignment="CENTER_LEFT">
                            <children>
                               <Label fx:id="currentSongTitleLabel" focusTraversable="false" text="N/A">
                                  <font>
