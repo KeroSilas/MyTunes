@@ -39,7 +39,7 @@ public class Player {
     public Player(List<Song> songs, Song song) {
         setListStatus(ListStatus.ALL_SONGS);
 
-        path = Path.of("src/main/resources/com/mytunes/music/" + song.getPath());
+        path = Path.of("src/main/resources/com/mytunes/music/", song.getPath());
         load(path);
 
         currentSong = song;
@@ -61,7 +61,7 @@ public class Player {
         boolean isRepeatingBeforeMediaChange = isRepeating();
         mediaPlayer.dispose();
 
-        path = Path.of("src/main/resources/com/mytunes/music/" + song.getPath());
+        path = Path.of("src/main/resources/com/mytunes/music/", song.getPath());
         load(path);
 
         //reapplies player values from before

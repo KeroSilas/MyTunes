@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/mssql-jdbc-11.2.1.jre18.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-18.0.1-mac.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-18.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jaxb-api-2.4.0-b180830.0359.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-18.0.1-win.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-base-18.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-18.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javax.activation-api-1.2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-18.0.1-win.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-18.0.1-win.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-media-18.0.1-mac.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/javafx-graphics-18.0.1-mac.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
