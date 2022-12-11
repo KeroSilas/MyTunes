@@ -36,9 +36,9 @@
                       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label alignment="BOTTOM_LEFT" focusTraversable="false" maxHeight="1.7976931348623157E308" text=" Playlists">
+                        <Label alignment="BOTTOM_LEFT" focusTraversable="false" maxHeight="1.7976931348623157E308" text=" All playlists">
                            <font>
-                              <Font name="Arial" size="12.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                            <padding>
                               <Insets top="16.0" />
@@ -101,9 +101,9 @@
                       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label alignment="BOTTOM_LEFT" focusTraversable="false" maxHeight="1.7976931348623157E308" text=" Songs in playlist">
+                        <Label alignment="BOTTOM_LEFT" focusTraversable="false" maxHeight="1.7976931348623157E308" text=" Playlist">
                            <font>
-                              <Font name="Arial" size="12.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                            <padding>
                               <Insets top="16.0" />
@@ -181,7 +181,7 @@
                      <children>
                         <Label alignment="BOTTOM_LEFT" focusTraversable="false" maxHeight="1.7976931348623157E308" text=" All songs">
                            <font>
-                              <Font name="Arial" size="12.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                            <padding>
                               <Insets top="16.0" />

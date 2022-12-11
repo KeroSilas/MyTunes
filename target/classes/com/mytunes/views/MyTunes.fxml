@@ -38,7 +38,7 @@
                      <children>
                         <Label alignment="BOTTOM_LEFT" focusTraversable="false" maxHeight="1.7976931348623157E308" text=" Playlists">
                            <font>
-                              <Font name="Arial" size="12.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                            <padding>
                               <Insets top="16.0" />
@@ -79,7 +79,7 @@
                         </Button>
                      </children>
                   </GridPane>
-                  <TableView fx:id="playlistTableView" onMouseClicked="#handlePlaylistClick" prefWidth="250.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="playlistTableView" focusTraversable="false" onMouseClicked="#handlePlaylistClick" prefWidth="250.0" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="nameColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="142.0" text="Name" />
                       <TableColumn fx:id="songsColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="50.0" text="Songs" />
@@ -103,7 +103,7 @@
                      <children>
                         <Label alignment="BOTTOM_LEFT" focusTraversable="false" maxHeight="1.7976931348623157E308" text=" Songs in playlist">
                            <font>
-                              <Font name="Arial" size="12.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                            <padding>
                               <Insets top="16.0" />
@@ -145,7 +145,7 @@
                         </Button>
                      </children>
                   </GridPane>
-                  <ListView fx:id="songsInPlaylistListView" onMouseClicked="#handleSongInPlaylistClick" prefWidth="250.0" VBox.vgrow="ALWAYS" />
+                  <ListView fx:id="songsInPlaylistListView" focusTraversable="false" onMouseClicked="#handleSongInPlaylistClick" prefWidth="250.0" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             <Button fx:id="addSongToPlaylistButton" cache="true" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleAddSongToPlaylist" prefHeight="30.0" prefWidth="30.0">
@@ -181,7 +181,7 @@
                      <children>
                         <Label alignment="BOTTOM_LEFT" focusTraversable="false" maxHeight="1.7976931348623157E308" text=" All songs">
                            <font>
-                              <Font name="Arial" size="12.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                            <padding>
                               <Insets top="16.0" />
@@ -238,7 +238,7 @@
                            </cursor></TextField>
                      </children>
                   </GridPane>
-                  <TableView fx:id="songTableView" onMouseClicked="#handleSongClick" prefWidth="400.0" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="songTableView" focusTraversable="false" onMouseClicked="#handleSongClick" prefWidth="400.0" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="titleColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="142.0" text="Title" />
                       <TableColumn fx:id="artistColumn" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="142.0" text="Artist" />
