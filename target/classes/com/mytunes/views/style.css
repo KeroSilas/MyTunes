@@ -4,11 +4,11 @@
 }
 
 .slider .track {
-    -fx-pref-height:8;
+    -fx-pref-height: 8;
 }
 
 .slider:vertical .track {
-    -fx-pref-width:8;
+    -fx-pref-width: 8;
 }
 
 .slider .thumb {

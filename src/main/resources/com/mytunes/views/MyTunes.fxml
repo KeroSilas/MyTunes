@@ -273,7 +273,7 @@
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font></Label>
-                  <Slider fx:id="progressSlider" cache="true" focusTraversable="false" onMouseReleased="#handleProgressSlider" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Slider fx:id="progressSlider" cache="true" focusTraversable="false" onMouseReleased="#handleProgressSlider" stylesheets="@style.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></Slider>
@@ -418,7 +418,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Slider fx:id="volumeSlider" cache="true" focusTraversable="false" prefWidth="120.0" value="49.0" HBox.hgrow="NEVER">
+                        <Slider fx:id="volumeSlider" cache="true" focusTraversable="false" prefWidth="120.0" stylesheets="@style.css" value="49.0" HBox.hgrow="NEVER">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
