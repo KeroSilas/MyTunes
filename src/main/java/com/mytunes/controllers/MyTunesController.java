@@ -136,18 +136,6 @@ public class MyTunesController {
         player.updateCurrentAllSongs(songsManager.getAllSongs());
     }
 
-    @FXML void handleEditPlaylist() {
-        isNewPressed = false;
-        showNewEditPlaylistWindow();
-        playlistObservableList.setAll(playlistsManager.getAllPlaylists());
-    }
-
-    @FXML void handleEditSong() {
-        isNewPressed = false;
-        showNewEditSongWindow();
-        songObservableList.setAll(songsManager.getAllSongs());
-    }
-
     @FXML void handleAddSongToPlaylist() {
         if (selectedPlaylist != null && selectedSong != null) {
             selectedPlaylist.addSong(selectedSong);
@@ -157,45 +145,24 @@ public class MyTunesController {
         }
     }
 
-    @FXML void handleDeleteSong() {
-        Optional<ButtonType> result = showAlertWindow("Are you sure you wish to delete this song?");
+    @FXML void handleEditPlaylist() {
+        editPlaylist();
+    }
 
-        if (result.isPresent() && result.get() == ButtonType.YES) {
-            songsManager.removeSong(selectedSong);
-            songObservableList.setAll(songsManager.getAllSongs());
-            if (selectedPlaylist != null) {
-                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-                selectedPlaylist.getSongs().remove(selectedSong); //NEED FIX: only deletes the song from the selected playlist, won't be removed from other playlists until all playlists are refreshed from the server
-            }
-            player.updateCurrentPlaylist(selectedPlaylist);
-            player.updateCurrentAllSongs(songObservableList);
-        }
+    @FXML void handleEditSong() {
+        editSong();
+    }
+
+    @FXML void handleDeleteSong() {
+        deleteSong();
     }
 
     @FXML void handleDeletePlaylist() {
-        Optional<ButtonType> result = showAlertWindow("Are you sure you wish to delete this playlist?");
-
-        if (result.isPresent() && result.get() == ButtonType.YES) {
-            playlistsManager.removePlaylist(selectedPlaylist);
-            playlistObservableList.setAll(playlistsManager.getAllPlaylists());
-            selectedPlaylist.getSongs().clear();
-            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-            //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
-            if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
-                player.load(songObservableList, songObservableList.get(0));
-            }
-        }
+        deletePlaylist();
     }
 
     @FXML void handleDeleteSongFromPlaylist() {
-        Optional<ButtonType> result = showAlertWindow("Are you sure you wish to delete this song from the playlist?");
-
-        if (result.isPresent() && result.get() == ButtonType.YES) {
-            selectedPlaylist.removeSong(selectedSongInPlaylist);
-            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-            playlistObservableList.setAll(playlistsManager.getAllPlaylists());
-            player.updateCurrentPlaylist(selectedPlaylist);
-        }
+        deleteSongInPlaylist();
     }
 
     ///// --- PLAYER CONTROLS --- /////
@@ -272,6 +239,7 @@ public class MyTunesController {
         songObservableList.addAll(songsManager.getAllSongs());
         songTableView.setItems(songObservableList);
         songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        songTableView.setContextMenu(getSongsContextMenu());
 
         //Set up the table columns and cells for the playlist table
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
@@ -280,9 +248,11 @@ public class MyTunesController {
         playlistObservableList.addAll(playlistsManager.getAllPlaylists());
         playlistTableView.setItems(playlistObservableList);
         playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        playlistTableView.setContextMenu(getPlaylistsContextMenu());
 
         songsInPlaylistListView.setItems(songInPlaylistObservableList);
         songsInPlaylistListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        songsInPlaylistListView.setContextMenu(getSongsInPlaylistContextMenu());
 
         //initialize player with first song on Songs list if there is any
         if (songObservableList.isEmpty()) {
@@ -438,6 +408,40 @@ public class MyTunesController {
         }
     }
 
+    private ContextMenu getPlaylistsContextMenu() {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem edit = new MenuItem("Edit");
+        MenuItem delete = new MenuItem("Delete");
+
+        edit.setOnAction((event) -> editPlaylist());
+        delete.setOnAction((event) -> deletePlaylist());
+
+        contextMenu.getItems().addAll(edit,delete);
+        return contextMenu;
+    }
+
+    private ContextMenu getSongsContextMenu() {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem edit = new MenuItem("Edit");
+        MenuItem delete = new MenuItem("Delete");
+
+        edit.setOnAction((event) -> editSong());
+        delete.setOnAction((event) -> deleteSong());
+
+        contextMenu.getItems().addAll(edit,delete);
+        return contextMenu;
+    }
+
+    private ContextMenu getSongsInPlaylistContextMenu() {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem delete = new MenuItem("Delete");
+
+        delete.setOnAction((event) -> deleteSongInPlaylist());
+
+        contextMenu.getItems().addAll(delete);
+        return contextMenu;
+    }
+
     private void showNewEditPlaylistWindow() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/mytunes/views/NewEditPlaylist.fxml"));
@@ -458,6 +462,59 @@ public class MyTunesController {
             stage.showAndWait();
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private void editSong() {
+        isNewPressed = false;
+        showNewEditSongWindow();
+        songObservableList.setAll(songsManager.getAllSongs());
+    }
+
+    private void deleteSong() {
+        Optional<ButtonType> result = showAlertWindow("Are you sure you wish to delete this song?");
+
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            songsManager.removeSong(selectedSong);
+            songObservableList.setAll(songsManager.getAllSongs());
+            if (selectedPlaylist != null) {
+                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+                selectedPlaylist.getSongs().remove(selectedSong); //NEED FIX: only deletes the song from the selected playlist, won't be removed from other playlists until all playlists are refreshed from the server
+            }
+            player.updateCurrentPlaylist(selectedPlaylist);
+            player.updateCurrentAllSongs(songObservableList);
+        }
+    }
+
+    private void deleteSongInPlaylist() {
+        Optional<ButtonType> result = showAlertWindow("Are you sure you wish to delete this song from the playlist?");
+
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            selectedPlaylist.removeSong(selectedSongInPlaylist);
+            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            playlistObservableList.setAll(playlistsManager.getAllPlaylists());
+            player.updateCurrentPlaylist(selectedPlaylist);
+        }
+    }
+
+    private void editPlaylist() {
+        isNewPressed = false;
+        showNewEditPlaylistWindow();
+        playlistObservableList.setAll(playlistsManager.getAllPlaylists());
+    }
+
+    private void deletePlaylist() {
+        Optional<ButtonType> result = showAlertWindow("Are you sure you wish to delete this playlist?");
+
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            playlistsManager.removePlaylist(selectedPlaylist);
+            playlistObservableList.setAll(playlistsManager.getAllPlaylists());
+            selectedPlaylist.getSongs().clear();
+            songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+            //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
+            if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
+                player.load(songObservableList, songObservableList.get(0));
+            }
         }
     }
 
