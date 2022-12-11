@@ -7,11 +7,12 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
 <GridPane fx:id="gridPane" hgap="8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mytunes.controllers.NewEditPlaylistController">
     <columnConstraints>
         <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
     </columnConstraints>
     <rowConstraints>
@@ -21,12 +22,24 @@
     <padding>
         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
     </padding>
-    <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="72.0" text="Save" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+    <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#handleSave" prefHeight="25.0" prefWidth="72.0" text="Save" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+      <font>
+         <Font name="Arial" size="12.0" />
+      </font></Button>
     <Button fx:id="cancelButton" cancelButton="true" mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" prefWidth="72.0" text="Cancel" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
         <GridPane.margin>
           <Insets right="80.0" />
         </GridPane.margin>
+      <font>
+         <Font name="Arial" size="12.0" />
+      </font>
     </Button>
-    <TextField fx:id="nameTextField" promptText="Enter a playlist name" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" />
-    <Label text="Name:" />
+    <TextField fx:id="nameTextField" prefHeight="25.0" promptText="Enter a playlist name" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
+      <font>
+         <Font name="Arial" size="12.0" />
+      </font></TextField>
+    <Label text="Name:">
+      <font>
+         <Font name="Arial" size="12.0" />
+      </font></Label>
 </GridPane>
