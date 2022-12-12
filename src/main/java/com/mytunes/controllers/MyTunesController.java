@@ -137,7 +137,15 @@ public class MyTunesController {
     }
 
     @FXML void handleAddSongToPlaylist() {
-        if (selectedPlaylist != null && selectedSong != null) {
+        if (selectedPlaylist != null && selectedSong != null && selectedPlaylist.getSongs().contains(selectedSong)) {
+            Optional<ButtonType> result = showAlertWindow("You already have this song in the selected playlist.\nDo you want to add a duplicate?");
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                selectedPlaylist.addSong(selectedSong);
+                songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
+                playlistObservableList.setAll(playlistsManager.getAllPlaylists());
+                player.updateCurrentPlaylist(selectedPlaylist);
+            }
+        } else if (selectedPlaylist != null && selectedSong != null) {
             selectedPlaylist.addSong(selectedSong);
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
             playlistObservableList.setAll(playlistsManager.getAllPlaylists());
