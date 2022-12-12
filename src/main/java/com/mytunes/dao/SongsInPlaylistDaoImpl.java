@@ -48,7 +48,7 @@ public class SongsInPlaylistDaoImpl implements SongsInPlaylistDao {
     @Override
     public void deleteSongFromPlaylist(int playlistId, int songId) {
         try (Connection connection = databaseConnector.getConnection()) {
-            String sql = "DELETE FROM SongsInPlaylist WHERE playlistID = ? AND songID = ?;";
+            String sql = "DELETE TOP (1) FROM SongsInPlaylist WHERE playlistID = ? AND songID = ?;";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, playlistId);
             statement.setInt(2, songId);
