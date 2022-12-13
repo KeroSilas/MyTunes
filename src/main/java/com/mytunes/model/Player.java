@@ -6,8 +6,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Player {
 
@@ -21,6 +20,8 @@ public class Player {
     private List<Song> allSongs;
 
     private boolean isShuffling;
+    private int shuffleCounter = 0;
+    private final List<Integer> shuffleNumbers = new ArrayList<>();
 
     private ListStatus listStatus;
 
@@ -58,6 +59,7 @@ public class Player {
         double volumeBeforeMediaChange = mediaPlayer.getVolume();
         boolean isMutedBeforeMediaChange = isMuted();
         boolean isRepeatingBeforeMediaChange = isRepeating();
+
         mediaPlayer.dispose();
 
         path = Path.of("src/main/resources/com/mytunes/music/", song.getPath());
@@ -78,6 +80,7 @@ public class Player {
     public void load(List<Song> songs, Song song) {
         setListStatus(ListStatus.ALL_SONGS);
         load(song);
+        shuffleCounter = 0;
         allSongs = songs;
     }
 
@@ -85,6 +88,7 @@ public class Player {
     public void load(Playlist playlist, Song song) {
         setListStatus(ListStatus.PLAYLIST);
         load(song);
+        shuffleCounter = 0;
         currentPlaylist = playlist;
     }
 
@@ -101,8 +105,15 @@ public class Player {
     public void next() {
         if (getListStatus() == Player.ListStatus.ALL_SONGS) {
             if (isShuffling()) {
-                Random random = new Random();
-                load(allSongs.get(random.nextInt(allSongs.size())));
+                if (shuffleNumbers.size() == 0) {
+                    while (shuffleCounter < allSongs.size()) {
+                        shuffleNumbers.add(shuffleCounter++);
+                    }
+                    Collections.shuffle(shuffleNumbers);
+                    shuffleCounter = 0;
+                }
+                load(allSongs.get(shuffleNumbers.get(0)));
+                shuffleNumbers.remove(0);
             } else if (allSongs.indexOf(getCurrentSong()) == allSongs.size() - 1) { //checks if current song is at the end of the list
                 load(allSongs.get(0)); //returns to first song on the list
             } else {
@@ -111,9 +122,15 @@ public class Player {
             }
         } else if (getListStatus() == Player.ListStatus.PLAYLIST) {
             if (isShuffling()) {
-                Random random = new Random();
-                random.nextInt(currentPlaylist.getSongs().size());
-                load(currentPlaylist.getSongs().get(random.nextInt(currentPlaylist.getSongs().size() - 1)));
+                if (shuffleNumbers.size() == 0) {
+                    while (shuffleCounter < currentPlaylist.getSongs().size()) {
+                        shuffleNumbers.add(shuffleCounter++);
+                    }
+                    Collections.shuffle(shuffleNumbers);
+                    shuffleCounter = 0;
+                }
+                load(currentPlaylist.getSongs().get(shuffleNumbers.get(0)));
+                shuffleNumbers.remove(0);
             } else if (currentPlaylist.getSongs().indexOf(getCurrentSong()) == currentPlaylist.getSongs().size() - 1) {
                 load(currentPlaylist.getSongs().get(0));
             } else {
