@@ -81,6 +81,7 @@ public class Player {
         setListStatus(ListStatus.ALL_SONGS);
         load(song);
         shuffleCounter = 0;
+        shuffleNumbers.clear();
         allSongs = songs;
     }
 
@@ -89,6 +90,7 @@ public class Player {
         setListStatus(ListStatus.PLAYLIST);
         load(song);
         shuffleCounter = 0;
+        shuffleNumbers.clear();
         currentPlaylist = playlist;
     }
 
