@@ -24,6 +24,7 @@
     -fx-padding: 1px;
     -fx-background-insets: 1 1 2 1;
     -fx-background-radius: 6;
+    -fx-background-color: linear-gradient(to right, #376ef8, #295cdc);
 }
 
 .progress-bar > .track {
