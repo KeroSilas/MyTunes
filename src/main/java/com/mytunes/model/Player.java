@@ -50,10 +50,9 @@ public class Player {
     private void load(Path path) {
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
-        //mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
-    //used on end of media or when pressing prev/next
+    //used in prev/next methods
     private void load(Song song) {
         //stores player values in temporary variables so that they can be reapplied on the new media-player object
         double volumeBeforeMediaChange = mediaPlayer.getVolume();
@@ -65,11 +64,9 @@ public class Player {
         load(path);
 
         //reapplies player values from before
-        mediaPlayer.setVolume(volumeBeforeMediaChange);
-        if (isMutedBeforeMediaChange)
-            mute(true);
-        if (isRepeatingBeforeMediaChange)
-            repeat(true);
+        setVolume(volumeBeforeMediaChange);
+        mute(isMutedBeforeMediaChange);
+        repeat(isRepeatingBeforeMediaChange);
         play();
 
         currentSong = song;
@@ -92,6 +89,7 @@ public class Player {
     }
 
     public void play() {
+        mediaPlayer.seek(mediaPlayer.getCurrentTime()); //without this line, a small stutter would occur when resuming after pause
         mediaPlayer.play();
     }
 

@@ -189,7 +189,6 @@ public class MyTunesController {
             player.pause();
             playPauseImage.setImage(playImage);
         } else {
-            player.setProgress(progressSlider.getValue() / 100);
             player.play();
         }
     }
@@ -481,6 +480,13 @@ public class MyTunesController {
         }
     }
 
+    private Optional<ButtonType> showAlertWindow(String text) {
+        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.NO, ButtonType.YES);
+        alert.setTitle("Confirmation");
+        alert.initOwner(searchTextField.getScene().getWindow()); //retrieves the title bar icon from the main window by setting the alerts owner to that window
+        return alert.showAndWait();
+    }
+
     private void editSong() {
         isNewPressed = false;
         showNewEditSongWindow();
@@ -532,12 +538,6 @@ public class MyTunesController {
                 player.load(songObservableList, songObservableList.get(0));
             }
         }
-    }
-
-    private Optional<ButtonType> showAlertWindow(String text) {
-        Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.YES, ButtonType.NO);
-        alert.setTitle("Confirmation");
-        return alert.showAndWait();
     }
 
     //styling that adds the blue fill behind sliders
