@@ -11,23 +11,23 @@
     -fx-pref-width: 8;
 }
 
+.slider .track{
+    -fx-opacity: 0;
+}
+
 .slider .thumb {
     -fx-pref-height: 16;
     -fx-pref-width: 16;
-	-fx-opacity: 0;
 }
 
-.slider:hover .thumb {
-	-fx-opacity: 100;
+.progress-bar .bar {
+    -fx-padding: 1px;
+    -fx-background-insets: 1 1 2 1;
+    -fx-background-radius: 6;
 }
 
-.slider {
-    -default-track-color: -fx-control-inner-background;
-    -track-color: -default-track-color;
-}
-
-.slider .track {
-    -fx-background-color: -fx-shadow-highlight-color,
-          linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
-          -track-color;
+.progress-bar > .track {
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-control-inner-background: white;
 }

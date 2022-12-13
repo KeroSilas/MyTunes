@@ -57,6 +57,8 @@ public class MyTunesController {
 
     @FXML private Slider volumeSlider, progressSlider;
 
+    @FXML private ProgressBar progressBar, volumeBar;
+
     @FXML private Button editPlaylistButton, deletePlaylistButton, editSongButton, deleteSongButton, moveSongUpButton, moveSongDownButton, deleteSongFromPlaylistButton, addSongToPlaylistButton;
 
     @FXML private Label currentSongTitleLabel, currentSongArtistLabel, currentTimeLabel, totalDurationLabel, volumeLabel;
@@ -282,7 +284,7 @@ public class MyTunesController {
         volumeSlider.valueProperty().addListener((ov, oldValue, newValue) -> {
             double percentage = newValue.doubleValue();
             player.setVolume(percentage / 100);
-            volumeSlider.setStyle(sliderProgressStyle(percentage));
+            volumeBar.setProgress(percentage / 100);
             volumeLabel.setText(String.format("%s%%", newValue.intValue()));
             if (!Objects.equals(oldValue, newValue) && player.getVolume() == 0) {
                 muteUnmuteImage.setImage(muteImage);
@@ -341,10 +343,10 @@ public class MyTunesController {
     private void update() {
         //automatically moves progress slider with current time on song
         player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
-            double percentage = newValue.toSeconds() / player.getCurrentSong().getDurationInInteger() * 100;
+            double percentage = newValue.toSeconds() / player.getCurrentSong().getDurationInInteger();
             if (!progressSlider.isPressed())
-                progressSlider.setValue(percentage);
-            progressSlider.setStyle(sliderProgressStyle(percentage));
+                progressSlider.setValue(percentage * 100);
+            progressBar.setProgress(percentage);
 
             //keeps current time label updated
             int currentTime = (int) newValue.toSeconds();
@@ -538,16 +540,5 @@ public class MyTunesController {
                 player.load(songObservableList, songObservableList.get(0));
             }
         }
-    }
-
-    //styling that adds the blue fill behind sliders
-    private String sliderProgressStyle(double percentage) {
-        return String.format(
-                "-track-color: linear-gradient(to right, " +
-                        "-fx-accent 0%%, " +
-                        "-fx-accent %1$.1f%%, " +
-                        "-default-track-color %1$.1f%%, " +
-                        "-default-track-color 100%%);",
-                percentage);
     }
 }
