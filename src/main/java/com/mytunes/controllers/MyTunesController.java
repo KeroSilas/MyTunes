@@ -256,6 +256,7 @@ public class MyTunesController {
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
+        durationColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
         songObservableList.addAll(songsManager.getAllSongs());
         songTableView.setItems(songObservableList);
         songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -264,7 +265,9 @@ public class MyTunesController {
         //Set up the table columns and cells for the playlist table
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
         songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
+        songsColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
         totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
+        totalDurationColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
         playlistObservableList.addAll(playlistsManager.getAllPlaylists());
         playlistTableView.setItems(playlistObservableList);
         playlistTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);

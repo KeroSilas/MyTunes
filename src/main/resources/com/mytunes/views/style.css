@@ -33,3 +33,14 @@
     -fx-background-color: white;
     -fx-border-color: #b6b6b6;
 }
+
+.list-cell:empty,
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+}
+
+.list-cell,
+.table-row-cell{
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}
