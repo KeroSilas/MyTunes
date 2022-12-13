@@ -115,6 +115,7 @@ public class Player {
                     shuffleCounter = 0;
                 }
                 load(allSongs.get(shuffleNumbers.get(0)));
+                shuffleNumbers.add(shuffleNumbers.get(0));
                 shuffleNumbers.remove(0);
             } else if (allSongs.indexOf(getCurrentSong()) == allSongs.size() - 1) { //checks if current song is at the end of the list
                 load(allSongs.get(0)); //returns to first song on the list
@@ -132,6 +133,7 @@ public class Player {
                     shuffleCounter = 0;
                 }
                 load(currentPlaylist.getSongs().get(shuffleNumbers.get(0)));
+                shuffleNumbers.add(shuffleNumbers.get(0));
                 shuffleNumbers.remove(0);
             } else if (currentPlaylist.getSongs().indexOf(getCurrentSong()) == currentPlaylist.getSongs().size() - 1) {
                 load(currentPlaylist.getSongs().get(0));
