@@ -1,6 +1,6 @@
 .root {
 	-fx-accent: #2d61e3;
-	-fx-focus-color: #2d61e3;
+	-fx-focus-color: linear-gradient(to bottom, #376ef8, #295cdc);
 }
 
 .slider .track {
@@ -22,13 +22,14 @@
 
 .progress-bar .bar {
     -fx-padding: 1px;
-    -fx-background-insets: 1 1 2 1;
-    -fx-background-radius: 6;
+    -fx-background-insets: 1 1 1 1;
+    -fx-background-radius: 4;
     -fx-background-color: linear-gradient(to right, #376ef8, #295cdc);
 }
 
 .progress-bar > .track {
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
-    -fx-control-inner-background: white;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-background-color: white;
+    -fx-border-color: #b6b6b6;
 }
