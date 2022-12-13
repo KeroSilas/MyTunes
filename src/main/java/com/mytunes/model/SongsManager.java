@@ -33,7 +33,6 @@ public class SongsManager {
                 allSongs.get(allSongs.indexOf(s)).setDuration(duration);
                 allSongs.get(allSongs.indexOf(s)).setPath(path);
             }
-
         }
         songDao.updateSong(song.getId(), title, artist, category, duration, path);
     }

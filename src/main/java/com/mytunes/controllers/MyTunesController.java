@@ -278,7 +278,7 @@ public class MyTunesController {
         if (songObservableList.isEmpty()) {
             player = new Player();
         } else {
-            player = new Player(songObservableList, songObservableList.get(0));
+            player = new Player(songsManager.getAllSongs(), songsManager.getAllSongs().get(0));
             songTableView.getSelectionModel().select(player.getCurrentSong());
             Platform.runLater(() -> songTableView.requestFocus());
         }

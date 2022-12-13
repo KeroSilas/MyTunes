@@ -38,13 +38,8 @@ public class Player {
 
     //constructor for when songs list is not empty
     public Player(List<Song> songs, Song song) {
-        setListStatus(ListStatus.ALL_SONGS);
-
-        path = Path.of("src/main/resources/com/mytunes/music/", song.getPath());
-        load(path);
-
-        currentSong = song;
-        allSongs = songs;
+        this();
+        load(songs, song);
     }
 
     //base loader for passing in a file
@@ -80,8 +75,16 @@ public class Player {
     public void load(List<Song> songs, Song song) {
         setListStatus(ListStatus.ALL_SONGS);
         load(song);
+
         shuffleCounter = 0;
         shuffleNumbers.clear();
+        while (shuffleCounter < songs.size()) {
+            shuffleNumbers.add(shuffleCounter++);
+        }
+        Collections.shuffle(shuffleNumbers);
+        shuffleNumbers.remove((Integer) songs.indexOf(song));
+        shuffleNumbers.add(songs.indexOf(song));
+
         allSongs = songs;
     }
 
@@ -89,8 +92,16 @@ public class Player {
     public void load(Playlist playlist, Song song) {
         setListStatus(ListStatus.PLAYLIST);
         load(song);
+
         shuffleCounter = 0;
         shuffleNumbers.clear();
+        while (shuffleCounter < playlist.getSongs().size()) {
+            shuffleNumbers.add(shuffleCounter++);
+        }
+        Collections.shuffle(shuffleNumbers);
+        shuffleNumbers.remove((Integer) playlist.getSongs().indexOf(song));
+        shuffleNumbers.add(playlist.getSongs().indexOf(song));
+
         currentPlaylist = playlist;
     }
 
@@ -107,13 +118,6 @@ public class Player {
     public void next() {
         if (getListStatus() == Player.ListStatus.ALL_SONGS) {
             if (isShuffling()) {
-                if (shuffleNumbers.size() == 0) {
-                    while (shuffleCounter < allSongs.size()) {
-                        shuffleNumbers.add(shuffleCounter++);
-                    }
-                    Collections.shuffle(shuffleNumbers);
-                    shuffleCounter = 0;
-                }
                 load(allSongs.get(shuffleNumbers.get(0)));
                 shuffleNumbers.add(shuffleNumbers.get(0));
                 shuffleNumbers.remove(0);
@@ -125,13 +129,6 @@ public class Player {
             }
         } else if (getListStatus() == Player.ListStatus.PLAYLIST) {
             if (isShuffling()) {
-                if (shuffleNumbers.size() == 0) {
-                    while (shuffleCounter < currentPlaylist.getSongs().size()) {
-                        shuffleNumbers.add(shuffleCounter++);
-                    }
-                    Collections.shuffle(shuffleNumbers);
-                    shuffleCounter = 0;
-                }
                 load(currentPlaylist.getSongs().get(shuffleNumbers.get(0)));
                 shuffleNumbers.add(shuffleNumbers.get(0));
                 shuffleNumbers.remove(0);
