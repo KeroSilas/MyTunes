@@ -66,7 +66,10 @@ public class Playlist {
         int hours = duration / 3600;
         int minutes = (duration / 60) % 60;
         int seconds = duration % 60;
-        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        if (hours == 0)
+            return String.format("%02d:%02d", minutes, seconds);
+        else
+            return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
     public int getNumberOfSongs() {

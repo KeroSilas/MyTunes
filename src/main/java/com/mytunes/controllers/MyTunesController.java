@@ -518,6 +518,9 @@ public class MyTunesController {
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
             playlistObservableList.setAll(playlistsManager.getAllPlaylists());
             player.updateCurrentPlaylist(selectedPlaylist);
+            if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST && selectedPlaylist.getSongs().size() == 0) {
+                player.load(songObservableList, songObservableList.get(0));
+            }
         }
     }
 
