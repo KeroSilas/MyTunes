@@ -226,13 +226,16 @@ public class MyTunesController {
     @FXML void handleMuteUnmute() {
         if (player.isMuted()) {
             player.mute(false);
+            volumeBar.lookup(".bar").setStyle("-fx-background-color: linear-gradient(to right, #376ef8, #295cdc);");
             muteUnmuteImage.setImage(unmuteImage);
         } else {
             player.mute(true);
+            volumeBar.lookup(".bar").setStyle("-fx-background-color: linear-gradient(to right, #939393, #757575);");
             muteUnmuteImage.setImage(muteImage);
         }
         if (player.getVolume() == 0) {
             player.mute(false);
+            volumeBar.lookup(".bar").setStyle("-fx-background-color: linear-gradient(to right, #376ef8, #295cdc);");
             volumeSlider.setValue(20);
             muteUnmuteImage.setImage(unmuteImage);
         }
@@ -290,6 +293,8 @@ public class MyTunesController {
                 muteUnmuteImage.setImage(muteImage);
             } else if (!Objects.equals(oldValue, newValue) && player.getVolume() > 0) {
                 player.mute(false);
+                if (volumeBar.lookup(".bar") != null) //would give an error on launch, presumably since the bar hadn't been loaded yet
+                    volumeBar.lookup(".bar").setStyle("-fx-background-color: linear-gradient(to right, #376ef8, #295cdc);");
                 muteUnmuteImage.setImage(unmuteImage);
             }
         });
