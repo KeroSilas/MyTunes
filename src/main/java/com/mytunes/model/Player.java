@@ -8,6 +8,11 @@ import javafx.util.Duration;
 import java.nio.file.Path;
 import java.util.*;
 
+/**
+ * A class that is responsible for manipulating a MediaPlayer object and load Song objects from playlists/all-songs.
+ * Also provides methods such as next(), previous() and shuffle().
+ */
+
 public class Player {
 
     private Path path;
@@ -25,42 +30,44 @@ public class Player {
 
     private ListStatus listStatus;
 
+    //Enum list that are used to specify whether the player is playing from a playlist or the all-songs list.
     public enum ListStatus {
         ALL_SONGS,
         PLAYLIST,
     }
 
-    //default constructor for when there are no songs
+    //Default constructor for when there are no songs.
     public Player() {
         path = Path.of("src/main/resources/com/mytunes/music/default.mp3");
         load(path);
     }
 
-    //constructor for when songs list is not empty
+    //Constructor for when songs list is not empty.
     public Player(List<Song> songs, Song song) {
-        this();
+        this(); //Initialize the base MediaPlayer object, so that the next line can utilize its functions.
         load(songs, song);
+        pause();
     }
 
-    //base loader for passing in a file
+    //Base loader for passing in a file or initializing the MediaPlayer object.
     private void load(Path path) {
         media = new Media(path.toUri().toString());
         mediaPlayer = new MediaPlayer(media);
     }
 
-    //used in prev/next methods
+    //Used in prev/next methods.
     private void load(Song song) {
-        //stores player values in temporary variables so that they can be reapplied on the new media-player object
+        //Stores player values in temporary variables so that they can be reapplied on the new media-player object.
         double volumeBeforeMediaChange = mediaPlayer.getVolume();
         boolean isMutedBeforeMediaChange = isMuted();
         boolean isRepeatingBeforeMediaChange = isRepeating();
 
-        mediaPlayer.dispose();
+        mediaPlayer.dispose(); //Removes the previous MediaPlayer object, as a new one will be created from the next load.
 
         path = Path.of("src/main/resources/com/mytunes/music/", song.getPath());
         load(path);
 
-        //reapplies player values from before
+        //Reapplies player values from before.
         setVolume(volumeBeforeMediaChange);
         mute(isMutedBeforeMediaChange);
         repeat(isRepeatingBeforeMediaChange);
@@ -68,14 +75,17 @@ public class Player {
 
         currentSong = song;
 
+        //Toggles to either true or false when a song has been loaded.
+        //It is used to detect a change to run the update() method in MyTunesController.
         hasLoadedProperty.set(!hasLoadedProperty.get());
     }
 
-    //used when clicking a song on the all songs list
+    //Used when clicking a song on the all songs list.
     public void load(List<Song> songs, Song song) {
         setListStatus(ListStatus.ALL_SONGS);
         load(song);
 
+        //Resets shuffle algorithm.
         shuffleCounter = 0;
         shuffleNumbers.clear();
         while (shuffleCounter < songs.size()) {
@@ -88,11 +98,12 @@ public class Player {
         allSongs = songs;
     }
 
-    //used when clicking a song on a playlist
+    //Used when clicking a song on a playlist.
     public void load(Playlist playlist, Song song) {
         setListStatus(ListStatus.PLAYLIST);
         load(song);
 
+        //Resets shuffle algorithm.
         shuffleCounter = 0;
         shuffleNumbers.clear();
         while (shuffleCounter < playlist.getSongs().size()) {
@@ -106,7 +117,7 @@ public class Player {
     }
 
     public void play() {
-        mediaPlayer.seek(mediaPlayer.getCurrentTime()); //without this line, a small stutter would occur when resuming after pause
+        mediaPlayer.seek(mediaPlayer.getCurrentTime()); //Without this line, a small stutter would occur when resuming after pause.
         mediaPlayer.play();
     }
 
@@ -114,17 +125,17 @@ public class Player {
         mediaPlayer.pause();
     }
 
-    //loads next song on either the all songs list or the currently playing playlist
+    //Loads next song on either the all songs list or the currently playing playlist.
     public void next() {
         if (getListStatus() == Player.ListStatus.ALL_SONGS) {
             if (isShuffling()) {
                 load(allSongs.get(shuffleNumbers.get(0)));
                 shuffleNumbers.add(shuffleNumbers.get(0));
                 shuffleNumbers.remove(0);
-            } else if (allSongs.indexOf(getCurrentSong()) == allSongs.size() - 1) { //checks if current song is at the end of the list
-                load(allSongs.get(0)); //returns to first song on the list
+            } else if (allSongs.indexOf(getCurrentSong()) == allSongs.size() - 1) { //Checks if current song is at the end of the list.
+                load(allSongs.get(0)); //Returns to first song on the list.
             } else {
-                Song nextSong = allSongs.get(allSongs.indexOf(getCurrentSong()) + 1); //gets next song on the list
+                Song nextSong = allSongs.get(allSongs.indexOf(getCurrentSong()) + 1); //Gets next song on the list.
                 load(nextSong);
             }
         } else if (getListStatus() == Player.ListStatus.PLAYLIST) {
@@ -141,15 +152,15 @@ public class Player {
         }
     }
 
-    //loads previous song on either the all songs list or the currently playing playlist
+    //Loads previous song on either the all songs list or the currently playing playlist.
     public void previous() {
-        if (getCurrentTime().toSeconds() > 3) { //checks if less than 3 seconds have passed
-            reset(); //resets currently playing song
+        if (getCurrentTime().toSeconds() > 3) { //Checks if less than 3 seconds have passed.
+            reset(); //Resets currently playing song.
         } else if (getListStatus() == Player.ListStatus.ALL_SONGS) {
-            if (allSongs.indexOf(getCurrentSong()) == 0) { //checks if current song is at the start of the list
+            if (allSongs.indexOf(getCurrentSong()) == 0) { //Checks if current song is at the start of the list.
                 reset();
             } else {
-                Song previousSong = allSongs.get(allSongs.indexOf(getCurrentSong()) - 1); //gets previous song on the list
+                Song previousSong = allSongs.get(allSongs.indexOf(getCurrentSong()) - 1); //Gets previous song on the list.
                 load(previousSong);
             }
         } else if (getListStatus() == Player.ListStatus.PLAYLIST) {
@@ -163,13 +174,14 @@ public class Player {
     }
 
     public void reset() {
-        mediaPlayer.seek(mediaPlayer.getStartTime()); //seeks the media-player back to its start time
+        mediaPlayer.seek(mediaPlayer.getStartTime()); //Seeks the media-player back to its start time.
     }
 
     public void mute(boolean mute) {
         mediaPlayer.setMute(mute);
     }
 
+    //Repeats the currently playing song when it reaches end of media.
     public void repeat(boolean repeat) {
         if (repeat) {
             mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
@@ -198,6 +210,7 @@ public class Player {
         return currentPlaylist;
     }
 
+    //Used to retrieve metadata in MyTunesController.
     public Media getMedia() {
         return mediaPlayer.getMedia();
     }
@@ -206,17 +219,17 @@ public class Player {
         return listStatus;
     }
 
-    //list status must be either ALL_SONGS or PLAYLIST
+    //List status must be either ALL_SONGS or PLAYLIST.
     public void setListStatus(ListStatus listStatus) {
         this.listStatus = listStatus;
     }
 
-    //volume value must be between 0 and 1
+    //Volume value must be between 0 and 1.
     public void setVolume(double volume) {
         mediaPlayer.setVolume(volume);
     }
 
-    //progress value must be between 0 and 1
+    //Progress value must be between 0 and 1.
     public void setProgress(double progress) {
         mediaPlayer.seek(media.getDuration().multiply(progress));
     }

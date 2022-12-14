@@ -4,11 +4,15 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import java.sql.*;
 
+/**
+ * A class that is responsible for connecting to the SQL server.
+ */
+
 public class DatabaseConnector {
 
     private final SQLServerDataSource dataSource;
 
-    //constructor that defines the connection to the SQL server
+    //Constructor that defines the connection to the SQL server.
     public DatabaseConnector() {
         dataSource = new SQLServerDataSource();
         dataSource.setServerName("kero.database.windows.net");

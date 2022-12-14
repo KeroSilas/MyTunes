@@ -6,6 +6,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Uses the DatabaseConnector class and sends queries to the Songs table on the database.
+ */
+
 public class SongDaoImpl implements SongDao{
 
     private final DatabaseConnector databaseConnector;
@@ -14,6 +18,7 @@ public class SongDaoImpl implements SongDao{
         databaseConnector = new DatabaseConnector();
     }
 
+    //Retrieves all the songs on the Songs table and returns an ArrayList with them.
     @Override
     public List<Song> getAllSongs() {
         List<Song> songs = new ArrayList<>();
@@ -40,6 +45,7 @@ public class SongDaoImpl implements SongDao{
         return songs;
     }
 
+    //Deletes a song.
     @Override
     public void deleteSong(int id) {
         try (Connection connection = databaseConnector.getConnection()) {
@@ -52,6 +58,7 @@ public class SongDaoImpl implements SongDao{
         }
     }
 
+    //Updates a song's values.
     @Override
     public void updateSong(int id, String title, String artist, String category, int duration, String path) {
         try (Connection connection = databaseConnector.getConnection()) {
@@ -69,6 +76,8 @@ public class SongDaoImpl implements SongDao{
         }
     }
 
+    //Creates a new song.
+    //Also returns an int value for the ID of the song that was just created.
     @Override
     public int createSong(String title, String artist, String category, int duration, String path) {
         int songId = 0;
@@ -90,6 +99,7 @@ public class SongDaoImpl implements SongDao{
         return songId;
     }
 
+    //Returns a list of songs where the search input matches a title or an artist.
     @Override
     public List<Song> searchSong(String search) {
         List<Song> songs = new ArrayList<>();

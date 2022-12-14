@@ -19,9 +19,15 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Responsible for controlling various elements in the GUI by using the model classes.
+ */
+
 public class MyTunesController {
 
     private Player player;
+
+    //Initialize all the images that will be used when toggling different button states.
     private final Image playImage = new Image("file:src/main/resources/com/mytunes/images/play.png");
     private final Image pauseImage = new Image("file:src/main/resources/com/mytunes/images/pause.png");
     private final Image muteImage = new Image("file:src/main/resources/com/mytunes/images/muted.png");
@@ -185,7 +191,7 @@ public class MyTunesController {
 
     ///// --- PLAYER CONTROLS --- /////
 
-    //determines whether the player is playing or paused and changes the buttons action accordingly
+    //Determines whether the player is playing or paused and changes the buttons action accordingly.
     @FXML void handlePlayPause() {
         if (player.isPlaying()) {
             player.pause();
@@ -241,17 +247,17 @@ public class MyTunesController {
         }
     }
 
-    //changes progress of player when mouse click is released
+    //Changes progress of player when mouse click is released.
     @FXML void handleProgressSlider() {
         player.setProgress(progressSlider.getValue() / 100);
     }
 
     public void initialize() {
-        //initialize song and playlist managers
+        //Initialize song and playlist managers.
         songsManager = new SongsManager();
         playlistsManager = new PlaylistsManager();
 
-        //Set up the table columns and cells for the song table
+        //Set up the table columns and cells for the song table.
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("Artist"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("Category"));
@@ -262,10 +268,10 @@ public class MyTunesController {
         songTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         songTableView.setContextMenu(getSongsContextMenu());
 
-        //Set up the table columns and cells for the playlist table
+        //Set up the table columns and cells for the playlist table.
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
         songsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
-        songsColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
+        songsColumn.setStyle( "-fx-alignment: CENTER;");
         totalDurationColumn.setCellValueFactory(new PropertyValueFactory<>("DurationInString"));
         totalDurationColumn.setStyle( "-fx-alignment: CENTER-RIGHT;");
         playlistObservableList.addAll(playlistsManager.getAllPlaylists());
@@ -277,7 +283,7 @@ public class MyTunesController {
         songsInPlaylistListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         songsInPlaylistListView.setContextMenu(getSongsInPlaylistContextMenu());
 
-        //initialize player with first song on Songs list if there is any
+        //Initialize player with first song on Songs list if there is any.
         if (songObservableList.isEmpty()) {
             player = new Player();
         } else {
@@ -286,7 +292,7 @@ public class MyTunesController {
             Platform.runLater(() -> songTableView.requestFocus());
         }
 
-        //add listener to volumeSlider
+        //Add listener to volumeSlider.
         volumeSlider.valueProperty().addListener((ov, oldValue, newValue) -> {
             double percentage = newValue.doubleValue();
             player.setVolume(percentage / 100);
@@ -302,6 +308,7 @@ public class MyTunesController {
             }
         });
 
+        //Next three sets of listeners are responsible for disabling or enabling buttons that have no valid selection input.
         playlistTableView.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> {
             if (!Objects.equals(oldValue, newValue) && playlistTableView.getSelectionModel().getSelectedItem() == null) {
                 editPlaylistButton.setDisable(true);
@@ -336,44 +343,44 @@ public class MyTunesController {
             }
         });
 
-        //set default volume to 50%
+        //Set default volume to 50%.
         volumeSlider.setValue(50);
 
         update();
-        //calls on the update method whenever a new song is loaded
+        //Calls on the update method whenever a new song is loaded.
         player.hasLoadedProperty().addListener((ov, oldValue, newValue) -> {
             if (!Objects.equals(oldValue, newValue))
                 update();
         });
     }
 
-    //refreshes some listeners and runnables: this is necessary because when a new media file is loaded, the listeners don't get updated with the new media-player object
+    //Refreshes some listeners and runnables: this is necessary because when a new media file is loaded, the listeners don't get updated with the new media-player object.
     private void update() {
-        //automatically moves progress slider with current time on song
+        //Automatically moves progress slider with current time on song.
         player.currentTimeProperty().addListener((ov, oldValue, newValue) -> {
             double percentage = newValue.toSeconds() / player.getCurrentSong().getDurationInInteger();
             if (!progressSlider.isPressed())
                 progressSlider.setValue(percentage * 100);
             progressBar.setProgress(percentage);
 
-            //keeps current time label updated
+            //Keeps current time label updated.
             int currentTime = (int) newValue.toSeconds();
             int minutes = (currentTime % 3600) / 60;
             int seconds = currentTime % 60;
             currentTimeLabel.setText(String.format("%02d:%02d", minutes, seconds));
         });
 
-        //if repeat button isn't toggled on, automatically loads next song on end of media
+        //If repeat button isn't toggled on, automatically loads next song on end of media.
         player.setOnEndOfMedia(() -> {
             if (!player.isRepeating()) {
                 player.next();
             }
         });
 
-        //changes play button icon whenever a song is playing (from either pressing play, clicking on a song or pressing next/prev)
+        //Changes play button icon whenever a song is playing (from either pressing play, clicking on a song or pressing next/prev).
         player.setOnPlaying(() -> playPauseImage.setImage(pauseImage));
 
-        //updates selection and focus toward currently playing song
+        //Updates selection and focus toward currently playing song.
         if (player.getListStatus() == Player.ListStatus.ALL_SONGS) {
             songTableView.getSelectionModel().select(player.getCurrentSong());
             songTableView.requestFocus();
@@ -386,12 +393,12 @@ public class MyTunesController {
             selectedSongInPlaylist = songsInPlaylistListView.getSelectionModel().getSelectedItem();
         }
 
-        //updates all relevant labels for currently playing song
+        //Updates all relevant labels for currently playing song.
         totalDurationLabel.setText(player.getCurrentSong().getDurationInString());
         currentSongTitleLabel.setText(player.getCurrentSong().getTitle());
         currentSongArtistLabel.setText(player.getCurrentSong().getArtist());
 
-        //retrieves album cover on currently playing song
+        //Retrieves album cover on currently playing song.
         albumCoverImage.setImage(defaultAlbumImage);
         player.getMedia().getMetadata().addListener((MapChangeListener.Change<? extends String, ?> c) -> {
             if (c.wasAdded()) {
@@ -433,6 +440,7 @@ public class MyTunesController {
         }
     }
 
+    //Next three methods are responsible for adding right-lick context menus for editing or deleting items.
     private ContextMenu getPlaylistsContextMenu() {
         ContextMenu contextMenu = new ContextMenu();
         MenuItem edit = new MenuItem("Edit");
@@ -490,10 +498,12 @@ public class MyTunesController {
         }
     }
 
+    //Opens an alert window that can be customized.
+    //Returns the button type that was pressed in the alert window.
     private Optional<ButtonType> showAlertWindow(String text) {
         Alert alert = new Alert(Alert.AlertType.NONE, text, ButtonType.NO, ButtonType.YES);
         alert.setTitle("Confirmation");
-        alert.initOwner(searchTextField.getScene().getWindow()); //retrieves the title bar icon from the main window by setting the alerts owner to that window
+        alert.initOwner(searchTextField.getScene().getWindow()); //Retrieves the title bar icon from the main window by setting the alerts owner to that window.
         return alert.showAndWait();
     }
 
@@ -546,7 +556,7 @@ public class MyTunesController {
             playlistObservableList.setAll(playlistsManager.getAllPlaylists());
             selectedPlaylist.getSongs().clear();
             songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-            //if the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list
+            //If the playlist that is getting deleted is currently loaded, then switch the player to load the first song on the all songs list.
             if (player.getCurrentPlaylist() == selectedPlaylist && player.getListStatus() == Player.ListStatus.PLAYLIST) {
                 player.load(songObservableList, songObservableList.get(0));
             }

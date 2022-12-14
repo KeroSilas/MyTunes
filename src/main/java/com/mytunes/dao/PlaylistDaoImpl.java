@@ -6,6 +6,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Uses the DatabaseConnector class and sends queries to the Playlists table on the database.
+ */
+
 public class PlaylistDaoImpl implements PlaylistDao {
 
     private final DatabaseConnector databaseConnector;
@@ -14,6 +18,7 @@ public class PlaylistDaoImpl implements PlaylistDao {
         databaseConnector = new DatabaseConnector();
     }
 
+    //Retrieves all the songs on the Playlists table and returns an ArrayList with them.
     @Override
     public List<Playlist> getAllPlaylists() {
         List<Playlist> playlists = new ArrayList<>();
@@ -36,6 +41,7 @@ public class PlaylistDaoImpl implements PlaylistDao {
         return playlists;
     }
 
+    //Deletes a playlist.
     @Override
     public void deletePlaylist(int id) {
         try (Connection connection = databaseConnector.getConnection()) {
@@ -48,6 +54,7 @@ public class PlaylistDaoImpl implements PlaylistDao {
         }
     }
 
+    //Updates a playlist's values.
     @Override
     public void updatePlaylist(int id, String name) {
         try (Connection connection = databaseConnector.getConnection()) {
@@ -61,6 +68,8 @@ public class PlaylistDaoImpl implements PlaylistDao {
         }
     }
 
+    //Creates a new playlist.
+    //Also returns an int value for the ID of the playlist that was just created.
     @Override
     public int createPlaylist(String name) {
         int playlistId = 0;

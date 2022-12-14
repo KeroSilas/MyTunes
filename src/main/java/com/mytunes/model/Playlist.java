@@ -6,6 +6,11 @@ import com.mytunes.dao.SongsInPlaylistDaoImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class that contains a playlists id and name, as well as all the songs in a playlist.
+ * Also sends queries to the database.
+ */
+
 public class Playlist {
 
     private final SongsInPlaylistDao songsInPlaylistDao;
@@ -37,6 +42,7 @@ public class Playlist {
         this.songs = songs;
     }
 
+    //Adds a new song on the playlist both locally and on the database.
     public void addSong(Song song) {
         songs.add(song);
         songsInPlaylistDao.moveSongToPlaylist(getId(), song.getId()); //adds the song to the database as well
@@ -46,12 +52,13 @@ public class Playlist {
         this.name = name;
     }
 
+    //Removes a song from the playlist both locally and on the database.
     public void removeSong(Song song) {
         songs.remove(song);
         songsInPlaylistDao.deleteSongFromPlaylist(getId(), song.getId());
     }
 
-    //returns the playlist duration in seconds
+    //Returns the playlist duration in seconds.
     private int getDurationInInteger() {
         int duration = 0;
         for (Song song : songs) {
@@ -60,7 +67,7 @@ public class Playlist {
         return duration;
     }
 
-    //returns the playlist duration in a string such as this: "02:32:23"
+    //Returns the playlist duration in a string such as this: "02:32:23".
     public String getDurationInString() {
         int duration = getDurationInInteger();
         int hours = duration / 3600;

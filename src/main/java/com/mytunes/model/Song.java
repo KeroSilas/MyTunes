@@ -2,6 +2,10 @@ package com.mytunes.model;
 
 import javafx.util.Duration;
 
+/**
+ * A class that contains a song's id, title, artist, category, duration and path.
+ */
+
 public class Song {
 
     private final int id;
@@ -40,12 +44,12 @@ public class Song {
         return new Duration(duration);
     }
 
-    //returns the song duration in seconds
+    //Returns the song duration in seconds.
     public int getDurationInInteger() {
         return duration;
     }
 
-    //returns the song duration in a string such as this: "02:23"
+    //Returns the song duration in a string such as this: "02:23".
     public String getDurationInString() {
         int duration = getDurationInInteger();
         int minutes = (duration % 3600) / 60;
@@ -77,6 +81,7 @@ public class Song {
         this.path = path;
     }
 
+    //A toString() method that formats a song's artist and title as such: "Adele - Hello".
     @Override
     public String toString() {
         return String.format("%s - %s", artist, title);
