@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Responsible for controlling various elements in the GUI by using the model classes.
+ * Responsible for controlling various elements in the GUI by utilizing the model classes.
  */
 
 public class MyTunesController {
@@ -115,7 +115,7 @@ public class MyTunesController {
         player.updateCurrentPlaylist(selectedPlaylist);
     }
 
-    ///// --- DAO CONTROLS --- /////
+    ///// --- MANAGER OBJECTS CONTROLS --- /////
 
     //searches for songs in the database
     @FXML void handleSearch() {
@@ -521,7 +521,7 @@ public class MyTunesController {
             songObservableList.setAll(songsManager.getAllSongs());
             if (selectedPlaylist != null) {
                 songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-                selectedPlaylist.getSongs().remove(selectedSong); //NEED FIX: only deletes the song from the selected playlist, won't be removed from other playlists until all playlists are refreshed from the server
+                selectedPlaylist.getSongs().remove(selectedSong);
             }
             player.updateCurrentPlaylist(selectedPlaylist);
             player.updateCurrentAllSongs(songObservableList);
