@@ -519,10 +519,18 @@ public class MyTunesController {
         if (result.isPresent() && result.get() == ButtonType.YES) {
             songsManager.removeSong(selectedSong);
             songObservableList.setAll(songsManager.getAllSongs());
+            //Loops through and deletes all copies of the deleted song from each playlist.
+            for (int i = 0; i < playlistsManager.getAllPlaylists().size(); i++) {
+                playlistsManager.getAllPlaylists().get(i).getSongs().removeIf(s -> s.getId() == selectedSong.getId());
+            }
+
+            //Updates Playlist and SongsInPlaylist lists.
+            playlistObservableList.setAll(playlistsManager.getAllPlaylists());
             if (selectedPlaylist != null) {
                 songInPlaylistObservableList.setAll(selectedPlaylist.getSongs());
-                selectedPlaylist.getSongs().remove(selectedSong);
             }
+
+            //Sends new versions of the lists to the Player.
             player.updateCurrentPlaylist(selectedPlaylist);
             player.updateCurrentAllSongs(songObservableList);
         }
